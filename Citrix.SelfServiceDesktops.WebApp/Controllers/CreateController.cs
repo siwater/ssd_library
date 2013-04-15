@@ -7,6 +7,7 @@ using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 {
+    [Authorize]
     public class CreateController : Controller
     {
         private IDesktopManager mgr
@@ -18,10 +19,22 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 
         //
         // GET: /Create/
-        [BasicAuthenticationAttribute]
+        [AllowAnonymous]
         public ActionResult Index()
         {
-            return View(mgr.ListDesktopOfferings());
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            try
+            {
+                return View(mgr.ListDesktopOfferings());
+            }
+            catch (System.Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
         }
 
         // POST: /Create/
@@ -35,7 +48,15 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 
             if (button == "Submit")
             {
-                var newDesktop = mgr.CreateDesktop(serviceOfferingId);
+                try
+                {
+                    var newDesktop = mgr.CreateDesktop(serviceOfferingId);
+                }
+                catch (System.Exception ex)
+                {
+                    ViewBag.ErrorMessage = ex.Message;
+                    return View("Error");
+                }
             }
 
             // TODO: Where is the error handling should create fail?

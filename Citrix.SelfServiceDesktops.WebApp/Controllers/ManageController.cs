@@ -9,6 +9,8 @@ using System.Security.Principal;
 
 namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 {
+
+    [Authorize]
     public class ManageController : Controller
     {
         private IDesktopManager mgr
@@ -22,13 +24,27 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         //
         // GET: /Manage/
         // TODO:  Add Create URL
-        [BasicAuthenticationAttribute]
+        [AllowAnonymous]
         public ActionResult Index()
         {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             CheckForNoCreate();
-            ViewBag.ReceiverUrl = mgr.BrokerUrl.ToString();
-            ViewBag.User = HttpContext.User.Identity.Name;
-            return View(mgr.ListDesktops());
+            try
+            {
+                ViewBag.ReceiverUrl = mgr.BrokerUrl.ToString();
+                ViewBag.User = HttpContext.User.Identity.Name;
+
+                return View(mgr.ListDesktops());
+            }
+            catch (System.Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
         }
 
         private void CheckForNoCreate()
@@ -44,68 +60,79 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 
         //
         // POST: /Manage/Restart?name=foo
-        [BasicAuthenticationAttribute]
         [HttpPost]
         public ActionResult Restart(string name)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
-            mgr.RestartDesktop(name);
-            return View("Index", mgr.ListDesktops());
+            try
+            {
+                mgr.RestartDesktop(name);
+                return View("Index", mgr.ListDesktops());
+            }
+            catch (System.Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
         }
 
         //
         // POST: /Manage/Start?name=foo
-        [BasicAuthenticationAttribute]
         [HttpPost]
         public ActionResult Start(string name)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
-            mgr.StartDesktop(name);
-            return View("Index", mgr.ListDesktops());
+            try
+            {
+                mgr.StartDesktop(name);
+                return View("Index", mgr.ListDesktops());
+            }
+            catch (System.Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
         }
 
         //
         // POST: /Manage/Stop?name=foo
-        [BasicAuthenticationAttribute]
         [HttpPost]
         public ActionResult Stop(string name)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
-            mgr.StopDesktop(name);
-            return View("Index", mgr.ListDesktops());
+            try
+            {
+                mgr.StopDesktop(name);
+                return View("Index", mgr.ListDesktops());
+            }
+            catch (System.Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
         }
 
         //
         // POST: /Manage/Delete?name=foo
         // 
-        [BasicAuthenticationAttribute]
         [HttpPost]
         public ActionResult Delete(string name)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
-            mgr.DestroyDesktop(name);
-            return View("Index", mgr.ListDesktops());
-        }
-
-        // POST: /Manage/LoggedOff
-        [HttpPost]
-        public ActionResult LoggedOff()
-        {
-            CheckForNoCreate();
-            // HttpContext set on Request basis
-            if (HttpContext.Session["clear_logon"] != null)
+            try
             {
-                HttpContext.Session.Abandon();
-                return RedirectToAction("Index", "Manage");
-           }
-
-            // Revoke credentials
-            HttpContext.Session.Add("clear_logon", "true");
-            return new HttpBasicAuthenticationUnauthorizedResult();
+                mgr.DestroyDesktop(name);
+                return View("Index", mgr.ListDesktops());
+            }
+            catch (System.Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
         }
     }
 }
