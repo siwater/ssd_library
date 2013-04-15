@@ -17,5 +17,6 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         string ServiceOfferingId { get; }
         string NetworkId { get; }
         string HostnamePrefix { get; }
+        bool Default { get; }
     }
 }

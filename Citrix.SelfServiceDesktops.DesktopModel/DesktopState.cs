@@ -21,4 +21,38 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         Error,
         Unknown
     }
+
+    public static class ValidTransitions
+    {
+        public static bool CanStart(DesktopState currState)
+        {
+            if (currState == DesktopState.Stopped)
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool CanStop(DesktopState currState)
+        {
+            if (currState == DesktopState.Running ||
+                currState == DesktopState.Stopping ||
+                currState == DesktopState.Starting)
+            {
+                return true;
+            }
+            return false;
+        }
+        public static bool CanRestart(DesktopState currState)
+        {
+            if (currState == DesktopState.Running ||
+                currState == DesktopState.Starting ||
+                currState == DesktopState.Stopping ||
+                currState == DesktopState.Starting)
+            {
+                return true;
+            }
+            return true;
+        }
+    }
+
 }

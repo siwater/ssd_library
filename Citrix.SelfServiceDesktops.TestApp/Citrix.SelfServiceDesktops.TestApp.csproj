@@ -35,10 +35,13 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Management.Automation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\WindowsPowerShell\v1.0\System.Management.Automation.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,7 +72,7 @@
       <Name>Citrix.SelfServiceDesktops.DesktopLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\Citrix.SelfServiceDesktops.DesktopModel\Citrix.SelfServiceDesktops.DesktopModel.csproj">
-      <Project>{0366824f-abfb-4009-9f79-d0a9fb4b26a4}</Project>
+      <Project>{6663c520-4bec-43bc-9534-3e2bffe1dbef}</Project>
       <Name>Citrix.SelfServiceDesktops.DesktopModel</Name>
     </ProjectReference>
   </ItemGroup>

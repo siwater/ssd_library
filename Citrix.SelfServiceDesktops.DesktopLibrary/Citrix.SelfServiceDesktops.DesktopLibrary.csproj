@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CloudStack.SDK">
+      <HintPath>..\packages\CloudStack.SDK.2.2.0.3\lib\net40\CloudStack.SDK.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -49,18 +52,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\cloudstack_dotnetsdk\CloudStack.SDK\CloudStack.SDK.csproj">
-      <Project>{17a9fe85-5623-469b-8041-f44cf404f3ae}</Project>
-      <Name>CloudStack.SDK</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Citrix.Diagnostics\Citrix.Diagnostics.csproj">
       <Project>{95706565-af6f-4435-ad04-dac7ec32155b}</Project>
       <Name>Citrix.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Citrix.SelfServiceDesktops.DesktopModel\Citrix.SelfServiceDesktops.DesktopModel.csproj">
-      <Project>{0366824f-abfb-4009-9f79-d0a9fb4b26a4}</Project>
+      <Project>{6663c520-4bec-43bc-9534-3e2bffe1dbef}</Project>
       <Name>Citrix.SelfServiceDesktops.DesktopModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -26,6 +26,13 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <exception cref="CloudStackException">If the credentials cannot be used to access cloudstack at the URL given in the config.</exception>
         internal DesktopManager(string userName, string password) {
 
             config = DesktopServiceConfiguration.Instance;
