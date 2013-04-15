@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Citrix.SelfServiceDesktops.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Citrix.SelfServiceDesktops.WebApp", "Citrix.SelfServiceDesktops.WebApp\Citrix.SelfServiceDesktops.WebApp.csproj", "{42778926-36D1-48F4-90A5-3E8BC2D3993F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Citrix.SelfServiceDesktops.MockDesktopLibrary", "Citrix.SelfServiceDesktops.MockDesktopLibrary\Citrix.SelfServiceDesktops.MockDesktopLibrary.csproj", "{CE1978C0-109B-4468-9C2E-B4F61522BC8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,16 @@ Global
 		{42778926-36D1-48F4-90A5-3E8BC2D3993F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{42778926-36D1-48F4-90A5-3E8BC2D3993F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{42778926-36D1-48F4-90A5-3E8BC2D3993F}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CE1978C0-109B-4468-9C2E-B4F61522BC8E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

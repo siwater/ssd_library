@@ -1,8 +1,13 @@
 ﻿@if (User.Identity.IsAuthenticated) {
     <text>
          <div class="username">Hello, @User.Identity.Name!</div>
-        @using (Html.BeginForm("LoggedOff", "Manage", FormMethod.Post, new { id = "logoutForm" })) {
-            <a href="javascript:document.getElementById('logoutForm').submit()">Change User</a>
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
         }
     </text>
+} else {
+    <ul>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
 }

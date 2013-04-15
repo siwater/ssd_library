@@ -26,27 +26,38 @@
         </td><td>  
             @using (Html.BeginForm("Restart", "Manage", new { name=item.Name }, FormMethod.Post )) 
             {
-                <input type="submit" value="Restart" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanRestart(item.State)? "": "disabled=disabled") onsubmit="return confirm('Are you sure you want to Restart?')" />
+                <input type="submit" value="Restart" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanRestart(item.State)? "": "disabled=disabled") onclick="return confirmStateChange('@item.Name', 'restart');" />
             }
         </td><td>
             @using (Html.BeginForm("Start", "Manage", new { name = item.Name }, FormMethod.Post))
             {
-                <input type="submit" value="Start" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStart(item.State)? "": "disabled=disabled")  onsubmit="return confirm('Are you sure you want to Restart?')" />
+                <input type="submit" value="Start" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStart(item.State)? "": "disabled=disabled")  onclick="return confirmStateChange('@item.Name', 'start');" />
             }
         </td><td>
             @using (Html.BeginForm("Stop", "Manage", new { name = item.Name }, FormMethod.Post))
             {
-                <input style="" type="submit" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStop(item.State)? "": "disabled=disabled style=color:#888;" ) value="Stop" />
+                <input type="submit" value="Stop" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStop(item.State)? "": "disabled=disabled;" ) onclick="return confirmStateChange('@item.Name', 'stop');" />
             }
         </td><td>
             @using (Html.BeginForm("Delete", "Manage", new { name = item.Name }, FormMethod.Post, new { id = "delete"+ item.Name } ))
             {
-               <div>
-                <input id = "delete-@item.Name" name="submit" type="submit" value="Delete"/>
-               </div>
+                <input id = "delete-@item.Name" value="Delete" name="submit" type="submit" onclick="return confirmDel('@item.Name');" />
             }
         </td>
     </tr>
     }
 </table>
-<h4><a href="@ViewBag.ReceiverUrl" style="color:blue">Web Receiver URL</a> </h4>   
+<! >
+<h4><a href="@ViewBag.ReceiverUrl" style="color:blue">Access your desktop console from Web Receiver</a> </h4>
+<script type="text/javascript">
+    function confirmStateChange(vmName, stateName) {
+        return confirm('Are you sure you want to ' + stateName + ' VM ' +  vmName + ' ?');
+    }
+    function confirmDel(vmName) {
+        var confirmText = prompt('WAIT! Delete cannot be undone, type DELETE to confirm you want to delete the VM ' +  vmName, "");
+        if (confirmText != null && confirmText == 'DELETE') {
+            return true;
+        }
+        return false;
+    }
+</script>

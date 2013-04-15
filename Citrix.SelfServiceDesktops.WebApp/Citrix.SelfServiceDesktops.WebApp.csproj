@@ -75,9 +75,6 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -137,24 +134,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CreateController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Filters\BasicAuthenticationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\MockDesktop.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\MockDesktopManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\MockDesktopManagerFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\MockDesktopOffering.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Models\Citrix.SelfServiceDesktops.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -260,13 +246,16 @@
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Create\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Manage\LoggedOut.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Citrix.SelfServiceDesktops.DesktopLibrary\Citrix.SelfServiceDesktops.DesktopLibrary.csproj">
@@ -276,6 +265,10 @@
     <ProjectReference Include="..\Citrix.SelfServiceDesktops.DesktopModel\Citrix.SelfServiceDesktops.DesktopModel.csproj">
       <Project>{6663c520-4bec-43bc-9534-3e2bffe1dbef}</Project>
       <Name>Citrix.SelfServiceDesktops.DesktopModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Citrix.SelfServiceDesktops.MockDesktopLibrary\Citrix.SelfServiceDesktops.MockDesktopLibrary.csproj">
+      <Project>{ce1978c0-109b-4468-9c2e-b4f61522bc8e}</Project>
+      <Name>Citrix.SelfServiceDesktops.MockDesktopLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
