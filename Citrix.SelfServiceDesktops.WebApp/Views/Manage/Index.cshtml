@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Citrix.SelfServiceDesktops.DesktopModel.IDesktop>
+
+@{
+    ViewBag.Title = "Manage Desktops";
+}
+
+<h2>Desktops for user "@ViewBag.User"</h2>
+@using (Html.BeginForm("Index", "Manage", FormMethod.Get)) 
+{
+    <input type="submit" value="Refresh"/>
+}
+<table>
+    <tr>
+        <th>Name</th>
+        <th>IP Address</th>
+        <th>State</th>
+    </tr>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td><td>
+            @Html.DisplayFor(modelItem => item.IpAddress)
+        </td><td>
+            @Html.DisplayFor(modelItem => item.State)
+        </td><td>  
+            @using (Html.BeginForm("Restart", "Manage", new { name=item.Name }, FormMethod.Post )) 
+            {
+                <input type="submit" value="Restart" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanRestart(item.State)? "": "disabled=disabled") onsubmit="return confirm('Are you sure you want to Restart?')" />
+            }
+        </td><td>
+            @using (Html.BeginForm("Start", "Manage", new { name = item.Name }, FormMethod.Post))
+            {
+                <input type="submit" value="Start" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStart(item.State)? "": "disabled=disabled")  onsubmit="return confirm('Are you sure you want to Restart?')" />
+            }
+        </td><td>
+            @using (Html.BeginForm("Stop", "Manage", new { name = item.Name }, FormMethod.Post))
+            {
+                <input style="" type="submit" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStop(item.State)? "": "disabled=disabled style=color:#888;" ) value="Stop" />
+            }
+        </td><td>
+            @using (Html.BeginForm("Delete", "Manage", new { name = item.Name }, FormMethod.Post, new { id = "delete"+ item.Name } ))
+            {
+               <div>
+                <input id = "delete-@item.Name" name="submit" type="submit" value="Delete"/>
+               </div>
+            }
+        </td>
+    </tr>
+    }
+</table>
+<h4><a href="@ViewBag.ReceiverUrl" style="color:blue">Web Receiver URL</a> </h4>   

@@ -1,0 +1,8 @@
+﻿@if (User.Identity.IsAuthenticated) {
+    <text>
+         <div class="username">Hello, @User.Identity.Name!</div>
+        @using (Html.BeginForm("LoggedOff", "Manage", FormMethod.Post, new { id = "logoutForm" })) {
+            <a href="javascript:document.getElementById('logoutForm').submit()">Change User</a>
+        }
+    </text>
+}

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Citrix.SelfServiceDesktops.DesktopModel.IDesktopOffering>
+
+@{
+    ViewBag.Title = "Request Desktop";
+}
+
+<h2>Desktop Offerings</h2>
+
+@using (Html.BeginForm())
+{
+<form>
+ <fieldset>
+  <legend>Select Your Desktop
+</legend>
+<table>
+@foreach (var item in Model)
+{
+<tr>
+    
+<td width ="10">@Html.RadioButton("serviceOfferingId", item.ServiceOfferingId, item.Default)
+
+<td><div class="offering-label">@Html.DisplayFor(modelItem => item.Name)</div></td>
+    
+</tr>
+<tr><div class="offering-description">
+   <td width ="10"></td> 
+<td>@Html.DisplayFor(modelItem => item.Description)</td>
+</div>
+</tr>
+}
+</table>
+<div class="offering-buttons">
+<input type="submit" value="Submit" name="button" />
+<input type="submit" value="Cancel" name="button"  />
+</div>
+</fieldset>
+</form>
+}
