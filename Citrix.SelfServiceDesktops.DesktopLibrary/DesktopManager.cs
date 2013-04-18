@@ -63,8 +63,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 ZoneId = offering.ZoneId,
                 DisplayName = name
             };
-            request.Parameters["name"] = name;
-            request.WithNetworkIds(offering.NetworkId);
+
+            if (!string.IsNullOrEmpty(offering.NetworkId)) {
+                request.WithNetworkIds(offering.NetworkId);
+            }
             string id = cloudStackClient.DeployVirtualMachine(request);
             return new Desktop(id, name, null, DesktopState.Creating);
         }
@@ -114,10 +116,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             foreach (VirtualMachine vm in machines) {                
                 if (desktopOfferings.Count(o => {
                     int num;
-                    return (vm.Name.StartsWith(o.HostnamePrefix) && int.TryParse(vm.Name.Substring(o.HostnamePrefix.Length), out num));
+                    return (vm.DisplayName.StartsWith(o.HostnamePrefix) && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
                 }) > 0) {
                     DesktopState state = Parse(vm.State);
-                    result.Add(vm.Name, new Desktop(vm.Id, vm.Name, vm.Nic[0].IpAddress, state));
+                    result.Add(vm.Id, new Desktop(vm.Id, vm.DisplayName, vm.Nic[0].IpAddress, state));
                 }
             }
             return result.Values;
