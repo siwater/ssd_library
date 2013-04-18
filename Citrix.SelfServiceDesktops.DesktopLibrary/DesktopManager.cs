@@ -53,8 +53,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             
         }
 
-        public IDesktop CreateDesktop(string desktopOfferingName) {
-            IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == desktopOfferingName));
+        public IDesktop CreateDesktop(string serviceOfferingId)
+        {
+            IDesktopOffering offering = ListDesktopOfferings().First(o => (o.ServiceOfferingId == serviceOfferingId));
             string name = GetNextDesktopName(offering);
             DeployVirtualMachineRequest request = new DeployVirtualMachineRequest() {
                 ServiceOfferingId = offering.ServiceOfferingId,
@@ -123,9 +124,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         }
 
         private DesktopState Parse(string state) {
-            DesktopState result = DesktopState.Unknown;
+            DesktopState result;
             if (!Enum.TryParse(state, true, out result)) {
                 CtxTrace.TraceError("Unable to parse desktop state: {0}", state);
+                result = DesktopState.Unknown;
             }
             return result;
         }
