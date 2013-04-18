@@ -20,6 +20,7 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         Running,
         Stopping,
         Error,
+        Expunging,
         Destroyed
     }
 
@@ -27,7 +28,7 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
     {
         public static bool CanDelete(DesktopState currState)
         {
-            if (currState == DesktopState.Destroyed)
+            if (currState == DesktopState.Destroyed || currState == DesktopState.Expunging)
             {
                 return false;
             }
