@@ -29,8 +29,8 @@ namespace Citrix.SelfServiceDesktops.WebApp
             AuthConfig.RegisterAuth();
 
             // Add the DesktopManagerFactory
-//            IDesktopManagerFactory factory = new DesktopManagerFactory();
-            IDesktopManagerFactory factory = new MockDesktopManagerFactory();
+            IDesktopManagerFactory factory = new DesktopManagerFactory();
+//            IDesktopManagerFactory factory = new MockDesktopManagerFactory();
             HttpContext.Current.Application.Add("IDesktopManagerFactory", factory);
         }
     }
