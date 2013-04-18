@@ -53,9 +53,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             
         }
 
-        public IDesktop CreateDesktop(string serviceOfferingId)
+        public IDesktop CreateDesktop(string serviceOfferingName)
         {
-            IDesktopOffering offering = ListDesktopOfferings().First(o => (o.ServiceOfferingId == serviceOfferingId));
+            IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == serviceOfferingName));
             string name = GetNextDesktopName(offering);
             DeployVirtualMachineRequest request = new DeployVirtualMachineRequest() {
                 ServiceOfferingId = offering.ServiceOfferingId,
@@ -116,7 +116,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             foreach (VirtualMachine vm in machines) {                
                 if (desktopOfferings.Count(o => {
                     int num;
-                    return (vm.DisplayName.StartsWith(o.HostnamePrefix) && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
+                    DesktopState state = Parse(vm.State);
+                    return (vm.DisplayName.StartsWith(o.HostnamePrefix) 
+                            && (state != DesktopState.Expunging && state != DesktopState.Destroyed)
+                            && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
                 }) > 0) {
                     DesktopState state = Parse(vm.State);
                     result.Add(vm.Id, new Desktop(vm.Id, vm.DisplayName, vm.Nic[0].IpAddress, state));

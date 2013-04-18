@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 namespace Citrix.SelfServiceDesktops.DesktopModel {
 
     public interface IDesktopOffering {
+        /// <summary>
+        /// The name must be unique
+        /// </summary>
         string Name { get; }
         string Description { get; }
         string ZoneId { get; }
