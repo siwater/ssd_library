@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
-using Citrix.SelfServiceDesktops.DesktopModel;
 using WebMatrix.WebData;
-using System.Security.Principal;
+
+using Citrix.Diagnostics;
+using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 {
@@ -42,6 +44,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             catch (System.Exception ex)
             {
+                CtxTrace.TraceError(ex.Message);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -61,17 +64,18 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         //
         // POST: /Manage/Restart?name=foo
         [HttpPost]
-        public ActionResult Restart(string name)
+        public ActionResult Restart(string identifier)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
-                mgr.RestartDesktop(name);
+                mgr.RestartDesktop(identifier);
                 return View("Index", mgr.ListDesktops());
             }
             catch (System.Exception ex)
             {
+                CtxTrace.TraceError(ex.Message);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -80,17 +84,18 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         //
         // POST: /Manage/Start?name=foo
         [HttpPost]
-        public ActionResult Start(string name)
+        public ActionResult Start(string identifier)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
-                mgr.StartDesktop(name);
+                mgr.StartDesktop(identifier);
                 return View("Index", mgr.ListDesktops());
             }
             catch (System.Exception ex)
             {
+                CtxTrace.TraceError(ex.Message);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -99,17 +104,18 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         //
         // POST: /Manage/Stop?name=foo
         [HttpPost]
-        public ActionResult Stop(string name)
+        public ActionResult Stop(string identifier)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
-                mgr.StopDesktop(name);
+                mgr.StopDesktop(identifier);
                 return View("Index", mgr.ListDesktops());
             }
             catch (System.Exception ex)
             {
+                CtxTrace.TraceError(ex.Message);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -119,17 +125,18 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         // POST: /Manage/Delete?name=foo
         // 
         [HttpPost]
-        public ActionResult Delete(string name)
+        public ActionResult Delete(string identifier)
         {
             CheckForNoCreate();
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
-                mgr.DestroyDesktop(name);
+                mgr.DestroyDesktop(identifier);
                 return View("Index", mgr.ListDesktops());
             }
             catch (System.Exception ex)
             {
+                CtxTrace.TraceError(ex.Message);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
