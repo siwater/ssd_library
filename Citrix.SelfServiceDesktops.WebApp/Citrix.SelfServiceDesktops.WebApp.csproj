@@ -273,6 +273,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Citrix.Diagnostics\Citrix.Diagnostics.csproj">
+      <Project>{95706565-af6f-4435-ad04-dac7ec32155b}</Project>
+      <Name>Citrix.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Citrix.SelfServiceDesktops.DesktopLibrary\Citrix.SelfServiceDesktops.DesktopLibrary.csproj">
       <Project>{39a3c94c-0a4b-4be0-92ca-3a590ce28d00}</Project>
       <Name>Citrix.SelfServiceDesktops.DesktopLibrary</Name>
