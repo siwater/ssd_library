@@ -9,13 +9,14 @@
 {
     <input type="submit" value="Refresh"/>
 }
-<table>
+<table id="SSD-list">
     <tr>
         <th>Name</th>
         <th>IP Address</th>
         <th>State</th>
     </tr>
 @foreach (var item in Model) {
+    <div id = "@item.Id">
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Name)
@@ -24,27 +25,28 @@
         </td><td>
             @Html.DisplayFor(modelItem => item.State)
         </td><td>  
-            @using (Html.BeginForm("Restart", "Manage", new { name=item.Name }, FormMethod.Post )) 
+            @using (Html.BeginForm("Restart", "Manage", new { identifier = item.Id }, FormMethod.Post)) 
             {
                 <input type="submit" value="Restart" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanRestart(item.State)? "": "disabled=disabled") onclick="return confirmStateChange('@item.Name', 'restart');" />
             }
         </td><td>
-            @using (Html.BeginForm("Start", "Manage", new { name = item.Name }, FormMethod.Post))
+            @using (Html.BeginForm("Start", "Manage", new { identifier = item.Id }, FormMethod.Post))
             {
-                <input type="submit" value="Start" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStart(item.State)? "": "disabled=disabled")  onclick="return confirmStateChange('@item.Name', 'start');" />
+                <input type="submit" value="Start" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStart(item.State) ? "" : "disabled=disabled")  onclick="return confirmStateChange('@item.Name', 'start');" />
             }
         </td><td>
-            @using (Html.BeginForm("Stop", "Manage", new { name = item.Name }, FormMethod.Post))
+            @using (Html.BeginForm("Stop", "Manage", new { identifier = item.Id }, FormMethod.Post))
             {
                 <input type="submit" value="Stop" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanStop(item.State)? "": "disabled=disabled;" ) onclick="return confirmStateChange('@item.Name', 'stop');" />
             }
         </td><td>
-            @using (Html.BeginForm("Delete", "Manage", new { name = item.Name }, FormMethod.Post, new { id = "delete"+ item.Name } ))
+            @using (Html.BeginForm("Delete", "Manage", new { identifier = item.Id }, FormMethod.Post, new { id = "delete" + item.Name }))
             {
-                <input id = "delete-@item.Name" value="Delete" name="submit" type="submit" onclick="return confirmDel('@item.Name');" />
+                <input id = "delete-@item.Name" value="Delete" name="submit" type="submit" @(Citrix.SelfServiceDesktops.DesktopModel.ValidTransitions.CanDelete(item.State)? "": "disabled=disabled;" )  onclick="return confirmDel('@item.Name');" />
             }
         </td>
     </tr>
+    </div>
     }
 </table>
 <! >
