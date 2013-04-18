@@ -13,17 +13,26 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
     /// Current state of the desktop (subset of the Apache CloudState virtual machine state)
     /// </summary>
     public  enum DesktopState {
+        Unknown,
         Creating,
         Stopped,
         Starting,
         Running,
         Stopping,
         Error,
-        Unknown
+        Destroyed
     }
 
     public static class ValidTransitions
     {
+        public static bool CanDelete(DesktopState currState)
+        {
+            if (currState == DesktopState.Destroyed)
+            {
+                return false;
+            }
+            return true;
+        }
         public static bool CanStart(DesktopState currState)
         {
             if (currState == DesktopState.Stopped)
@@ -51,7 +60,7 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
             {
                 return true;
             }
-            return true;
+            return false;
         }
     }
 
