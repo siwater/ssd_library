@@ -14,8 +14,8 @@ namespace Citrix.SelfServiceDesktops.DesktopModel
     {
         IEnumerable<IDesktopOffering> ListDesktopOfferings();
         IEnumerable<IDesktop> ListDesktops();
-    
-        IDesktop CreateDesktop(string desktopOfferingName);
+
+        IDesktop CreateDesktop(string serviceOfferingId);
         void DestroyDesktop(string desktopId);
 
         void StartDesktop(string desktopId);
