@@ -252,7 +252,11 @@ namespace Citrix.Diagnostics {
         private static void InternalWriteLine (TraceLevel level, object obj) {
             StackFrame frame = new StackFrame (2, true);
             MethodBase method = frame.GetMethod ();
-            string name = " " + method.DeclaringType.Name + "." + method.Name;
+            string name = "Unknown";
+            if (method != null)
+            {
+                name = " " + method.DeclaringType.Name + "." + method.Name;
+            }
             string msg = (obj == null) ? null : ": " + obj.ToString ();
             string timestamp = DateTime.Now.ToShortDateString () + " " + DateTime.Now.ToLongTimeString ();
             Trace.WriteLine (timestamp + LevelString (level) + ThreadId + name + msg);

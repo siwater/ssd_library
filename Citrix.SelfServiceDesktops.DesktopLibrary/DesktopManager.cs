@@ -44,7 +44,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             }
             catch (CloudStackException ex)
             {
-                cloudStackClient.Login(userName, password, false); // hashing caused problems on CloudStack 3.0.6, AD authentication enabled
+                cloudStackClient.Login(userName, password, false);  // fall back to hashed value
             }
         }
 

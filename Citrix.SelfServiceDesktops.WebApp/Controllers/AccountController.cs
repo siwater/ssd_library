@@ -50,9 +50,9 @@ namespace Citrix.SelfServiceDesktops.Controllers
                     }
                     catch (System.Exception ex)
                     {
-                        ////CtxTrace.TraceError(ex.Message);
+                        CtxTrace.TraceError(ex.Message);
                         ViewBag.ErrorMessage = ex.Message;
-                        return View("Error"); // Exceptions thrown when authentication fails, but we ignore to avoid giving away details about the cloudstack command.
+                        // return View("Error"); // Exceptions thrown when authentication fails, but we ignore to avoid giving away details about the cloudstack command.
                     }
                 }
             }
