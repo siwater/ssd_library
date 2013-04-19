@@ -37,7 +37,15 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
             config = DesktopServiceConfiguration.Instance;
             cloudStackClient = new Client(config.CLoudStackUri);
-            cloudStackClient.Login(userName, password, true);
+
+            try
+            {
+                cloudStackClient.Login(userName, password, true); // hashing caused problems on CloudStack 3.0.6, AD authentication enabled
+            }
+            catch (CloudStackException ex)
+            {
+                cloudStackClient.Login(userName, password, false); // hashing caused problems on CloudStack 3.0.6, AD authentication enabled
+            }
         }
 
         #region IDesktopManager implementation
@@ -63,7 +71,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 ZoneId = offering.ZoneId,
                 DisplayName = name
             };
-
+            request.Parameters["name"] = name;
             if (!string.IsNullOrEmpty(offering.NetworkId)) {
                 request.WithNetworkIds(offering.NetworkId);
             }
