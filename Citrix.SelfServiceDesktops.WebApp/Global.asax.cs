@@ -33,7 +33,7 @@ namespace Citrix.SelfServiceDesktops.WebApp
             AuthConfig.RegisterAuth();
 
             // Add the DesktopManagerFactory
-            CtxTrace.Initialize("self-service-desktops-agent", true);
+            CtxTrace.Initialize("self-service-desktops-agent");
             IDesktopManagerFactory factory = new DesktopManagerFactory();
 //            IDesktopManagerFactory factory = new MockDesktopManagerFactory();
             HttpContext.Current.Application.Add("IDesktopManagerFactory", factory);
