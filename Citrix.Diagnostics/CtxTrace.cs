@@ -81,6 +81,7 @@ namespace Citrix.Diagnostics {
             Initialized = true;
             foreach (TraceListener traceListener in Trace.Listeners) {
                 if ((traceListener is TextWriterTraceListener) || (traceListener is LogWriterTraceListener)) {
+                    TraceInformation("Working listener called " + traceListener.Name);
                     return;
                 }
             }
@@ -255,11 +256,13 @@ namespace Citrix.Diagnostics {
             string name = "Unknown";
             if (method != null)
             {
-                name = " " + method.DeclaringType.Name + "." + method.Name;
+                var typeName = method.DeclaringType == null ? "UnknownType" : method.DeclaringType.Name;
+                name = " " + typeName + "." + method.Name;
             }
-            string msg = (obj == null) ? null : ": " + obj.ToString ();
-            string timestamp = DateTime.Now.ToShortDateString () + " " + DateTime.Now.ToLongTimeString ();
-            Trace.WriteLine (timestamp + LevelString (level) + ThreadId + name + msg);
+
+            string msg = (obj == null) ? "" : ": " + obj.ToString();
+            string timestamp = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
+            Trace.WriteLine(timestamp + LevelString(level) + ThreadId + name + msg);
         }
     }
 }
