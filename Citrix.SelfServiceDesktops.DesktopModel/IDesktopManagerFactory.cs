@@ -11,5 +11,7 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
 
     public interface IDesktopManagerFactory {
         IDesktopManager CreateManager(string userName, string password);
+
+        IDesktopManager CreateManager(string userName, string password, string domain);
     }
 }

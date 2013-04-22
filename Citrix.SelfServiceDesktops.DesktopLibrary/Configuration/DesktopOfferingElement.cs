@@ -14,7 +14,7 @@ using Citrix.SelfServiceDesktops.DesktopModel;
 namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
     [XmlRootAttribute(ElementName = "add")]
-    public class DesktopOffering : IDesktopOffering {
+    public class DesktopOfferingElement : IDesktopOffering {
 
         [XmlAttribute("name")]
         public string Name { get; set; }

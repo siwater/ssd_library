@@ -17,5 +17,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         public IDesktopManager CreateManager(string userName, string password) {
             return new DesktopManager(userName, password);     
         }
+
+        public IDesktopManager CreateManager(string userName, string password, string domain) {
+            return new DesktopManager(userName, password, domain);
+        }
     }
 }

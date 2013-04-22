@@ -25,12 +25,26 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
+        
 
-        internal DesktopManager(string userName, string password) {
+        /// <summary>
+        /// Create a new instance of the DesktopManager for the specified user in the root domain
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        internal DesktopManager(string userName, string password) : this(userName, password, null) {      
+        }
 
+        /// <summary>
+        /// Create a new instance of the DesktopManager for the specified user and domain
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="domain"></param>
+        internal DesktopManager(string userName, string password, string domain) {
             config = DesktopServiceConfiguration.Instance;
-            cloudStackClient = new Client(config.CLoudStackUri);
-            cloudStackClient.Login(userName, password, true);
+            cloudStackClient = new Client(config.CloudStackUri);
+            cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
         }
 
         #region IDesktopManager implementation
