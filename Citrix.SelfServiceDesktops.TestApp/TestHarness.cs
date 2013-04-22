@@ -34,7 +34,7 @@ namespace TestApp {
         public void TestConfigurationReader() {
             IDesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
             Console.WriteLine("Broker Url is {0}", config.BrokerUri);
-            Console.WriteLine("CloudStack Url is {0}", config.CLoudStackUri);
+            Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
             DisplayOfferings(config.DesktopOfferings);
 
             //config = DesktopServiceConfiguration.GetInstance(ConfigurationLocation.Remote);

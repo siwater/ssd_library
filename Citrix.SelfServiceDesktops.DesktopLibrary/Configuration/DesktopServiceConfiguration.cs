@@ -70,24 +70,39 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             }
         }
 
-        public Uri CLoudStackUri {
+        public Uri CloudStackUri {
             get {
                 return new Uri(config.XPathSelectElement("//cloudstack").Attribute("url").Value);
+            }
+        }
+
+        public bool HashCloudStackPassword {
+            get {             
+                return bool.Parse(config.XPathSelectElement("//cloudstack").Attribute("hashPassword").Value);
             }
         }
 
         public IEnumerable<IDesktopOffering> DesktopOfferings {
             get {
                 List<IDesktopOffering> result = new List<IDesktopOffering>();
-                XmlSerializer deSerializer = new XmlSerializer(typeof(DesktopOffering));
+                XmlSerializer deSerializer = new XmlSerializer(typeof(DesktopOfferingElement));
                 foreach (XElement e in config.XPathSelectElements("//desktopOfferings/add")) {              
-                    DesktopOffering offering = deSerializer.Deserialize(e.CreateReader()) as DesktopOffering;
+                    DesktopOfferingElement offering = deSerializer.Deserialize(e.CreateReader()) as DesktopOfferingElement;
                     result.Add(offering);
                 }
                 return result;
             }    
         }
 
+        public IPowerShellScript PowerShellScript {
+            get {
+                return new PowerShellScriptElement(config);
+            }
+        }
+
         #endregion
+
+
+     
     }
 }

@@ -13,9 +13,13 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
 
         Uri BrokerUri { get; }
 
-        Uri CLoudStackUri { get; }
+        Uri CloudStackUri { get; }
+
+        bool HashCloudStackPassword { get; }
 
         IEnumerable<IDesktopOffering> DesktopOfferings { get; }
+
+        IPowerShellScript PowerShellScript { get; }
 
     }
 }

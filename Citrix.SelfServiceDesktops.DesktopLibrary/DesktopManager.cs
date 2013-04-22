@@ -25,27 +25,26 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
-
+        
 
         /// <summary>
-        /// 
+        /// Create a new instance of the DesktopManager for the specified user in the root domain
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <exception cref="CloudStackException">If the credentials cannot be used to access cloudstack at the URL given in the config.</exception>
-        internal DesktopManager(string userName, string password) {
+        internal DesktopManager(string userName, string password) : this(userName, password, null) {      
+        }
 
+        /// <summary>
+        /// Create a new instance of the DesktopManager for the specified user and domain
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="domain"></param>
+        internal DesktopManager(string userName, string password, string domain) {
             config = DesktopServiceConfiguration.Instance;
-            cloudStackClient = new Client(config.CLoudStackUri);
-
-            try
-            {
-                cloudStackClient.Login(userName, password, true); // hashing caused problems on CloudStack 3.0.6, AD authentication enabled
-            }
-            catch (CloudStackException ex)
-            {
-                cloudStackClient.Login(userName, password, false);  // fall back to hashed value
-            }
+            cloudStackClient = new Client(config.CloudStackUri);
+            cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
         }
 
         #region IDesktopManager implementation

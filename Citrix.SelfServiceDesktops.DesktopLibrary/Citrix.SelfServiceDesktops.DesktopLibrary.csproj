@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Citrix.SelfServiceDesktops.DesktopLibrary</RootNamespace>
     <AssemblyName>Citrix.SelfServiceDesktops.DesktopLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,8 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\DesktopOffering.cs" />
+    <Compile Include="Configuration\DesktopOfferingElement.cs" />
     <Compile Include="Configuration\DesktopServiceConfiguration.cs" />
+    <Compile Include="Configuration\PowerShellScriptElement.cs" />
     <Compile Include="Configuration\SelfServiceDesktopsSection.cs" />
     <Compile Include="Desktop.cs" />
     <Compile Include="DesktopManager.cs" />
