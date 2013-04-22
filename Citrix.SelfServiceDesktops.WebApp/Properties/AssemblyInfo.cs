@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿/*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+ */
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

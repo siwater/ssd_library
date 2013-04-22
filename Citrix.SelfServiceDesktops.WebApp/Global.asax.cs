@@ -1,4 +1,7 @@
-﻿using Citrix.Diagnostics;
+﻿/*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+ */
+using Citrix.Diagnostics;
 using Citrix.SelfServiceDesktops.DesktopLibrary;
 using Citrix.SelfServiceDesktops.DesktopModel;
 using Citrix.SelfServiceDesktops.MockDesktopLibrary;
