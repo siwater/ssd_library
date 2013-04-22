@@ -43,7 +43,8 @@ namespace Citrix.SelfServiceDesktops.Controllers
                 {
                     try
                     {
-                        IDesktopManager mgr = factory.CreateManager(model.UserName, model.Password);
+                        IDesktopManager mgr = factory.CreateManager(model.UserName, model.Password, model.Domain);
+
                         if (mgr != null)
                         {
                             HttpContext.Session.Add("IDesktopManager", mgr);
