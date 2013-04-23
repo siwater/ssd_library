@@ -22,15 +22,6 @@ namespace TestApp {
             CtxTrace.Initialize("self-service-desktops-agent", true);
         }
 
-        public void TestPs1() {
-            Dictionary<string, string> arguments = new Dictionary<string, string>();
-            arguments["catalogname"] = "who cares";
-            arguments["ccpip"] = "192.168.1.1";
-            arguments["domain"] = "formentera";
-            arguments["templatestart"] = "DEV";
-            PsRunner.TestRunScript(@".\Test.ps1", arguments);
-        }
-
         public void TestConfigurationReader() {
             IDesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
             Console.WriteLine("Broker Url is {0}", config.BrokerUri);
@@ -44,10 +35,15 @@ namespace TestApp {
 
         }
 
-
         public void TestDesktopManager() {
+           // TestDesktopManager("admin", "1pass@word1", null);
+            TestDesktopManager("simonw", "pass@word1", "TestDomain");
+        }
+
+
+        public void TestDesktopManager(string user, string password, string domain) {
             DesktopManagerFactory factory = new DesktopManagerFactory();
-            IDesktopManager manager = factory.CreateManager("admin", "1pass@word1");
+            IDesktopManager manager = (domain == null) ? factory.CreateManager(user, password) : factory.CreateManager(user, password, domain);
 
             IEnumerable<IDesktopOffering> offerings = manager.ListDesktopOfferings();
             DisplayOfferings(offerings);
