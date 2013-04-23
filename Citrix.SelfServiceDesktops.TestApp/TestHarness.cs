@@ -40,7 +40,6 @@ namespace TestApp {
             TestDesktopManager("simonw", "pass@word1", "TestDomain");
         }
 
-
         public void TestDesktopManager(string user, string password, string domain) {
             DesktopManagerFactory factory = new DesktopManagerFactory();
             IDesktopManager manager = (domain == null) ? factory.CreateManager(user, password) : factory.CreateManager(user, password, domain);
