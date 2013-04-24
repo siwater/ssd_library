@@ -30,7 +30,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         // GET: /Manage/
         // TODO:  Add Create URL
         [AllowAnonymous]
-        public ActionResult Index()
+        public ActionResult Index(string newId)
         {
             if (!HttpContext.User.Identity.IsAuthenticated)
             {
