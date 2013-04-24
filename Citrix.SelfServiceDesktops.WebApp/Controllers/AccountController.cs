@@ -23,10 +23,34 @@ namespace Citrix.SelfServiceDesktops.Controllers
         //
         // GET: /Account/Login
 
+        /// <summary>
+        /// /Account/Login[/?[username=admin&][password=password&][ssoSessionkey=long_string]
+        /// 
+        /// e.g
+        /// 
+        /// /Account/Login
+        /// 
+        /// /Account/Login/?username=admin&password=password
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="ssoSessionKey"></param>
+        /// <returns></returns>
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl, string username, string password, string ssoSessionKey )
         {
             ViewBag.ReturnUrl = returnUrl;
+
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                return this.Login(new LoginModel() { Password = password, UserName = username }, returnUrl);
+            }
+            else if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(ssoSessionKey))
+            {
+                // TODO: revise to use SSO key
+                return this.Login(new LoginModel() { Password = ssoSessionKey, UserName = username }, returnUrl);
+            }
             return View();
         }
 
@@ -43,7 +67,7 @@ namespace Citrix.SelfServiceDesktops.Controllers
                 {
                     try
                     {
-                        IDesktopManager mgr = factory.CreateManager(model.UserName, model.Password, model.Domain);
+                        IDesktopManager mgr = factory.CreateManager(model.UserName, model.Password, string.Empty);
 
                         if (mgr != null)
                         {
