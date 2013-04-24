@@ -55,12 +55,17 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         }
 
         public IEnumerable<IDesktop> ListDesktops() {
-            ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
-            ListVirtualMachinesResponse response = cloudStackClient.ListVirtualMachines(request);
-            return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>());
+            return ListDesktops(false);
         }
 
-        public IDesktop CreateDesktop(string serviceOfferingName)
+        public IEnumerable<IDesktop> ListDesktops(bool includeDestroyed)
+        {
+            ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
+            ListVirtualMachinesResponse response = cloudStackClient.ListVirtualMachines(request);
+            return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), includeDestroyed);
+        }
+
+    public IDesktop CreateDesktop(string serviceOfferingName)
         {
             IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == serviceOfferingName));
             string name = GetNextDesktopName(offering);
@@ -117,7 +122,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// <param name="machines">The raw set of virtual machines from the CloudStack API</param>
         /// <param name="desktopOfferings">The set of desktop offerings to use as a filter</param>
         /// <returns>A list of potential desktops (ordered by name)</returns>
-        private IEnumerable<IDesktop> FilterDesktops(VirtualMachine[] machines, IEnumerable<IDesktopOffering> desktopOfferings) {
+        private IEnumerable<IDesktop> FilterDesktops(VirtualMachine[] machines, IEnumerable<IDesktopOffering> desktopOfferings, bool includeDestroyed) {
            
             SortedList<string, IDesktop> result = new SortedList<string, IDesktop>();
             foreach (VirtualMachine vm in machines) {                
@@ -125,7 +130,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                     int num;
                     DesktopState state = Parse(vm.State);
                     return (vm.DisplayName.StartsWith(o.HostnamePrefix)
-                            && (state != DesktopState.Expunging && state != DesktopState.Destroyed)
+                            && (includeDestroyed || (state != DesktopState.Expunging && state != DesktopState.Destroyed))
                             && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
                 }) > 0) {
                     DesktopState state = Parse(vm.State);
@@ -150,7 +155,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// <param name="offering">Desktop offering</param>
         /// <returns>A name for the desktop</returns>
         private string GetNextDesktopName(IDesktopOffering offering) {
-            IEnumerable<IDesktop> existingDesktops = ListDesktops().Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
+            IEnumerable<IDesktop> existingDesktops = ListDesktops(true).Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
             string suffix = DesktopSuffixFormat;
             int last = 0;
             if (existingDesktops.Count() > 0) {
