@@ -20,7 +20,6 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
     public class DesktopManager : IDesktopManager {
 
-
         public const string DesktopSuffixFormat = "00";
 
         private IDesktopServiceConfiguration config;
@@ -78,7 +77,6 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 response = cloudStackClient.ListVirtualMachines(request);
             }
             return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>()); 
-            
         }
 
         public IDesktop CreateDesktop(string serviceOfferingName)
@@ -145,7 +143,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 if (desktopOfferings.Count(o => {
                     int num;
                     DesktopState state = Parse(vm.State);
-                    return (vm.DisplayName.StartsWith(o.HostnamePrefix) 
+                    return (vm.DisplayName.StartsWith(o.HostnamePrefix)
                             && (state != DesktopState.Expunging && state != DesktopState.Destroyed)
                             && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
                 }) > 0) {

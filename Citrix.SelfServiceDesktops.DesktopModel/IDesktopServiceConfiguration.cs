@@ -17,6 +17,8 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
 
         bool HashCloudStackPassword { get; }
 
+        string Domain { get; }
+
         IEnumerable<IDesktopOffering> DesktopOfferings { get; }
 
         IPowerShellScript PowerShellScript { get; }
