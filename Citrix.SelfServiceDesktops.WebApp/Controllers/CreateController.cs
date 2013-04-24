@@ -47,6 +47,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Index(string serviceOfferingId, string button)
         {
+            System.Web.Routing.RouteValueDictionary route =new System.Web.Routing.RouteValueDictionary();
             if (button == "Submit")
             {
                 if (serviceOfferingId == null)
@@ -56,6 +57,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                 try
                 {
                     var newDesktop = mgr.CreateDesktop(serviceOfferingId);
+                    route.Add("newId", newDesktop.Id);
                 }
                 catch (System.Exception ex)
                 {
@@ -64,7 +66,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                     return View("Error");
                 }
             }
-            return RedirectToAction("Index", "Manage"); 
+            return RedirectToAction("Index", "Manage", route ); 
         }
     }
 }
