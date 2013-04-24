@@ -36,7 +36,7 @@ namespace TestApp {
         }
 
         public void TestDesktopManager() {
-           // TestDesktopManager("admin", "1pass@word1", null);
+            TestDesktopManager("admin", "1pass@word1", null);
             TestDesktopManager("simonw", "pass@word1", "TestDomain");
         }
 
