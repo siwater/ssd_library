@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmp51E22D7B4AC3DD5608B51E5F80B55892" Guid="{9CC7F1B7-36CB-49FE-8E54-AD80EB9B147F}">
+                <File Id="filD93585CD79EE57E993AE6669EEC97F8F" KeyPath="yes" Source="$(var.BasePath)\Citrix.Diagnostics.dll" />
+            </Component>
+            <Component Id="cmpA3E83FC7B1928B2B7DD189279563D7AE" Guid="{1505094C-C985-4448-AAAF-BC0F11A4AE09}">
+                <File Id="filAEED87DDC2004DFA06A90AD8E04684C1" KeyPath="yes" Source="$(var.BasePath)\Citrix.Diagnostics.pdb" />
+            </Component>
+            <Component Id="cmpE6BDF92A2E37C07DB4B7C12464BC9E63" Guid="{E07E2D1A-07C0-4099-9AC1-F94982836ADA}">
+                <File Id="fil9DBE8C628FC4ABE47A6BF96CA8D27B87" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe" />
+            </Component>
+            <Component Id="cmpD60E38D9612B234E59B8A9755C0FD82E" Guid="{092DB231-58F8-4730-BD9F-33CD520EFA44}">
+                <File Id="fil3AB3A5E39D5075813A724E9C4B65CA8B" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe.config" />
+            </Component>
+            <Component Id="cmp7D9CFB56A6BCEBC0114A10E06F608707" Guid="{B89122DD-5256-4C1B-9CD1-CB5B004885BB}">
+                <File Id="fil28E886B265E4030F2858D61510C30669" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.pdb" />
+            </Component>
+            <Component Id="cmp8CF66DFE5233A14D8EE7FCF436FF79DC" Guid="{9F8E1BA5-61D4-46F8-926A-E6746FC30CA2}">
+                <File Id="fil6FA828CCABA21377F536F2F40D836836" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopLibrary.dll" />
+            </Component>
+            <Component Id="cmp5D63A33D4EE1522EE52D1369EA018A37" Guid="{838E1C10-C501-4948-888F-B891BFA16985}">
+                <File Id="filF761778AA12C0F6BCA041F1BA1F38040" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopLibrary.pdb" />
+            </Component>
+            <Component Id="cmpDF54286DAFD31FC3A952CD8C8B4B2D0C" Guid="{98F8CD20-6568-4AA0-A942-EC34F5252EE1}">
+                <File Id="fil16178CF9FF02033F6B167229EB0FF2CF" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopModel.dll" />
+            </Component>
+            <Component Id="cmpE35E740511C712843DC02F74EFA78718" Guid="{09A638CD-6617-4513-B21C-065E76691EA3}">
+                <File Id="fil8DA1B0260C4D0A073D4E9C1A54B28176" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopModel.pdb" />
+            </Component>
+            <Component Id="cmp71B80E561BEE5ED05216128A4F245FFB" Guid="{8CD83163-1991-47D4-8BAF-BAC302A6853A}">
+                <File Id="filC37ECAEE473FFD5399289A42DD4C527E" KeyPath="yes" Source="$(var.BasePath)\CloudStack.SDK.dll" />
+            </Component>
+            <Component Id="cmp89F7D99ED10C64E9DE4CBD6015788B55" Guid="{FC18BCBF-B36B-47D4-9209-5B26FEC3FE53}">
+                <File Id="fil5DFE29FD77742AB0EE9AA1CE946A1939" KeyPath="yes" Source="$(var.BasePath)\SyncDesktops.ps1" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="Citrix.SelfServiceDesktops.Agent_Project">
+            <ComponentRef Id="cmp51E22D7B4AC3DD5608B51E5F80B55892" />
+            <ComponentRef Id="cmpA3E83FC7B1928B2B7DD189279563D7AE" />
+            <ComponentRef Id="cmpE6BDF92A2E37C07DB4B7C12464BC9E63" />
+            <ComponentRef Id="cmpD60E38D9612B234E59B8A9755C0FD82E" />
+            <ComponentRef Id="cmp7D9CFB56A6BCEBC0114A10E06F608707" />
+            <ComponentRef Id="cmp8CF66DFE5233A14D8EE7FCF436FF79DC" />
+            <ComponentRef Id="cmp5D63A33D4EE1522EE52D1369EA018A37" />
+            <ComponentRef Id="cmpDF54286DAFD31FC3A952CD8C8B4B2D0C" />
+            <ComponentRef Id="cmpE35E740511C712843DC02F74EFA78718" />
+            <ComponentRef Id="cmp71B80E561BEE5ED05216128A4F245FFB" />
+            <ComponentRef Id="cmp89F7D99ED10C64E9DE4CBD6015788B55" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
