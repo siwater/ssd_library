@@ -82,6 +82,14 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             }
         }
 
+        public string Domain
+        {
+            get
+            {
+                return config.XPathSelectElement("//cloudstack").Attribute("domain").Value;
+            }
+        }
+
         public IEnumerable<IDesktopOffering> DesktopOfferings {
             get {
                 List<IDesktopOffering> result = new List<IDesktopOffering>();
