@@ -25,7 +25,11 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
-        
+
+        /// <summary>
+        /// Temporary access all areas via port 8096
+        /// </summary>
+        private Client openAccessClient;
 
         /// <summary>
         /// Create a new instance of the DesktopManager for the specified user in the root domain
@@ -44,7 +48,17 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         internal DesktopManager(string userName, string password, string domain) {
             config = DesktopServiceConfiguration.Instance;
             cloudStackClient = new Client(config.CloudStackUri);
-            cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
+
+            // Build Uri for accessing open port 8096 as a temporary fix to get complete VM list
+            UriBuilder openAccessUriBuilder = new UriBuilder(config.CloudStackUri);
+            openAccessUriBuilder.Port = 8096;
+            openAccessClient = new Client(openAccessUriBuilder.Uri);        
+
+            try {
+                cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
+            } catch (CloudStackException) {
+                cloudStackClient.Login(userName, password, domain, !config.HashCloudStackPassword);
+            }
         }
 
         #region IDesktopManager implementation
@@ -55,7 +69,14 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
         public IEnumerable<IDesktop> ListDesktops() {
             ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
-            ListVirtualMachinesResponse response = cloudStackClient.ListVirtualMachines(request);
+            request.Parameters["listall"] = "true";
+            ListVirtualMachinesResponse response = null;
+            try {
+                response = openAccessClient.ListVirtualMachines(request);
+            } catch { }
+            if (response == null) {
+                response = cloudStackClient.ListVirtualMachines(request);
+            }
             return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>()); 
             
         }
