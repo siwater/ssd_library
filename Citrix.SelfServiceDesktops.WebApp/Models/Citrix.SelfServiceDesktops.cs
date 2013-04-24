@@ -21,8 +21,5 @@ namespace Citrix.SelfServiceDesktops.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        [Display(Name = "Domain (Optional)")]
-        public string Domain { get; set; }
     }
 }
