@@ -43,7 +43,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <param name="domain"></param>
+        /// <param name="domain">If null or empty, domain will be taken from config</param>
         internal DesktopManager(string userName, string password, string domain) {
             config = DesktopServiceConfiguration.Instance;
             cloudStackClient = new Client(config.CloudStackUri);
@@ -51,8 +51,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             // Build Uri for accessing open port 8096 as a temporary fix to get complete VM list
             UriBuilder openAccessUriBuilder = new UriBuilder(config.CloudStackUri);
             openAccessUriBuilder.Port = 8096;
-            openAccessClient = new Client(openAccessUriBuilder.Uri);        
-
+            openAccessClient = new Client(openAccessUriBuilder.Uri);
+            if (string.IsNullOrEmpty(domain)) {
+                domain = config.Domain;
+            }
             try {
                 cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
             } catch (CloudStackException) {
