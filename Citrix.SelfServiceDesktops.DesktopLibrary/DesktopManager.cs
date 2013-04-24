@@ -44,8 +44,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         internal DesktopManager(string userName, string password, string domain) {
             config = DesktopServiceConfiguration.Instance;
             cloudStackClient = new Client(config.CloudStackUri);
-            cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
+            cloudStackClient.Login(userName, password, config.Domain, config.HashCloudStackPassword);
         }
+
 
         #region IDesktopManager implementation
 
@@ -56,8 +57,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         public IEnumerable<IDesktop> ListDesktops() {
             ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
             ListVirtualMachinesResponse response = cloudStackClient.ListVirtualMachines(request);
-            return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>()); 
-            
+            return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>());
         }
 
         public IDesktop CreateDesktop(string serviceOfferingName)
@@ -124,7 +124,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 if (desktopOfferings.Count(o => {
                     int num;
                     DesktopState state = Parse(vm.State);
-                    return (vm.DisplayName.StartsWith(o.HostnamePrefix) 
+                    return (vm.DisplayName.StartsWith(o.HostnamePrefix)
                             && (state != DesktopState.Expunging && state != DesktopState.Destroyed)
                             && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
                 }) > 0) {
