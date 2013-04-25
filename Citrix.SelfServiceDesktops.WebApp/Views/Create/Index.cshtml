@@ -29,11 +29,14 @@
 <td>
     @Html.DisplayFor(modelItem => item.Description)
     </td>
+    <div id="@item.Name" class="ServiceOffering">
+        <input name="HostnamePrefix" type="hidden" value="@item.HostnamePrefix">
         <input name="ServiceOfferingId" type="hidden" value="@item.ServiceOfferingId">
         <input name="Name" type="hidden" value="@item.Name">
         <input name="NetworkId" type="hidden" value="@item.NetworkId">
         <input name="TemplateId" type="hidden" value="@item.TemplateId">
         <input name="ZoneId" type="hidden" value="@item.ZoneId">
+        </div>
 </div>
 </tr>
 }
