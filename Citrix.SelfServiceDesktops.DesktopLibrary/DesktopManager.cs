@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,12 +32,21 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         private Client openAccessClient;
 
+        private DesktopManager() {
+            config = DesktopServiceConfiguration.Instance;
+            // Build Uri for accessing open port 8096 as a temporary fix to get complete VM list
+            UriBuilder openAccessUriBuilder = new UriBuilder(config.CloudStackUri);
+            openAccessUriBuilder.Port = 8096;
+            openAccessClient = new Client(openAccessUriBuilder.Uri); 
+        }
+
         /// <summary>
-        /// Create a new instance of the DesktopManager for the specified user in the root domain
+        /// Create a new instance of the DesktopManager for the specified user in the default domain
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        internal DesktopManager(string userName, string password) : this(userName, password, null) {      
+        internal DesktopManager(string userName, string password)
+            : this(userName, password, null) {
         }
 
         /// <summary>
@@ -44,15 +54,11 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <param name="domain"></param>
-        internal DesktopManager(string userName, string password, string domain) {
-            config = DesktopServiceConfiguration.Instance;
-            cloudStackClient = new Client(config.CloudStackUri);
+        /// <param name="domain">If not specified domain will be taken from config value</param>
+        internal DesktopManager(string userName, string password, string domain)
+            : this() {
 
-            // Build Uri for accessing open port 8096 as a temporary fix to get complete VM list
-            UriBuilder openAccessUriBuilder = new UriBuilder(config.CloudStackUri);
-            openAccessUriBuilder.Port = 8096;
-            openAccessClient = new Client(openAccessUriBuilder.Uri);
+            cloudStackClient = new Client(config.CloudStackUri);
             if (string.IsNullOrEmpty(domain)) {
                 domain = config.Domain;
             }
@@ -61,6 +67,14 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             } catch (CloudStackException) {
                 cloudStackClient.Login(userName, password, domain, !config.HashCloudStackPassword);
             }
+        }
+
+        internal DesktopManager(string userName, string sessionKey, string jSessionId, string domain)
+            : this() {           
+            Cookie sessionCookie = new Cookie("JESSIONID", jSessionId);
+            sessionCookie.Domain = config.CloudStackUri.Host;
+            sessionCookie.Path = "/client";
+            cloudStackClient = new Client(config.CloudStackUri, sessionKey, sessionCookie);
         }
 
 

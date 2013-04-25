@@ -37,7 +37,7 @@
   <ItemGroup>
     <Reference Include="CloudStack.SDK, Version=2.2.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CloudStack.SDK.2.2.0.4\lib\net40\CloudStack.SDK.dll</HintPath>
+      <HintPath>..\packages\CloudStack.SDK.2.2.0.5\lib\net40\CloudStack.SDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

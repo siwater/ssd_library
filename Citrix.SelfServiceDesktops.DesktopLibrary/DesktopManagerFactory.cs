@@ -24,7 +24,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
         public IDesktopManager CreateManager(string userName, string sessionKey, string jSessionId, string domain)
         {
-            throw new NotImplementedException();
+            return new DesktopManager(userName, sessionKey, jSessionId, domain);
         }
     }
 }
