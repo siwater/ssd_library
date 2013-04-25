@@ -38,7 +38,7 @@ namespace Citrix.SelfServiceDesktops.Controllers
         /// <param name="ssoSessionKey"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl, string username, string password, string ssoSessionKey )
+        public ActionResult Login(string returnUrl, string username, string password, string sessionkey, string jsessionid )
         {
             ViewBag.ReturnUrl = returnUrl;
 
@@ -46,10 +46,10 @@ namespace Citrix.SelfServiceDesktops.Controllers
             {
                 return this.Login(new LoginModel() { Password = password, UserName = username }, returnUrl);
             }
-            else if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(ssoSessionKey))
+            else if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(sessionkey) && !string.IsNullOrEmpty(jsessionid))
             {
                 // TODO: revise to use SSO key
-                return this.Login(new LoginModel() { Password = ssoSessionKey, UserName = username }, returnUrl);
+                return this.Login(new LoginModel() { UserName = username, JSessionId = jsessionid, SessionKey = sessionkey }, returnUrl);
             }
             return View();
         }
@@ -67,13 +67,22 @@ namespace Citrix.SelfServiceDesktops.Controllers
                 {
                     try
                     {
-                        IDesktopManager mgr = factory.CreateManager(model.UserName, model.Password, string.Empty);
+                        IDesktopManager mgr = null;
+
+                        if (!string.IsNullOrEmpty(model.Password))
+                        {
+                            mgr = factory.CreateManager(model.UserName, model.Password, string.Empty);
+                        }
+                        else
+                        {
+                            mgr = factory.CreateManager(model.UserName, model.SessionKey, model.JSessionId, string.Empty);
+                        }
 
                         if (mgr != null)
                         {
                             HttpContext.Session.Add("IDesktopManager", mgr);
                             FormsAuthentication.SetAuthCookie(model.UserName, false);
-                            return RedirectToLocal(returnUrl);
+                            return RedirectToLocal(null); // ignore returnUrl, always go to Manage
                         }
                     }
                     catch (System.Exception ex)
@@ -97,6 +106,13 @@ namespace Citrix.SelfServiceDesktops.Controllers
             FormsAuthentication.SignOut();
             HttpContext.Session.Abandon();
             return RedirectToAction("Login", "Account");
+        }
+
+        // GET: /Account/LogOff
+        [HttpGet]
+        public ActionResult LogOff(string blankForOverloading)
+        {
+            return this.LogOff();
         }
 
         #region Helpers
