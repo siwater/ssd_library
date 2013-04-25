@@ -20,7 +20,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
     public class DesktopManager : IDesktopManager {
 
-        public const string DesktopSuffixFormat = "00";
+        public const string DesktopSuffixFormat = "000";
 
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
@@ -165,7 +165,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             return result;
         }
 
-     
+        private IEnumerable<IDesktop> ListAllDesktops() {
+            ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
+            request.Parameters["listall"] = "true";
+            ListVirtualMachinesResponse response = openAccessClient.ListVirtualMachines(request);
+            return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), true);
+        }  
 
         /// <summary>
         /// Generate a new desktop name for the specified desktop offering
@@ -173,7 +178,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// <param name="offering">Desktop offering</param>
         /// <returns>A name for the desktop</returns>
         private string GetNextDesktopName(IDesktopOffering offering) {
-            IEnumerable<IDesktop> existingDesktops = ListDesktops(true).Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
+            IEnumerable<IDesktop> existingDesktops = ListAllDesktops().Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
             string suffix = DesktopSuffixFormat;
             int last = 0;
             if (existingDesktops.Count() > 0) {
