@@ -45,18 +45,18 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 
         // POST: /Create/
         [HttpPost]
-        public ActionResult Index(string serviceOfferingId, string button)
+        public ActionResult Index(string serviceOfferingIdName, string button)
         {
             System.Web.Routing.RouteValueDictionary route =new System.Web.Routing.RouteValueDictionary();
             if (button == "Submit")
             {
-                if (serviceOfferingId == null)
+                if (serviceOfferingIdName == null)
                 {
                     return this.Index();
                 }
                 try
                 {
-                    var newDesktop = mgr.CreateDesktop(serviceOfferingId);
+                    var newDesktop = mgr.CreateDesktop(serviceOfferingIdName);
                     route.Add("newId", newDesktop.Id);
                 }
                 catch (System.Exception ex)

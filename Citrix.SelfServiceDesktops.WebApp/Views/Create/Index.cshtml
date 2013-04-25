@@ -11,7 +11,6 @@
 
 @using (Html.BeginForm())
 {
-<form>
  <fieldset>
   <legend>Select Your Desktop
 </legend>
@@ -20,14 +19,21 @@
 {
 <tr>
     
-<td width ="10">@Html.RadioButton("serviceOfferingId", item.Name, item.Default)
+<td width ="10">@Html.RadioButton("serviceOfferingIdName", item.Name, item.Default)
 
 <td><div class="offering-label">@Html.DisplayFor(modelItem => item.Name)</div></td>
     
 </tr>
 <tr><div class="offering-description">
    <td width ="10"></td> 
-<td>@Html.DisplayFor(modelItem => item.Description)</td>
+<td>
+    @Html.DisplayFor(modelItem => item.Description)
+    </td>
+        <input name="ServiceOfferingId" type="hidden" value="@item.ServiceOfferingId">
+        <input name="Name" type="hidden" value="@item.Name">
+        <input name="NetworkId" type="hidden" value="@item.NetworkId">
+        <input name="TemplateId" type="hidden" value="@item.TemplateId">
+        <input name="ZoneId" type="hidden" value="@item.ZoneId">
 </div>
 </tr>
 }
@@ -37,5 +43,4 @@
 <input type="submit" value="Cancel" name="button"  />
 </div>
 </fieldset>
-</form>
 }
