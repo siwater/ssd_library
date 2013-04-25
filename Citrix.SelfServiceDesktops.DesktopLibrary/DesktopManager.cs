@@ -20,6 +20,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
     public class DesktopManager : IDesktopManager {
 
+
         public const string DesktopSuffixFormat = "000";
 
         private IDesktopServiceConfiguration config;
@@ -43,7 +44,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <param name="domain">If null or empty, domain will be taken from config</param>
+        /// <param name="domain"></param>
         internal DesktopManager(string userName, string password, string domain) {
             config = DesktopServiceConfiguration.Instance;
             cloudStackClient = new Client(config.CloudStackUri);
@@ -62,6 +63,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             }
         }
 
+
         #region IDesktopManager implementation
 
         public IEnumerable<IDesktopOffering> ListDesktopOfferings() {
@@ -75,11 +77,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         public IEnumerable<IDesktop> ListDesktops(bool includeDestroyed)
         {
             ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
-            request.Parameters["listall"] = "true";
             ListVirtualMachinesResponse response = cloudStackClient.ListVirtualMachines(request);
             return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), includeDestroyed);
         }
-
+  
         public IDesktop CreateDesktop(string serviceOfferingName)
         {
             IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == serviceOfferingName));
@@ -136,7 +137,6 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="machines">The raw set of virtual machines from the CloudStack API</param>
         /// <param name="desktopOfferings">The set of desktop offerings to use as a filter</param>
-        /// <param name="includeDestroyed">Include Expunging and Destroyed Vms in the list</param>
         /// <returns>A list of potential desktops (ordered by name)</returns>
         private IEnumerable<IDesktop> FilterDesktops(VirtualMachine[] machines, IEnumerable<IDesktopOffering> desktopOfferings, bool includeDestroyed) {
            
@@ -165,12 +165,16 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             return result;
         }
 
+        /// <summary>
+        /// Use the open access client to get all desktops from all users.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerable<IDesktop> ListAllDesktops() {
             ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
             request.Parameters["listall"] = "true";
             ListVirtualMachinesResponse response = openAccessClient.ListVirtualMachines(request);
             return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), true);
-        }  
+        } 
 
         /// <summary>
         /// Generate a new desktop name for the specified desktop offering

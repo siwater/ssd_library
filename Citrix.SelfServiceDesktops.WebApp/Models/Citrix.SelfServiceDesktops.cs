@@ -17,9 +17,14 @@ namespace Citrix.SelfServiceDesktops.Models
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
-        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Display(Name = "Session key")]
+        public string SessionKey { get; set; }
+
+        [Display(Name = "JSessionId")]
+        public string JSessionId { get; set; }
     }
 }
