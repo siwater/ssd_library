@@ -158,8 +158,6 @@ foreach ($vm in $ccpvmsnotinxd)
 		}
 }
 
-return
-
 # Delete old XenDesktop assignments
 
 foreach ($vm in $xdvmsnotinccp)
