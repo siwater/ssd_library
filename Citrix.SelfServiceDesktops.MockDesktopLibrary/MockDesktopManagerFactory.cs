@@ -41,5 +41,11 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
         {
             return CreateManager(userName, password);
         }
+
+
+        public IDesktopManager CreateManager(string userName, string sessionKey, string jSessionId, string domain)
+        {
+            return CreateManager(userName, sessionKey);
+        }
     }
 }
