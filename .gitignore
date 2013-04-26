@@ -8,3 +8,4 @@ packages
 Citrix.*/*.user
 Citrix.SelfServiceDesktops.WebApp/Properties/PublishProfiles/*
 Citrix.SelfServiceDesktops.WebApp.Setup/Citrix.SelfServiceDesktops.WebApp.wxs
+Citrix.SelfServiceDesktops.Agent.Setup/Citrix.SelfServiceDesktops.Agent.wxs
