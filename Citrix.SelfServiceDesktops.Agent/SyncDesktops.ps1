@@ -5,7 +5,7 @@ Copyright © 2013 Citrix Systems, Inc. All rights reserved.
 .SYNOPSIS
 
 .DESCRIPTION
-This script will...
+This script will synchronise XenDesktop and Cloud Platform
 
 .NOTES
     KEYWORDS: PowerShell, Apache CloudStack, Citrx CloudPlatform, XenDesktop
@@ -54,7 +54,7 @@ $ccpvmarray = @()
 $ccpvmarraymachine =@()
 $xdvmarray = @()
 
-# $ccpvmarray 0=Name incl. domain 1=Name 2=User
+# $ccpvmarray 0=Name incl. domain 1=Name 2=User 3=Template Description
 # Load VMs from CloudPlatform
 
 foreach ($virtualmachine in $ccpvms.listvirtualmachinesresponse.virtualmachine)
@@ -62,7 +62,8 @@ foreach ($virtualmachine in $ccpvms.listvirtualmachinesresponse.virtualmachine)
 	if (isDesktop $virtualmachine)
 	{
 		$machine = $domain + '\' + $virtualmachine.name
-		$ccpvmarray += ,($machine.ToLower(),$virtualmachine.name.ToLower(),$virtualmachine.account.ToLower())
+		$ccpvmarray += ,($machine.ToLower(),$virtualmachine.name.ToLower(),$virtualmachine.account.ToLower(),
+        $virtualmachine.templatename)
 		$ccpvmarraymachine += ,($machine.ToLower())
 	}
 }
@@ -133,19 +134,19 @@ foreach ($vm in $ccpvmsnotinxd)
 			Start-Sleep -s 15
 			Add-BrokerUser -Name $userincldomain -Machine $vm[0]
 			
-			$desktopgroupname = "${hostnameprefix}_group"
+			$desktopgroupname = $vm[3]
 			$desktopgroup = Get-BrokerDesktopGroup -Filter {(Name -eq $desktopgroupname)}
 			if ($desktopgroup) {WriteDebug "Desktop group $desktopgroupname exists"}
 				else
 				{
 				WriteDebug "Desktop group  $desktopgroupname does not exist"
-				New-BrokerDesktopGroup -Name $desktopgroupname -DesktopKind private -ShutdownDesktopsAfterUse $False -TimeZone 'W. Europe Standard Time'
+				New-BrokerDesktopGroup -Name $vm[3] -DesktopKind private -ShutdownDesktopsAfterUse $False -TimeZone 'W. Europe Standard Time'
 				$desktopgroupnamedirect = $desktopgroupname + '_Direct'
 				$desktopgroupnameag = $desktopgroupname + '_AG'
 				New-BrokerAccessPolicyRule -AllowedConnections 'NotViaAG' -AllowedProtocols @('RDP','HDX') -AllowedUsers 'AnyAuthenticated' -AllowRestart $True -Enabled $True -IncludedDesktopGroupFilterEnabled $True -IncludedDesktopGroups @($desktopgroupname) -IncludedSmartAccessFilterEnabled $True -IncludedUserFilterEnabled $True -Name $desktopgroupnamedirect
 				New-BrokerAccessPolicyRule -AllowedConnections 'ViaAG' -AllowedProtocols @('RDP','HDX') -AllowedUsers 'AnyAuthenticated' -AllowRestart $True -Enabled $True -IncludedDesktopGroupFilterEnabled $True -IncludedDesktopGroups @($desktopgroupname) -IncludedSmartAccessFilterEnabled $True -IncludedSmartAccessTags @() -IncludedUserFilterEnabled $True -Name $desktopgroupnameag 
 				}
-			Add-BrokerMachine -MachineName $vm[0] -DesktopGroup $desktopgroupname
+			Add-BrokerMachine -MachineName $vm[0] -DesktopGroup $vm[3]
 			}
 			else
 			{
@@ -211,7 +212,7 @@ if ((Get-PSSnapin -Name citrix.* -ErrorAction SilentlyContinue) -eq $null) {
 }
 
 # Create Catalog in XenDesktop
-$catalog = Get-BrokerCatalog -Filter {(Name -eq $catalogname)}
+$catalog = Get-BrokerCatalog -Filter {(Name -eq $catalogname)} -ErrorAction SilentlyContinue
 if ($catalog) {WriteDebug "Catalog $catalogname exists"}
 	else
 	{
@@ -230,7 +231,7 @@ if ($ccpserver.connected -eq "True")
 }
 else
 {
-	Write-Error "CloudPlatform Server not reachable. Exiting."
+	Write-Error "CloudPlatform Server port 8096 not reachable. Exiting."
 }
 
 #------------------END MAIN-------------------------------
