@@ -56,8 +56,8 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// <param name="password"></param>
         /// <param name="domain">If not specified domain will be taken from config value</param>
         internal DesktopManager(string userName, string password, string domain)
-            : this() {
-
+            : this() 
+        {       
             cloudStackClient = new Client(config.CloudStackUri);
             if (string.IsNullOrEmpty(domain)) {
                 domain = config.Domain;
@@ -70,8 +70,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         }
 
         internal DesktopManager(string userName, string sessionKey, string jSessionId, string domain)
-            : this() {           
-            Cookie sessionCookie = new Cookie("JESSIONID", jSessionId);
+            : this() {
+                
+            CtxTrace.TraceVerbose("sessionKey={0}, jSessionId={1}", sessionKey, jSessionId);
+            Cookie sessionCookie = new Cookie("JSESSIONID", jSessionId);
             sessionCookie.Domain = config.CloudStackUri.Host;
             sessionCookie.Path = "/client";
             cloudStackClient = new Client(config.CloudStackUri, sessionKey, sessionCookie);
@@ -151,6 +153,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="machines">The raw set of virtual machines from the CloudStack API</param>
         /// <param name="desktopOfferings">The set of desktop offerings to use as a filter</param>
+        /// <param name="includeDestroyed">Include destroyed and expunging virtual machines in the list</param>
         /// <returns>A list of potential desktops (ordered by name)</returns>
         private IEnumerable<IDesktop> FilterDesktops(VirtualMachine[] machines, IEnumerable<IDesktopOffering> desktopOfferings, bool includeDestroyed) {
            
