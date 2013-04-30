@@ -3,46 +3,82 @@
  */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 using Citrix.Diagnostics;
 using Citrix.SelfServiceDesktops.DesktopLibrary;
 using Citrix.SelfServiceDesktops.DesktopLibrary.Configuration;
 using Citrix.SelfServiceDesktops.DesktopModel;
 
+using CloudStack.SDK;
+
 namespace TestApp {
     public class TestHarness {
 
         private List<string> operationsInProgress;
 
-        public TestHarness() {
-            CtxTrace.Initialize("self-service-desktops-agent", true);
+        public struct Account {
+            public string Name;
+            public string Password;
+            public string Domain;
         }
 
-        public void TestConfigurationReader() {
+        public struct SessionDefinition {
+            public Cookie SessionCookie;
+            public string SessionKey;
+        }
+
+        public readonly Uri WebAppUrl = new Uri("http://localhost/Citrix/SelfServiceDesktops");
+
+        private Account AdminAccount = new Account() { Name = "admin", Password = "1pass@word1" };
+        private Account UserAccount = new Account() { Name = "simon", Password = "pass@word1" };
+        private Account DomainAccount = new Account() { Name = "simonw", Password = "pass@word1", Domain = "TestDomain" };
+
+        public TestHarness() {
+            CtxTrace.Initialize("self-service-desktops-test", true);
+        }
+
+        public void TestConfigurationReader(bool testRemote) {
             IDesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
             Console.WriteLine("Broker Url is {0}", config.BrokerUri);
             Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
             DisplayOfferings(config.DesktopOfferings);
 
-            //config = DesktopServiceConfiguration.GetInstance(ConfigurationLocation.Remote);
-            //Console.WriteLine("Broker Url is {0}", config.BrokerUri);
-            //Console.WriteLine("CloudStack Url is {0}", config.CLoudStackUri);
-            //DisplayOfferings(config.DesktopOfferings);
+            if (testRemote) {      
+                config = DesktopServiceConfiguration.GetInstance(ConfigurationLocation.Remote);
+                Console.WriteLine("Broker Url is {0}", config.BrokerUri);
+                Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
+                DisplayOfferings(config.DesktopOfferings);
+            }
 
         }
 
         public void TestDesktopManager() {
-            TestDesktopManager("admin", "1pass@word1", null);
-            TestDesktopManager("simonw", "pass@word1", "TestDomain");
+            TestDesktopManager(AdminAccount);
+            TestDesktopManager(UserAccount);
+            TestDesktopManager(DomainAccount);
         }
 
-        public void TestDesktopManager(string user, string password, string domain) {
+        public void TestSso() {
+            TestSsoLocal(AdminAccount);
+            TestSsoLocal(UserAccount);
+            TestSsoLocal(DomainAccount);
+
+            TestSsoRemote(AdminAccount, WebAppUrl);
+            TestSsoRemote(UserAccount, WebAppUrl);
+            TestSsoRemote(DomainAccount, WebAppUrl);
+        }
+
+        public void TestDesktopManager(Account user) {
             DesktopManagerFactory factory = new DesktopManagerFactory();
-            IDesktopManager manager = (domain == null) ? factory.CreateManager(user, password) : factory.CreateManager(user, password, domain);
+            IDesktopManager manager = (user.Domain == null) ? 
+                factory.CreateManager(user.Name, user.Password) : factory.CreateManager(user.Name, user.Password, user.Domain);
 
             IEnumerable<IDesktopOffering> offerings = manager.ListDesktopOfferings();
             DisplayOfferings(offerings);
@@ -73,7 +109,7 @@ namespace TestApp {
                     break;
                 }
             }
-              
+
             // Try start operation on a desktop     
             foreach (IDesktop d in desktops) {
                 if (!operationInPogress(d.Id) && d.State == DesktopState.Stopped) {
@@ -105,7 +141,103 @@ namespace TestApp {
             }
 
             desktops = manager.ListDesktops();
-            DisplayDesktops(desktops);  
+            DisplayDesktops(desktops);
+        }
+
+        public void TestSsoLocal(Account user) {
+
+            try {
+                SessionDefinition session = GetSession(user);
+
+                IDesktopManagerFactory factory = new DesktopManagerFactory();
+                string sessionKey = session.SessionKey;
+                string jsessionId = session.SessionCookie.Value;
+                Console.WriteLine("Create desktop manager with sessionkey {0}, jsessionid {1}", sessionKey, jsessionId );
+                IDesktopManager manager = factory.CreateManager(user.Name, sessionKey, jsessionId, user.Domain);
+                IEnumerable<IDesktop> desktops = manager.ListDesktops();
+                Console.WriteLine("Enumerated desktops");
+
+            } catch (Exception e) {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void TestSsoRemote(Account user, Uri webAppUrl) {
+            try {
+                SessionDefinition session = GetSession(user);
+                UriBuilder uriBuilder = new UriBuilder(webAppUrl);
+                string sessionKey = HttpUtility.UrlEncode(session.SessionKey);
+                Console.WriteLine("Session key (encoded): {0}", sessionKey);
+                string query = string.Format("username={0}&sessionkey={1}&jsessionid={2}", user.Name, sessionKey, session.SessionCookie.Value);
+                uriBuilder.Query = query;
+                Console.WriteLine("Attempting logon to web app: {0}", uriBuilder.ToString());
+                string response = SendRequest(uriBuilder.Uri);
+                // Ahem - rather crude way to detect the logon succeeded
+                if (response.Contains("Desktops for")) {
+                    Console.WriteLine("Successfully logged on to WebApp");
+                } else {
+                    Console.WriteLine("Sso Failed, Response is:");
+                    Console.WriteLine(response);
+                    throw new ApplicationException("WebApp SSO Failed");
+                }
+
+            } catch (Exception e) {
+                Console.WriteLine(e);
+            }
+        }
+
+        #region Private Methods
+
+        private SessionDefinition GetSession(Account user) {
+
+            IDesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
+            Client client = new Client(config.CloudStackUri);
+            client.Login(user.Name, user.Password, user.Domain, config.HashCloudStackPassword);
+            Console.WriteLine("Logged into Cloudstack as {0}", user.Name);
+            ListVirtualMachines(client);
+
+            Cookie cookie = FindSessionCookie(client.Cookies);
+            if (cookie == null) {
+                throw new ApplicationException("Failed to acquire session: Could not find session cookie");
+            }
+            ShowCookie(cookie);
+            Console.WriteLine("Session Key is {0}", client.SessionKey);
+            return new SessionDefinition() { SessionCookie = cookie, SessionKey = client.SessionKey };
+        }
+
+        private string SendRequest(Uri uri) {
+
+            HttpWebRequest httpWebRequest = WebRequest.Create(uri) as HttpWebRequest;
+            httpWebRequest.CookieContainer = new CookieContainer();
+            httpWebRequest.Method = "GET";
+            using (HttpWebResponse httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse) {
+                using (Stream respStrm = httpWebResponse.GetResponseStream()) {
+                    using (StreamReader streamReader = new StreamReader(respStrm, Encoding.UTF8)) {
+                        return streamReader.ReadToEnd();
+                    }
+                }
+            }
+        }
+
+        private void ShowCookie(Cookie cookie) {
+            Console.WriteLine("Cookie.Name: {0}, Cookie.Value: {1}", cookie.Name, cookie.Value);
+            Console.WriteLine("Cookie.Domain: {0}, Coookie.Path={1}", cookie.Domain, cookie.Path);
+        }
+
+        private Cookie FindSessionCookie(CookieCollection cookieCollection) {
+            foreach (Cookie c in cookieCollection) {
+                if (c.Name == "JSESSIONID") {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        private void ListVirtualMachines(Client client) {
+            ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
+            //request.Parameters["listall"] = "true";
+            ListVirtualMachinesResponse response = client.ListVirtualMachines(request);
+            Console.WriteLine("Got {0} virtual machines", response.VirtualMachine.Length);
         }
 
         private bool operationInPogress(string id) {
@@ -126,6 +258,6 @@ namespace TestApp {
             }
         }
 
-        
+        #endregion
     }
 }
