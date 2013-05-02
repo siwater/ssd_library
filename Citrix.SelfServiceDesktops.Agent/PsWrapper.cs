@@ -50,16 +50,9 @@ namespace Citrix.SelfServiceDesktops.Agent {
                 PowerShell powerShell = PowerShell.Create();
                 powerShell.Commands.AddCommand(command);
                 Collection<PSObject> results = powerShell.Invoke();
-                foreach (ErrorRecord r in powerShell.Streams.Error) {
-                    // If the exception doesn't match a "to be ignored" exception, then throw it
-                    if (IgnoreExceptions.SingleOrDefault(i => 
-                        i.Equals(r.Exception.GetType().Name, StringComparison.InvariantCultureIgnoreCase)) == null) {
-                        throw r.Exception;
-                    }
-                }
-                foreach (DebugRecord r in powerShell.Streams.Debug) {
-                    CtxTrace.TraceInformation(r.Message);
-                }
+
+                // The order is important here. Debug messages are flushed to the log *before* checking for errors
+                // so the debug traces leading up to an error are not lost 
                 Collection<PSObject> filteredResults = new Collection<PSObject>();
                 foreach (PSObject result in results) {
                     string output = result.BaseObject as string;
@@ -71,9 +64,20 @@ namespace Citrix.SelfServiceDesktops.Agent {
                         filteredResults.Add(result);
                     }
                 }
+                foreach (DebugRecord r in powerShell.Streams.Debug) {
+                    CtxTrace.TraceInformation(r.Message);
+                }
+                foreach (ErrorRecord r in powerShell.Streams.Error) {
+                    // If the exception doesn't match a "to be ignored" exception, then throw it
+                    if (IgnoreExceptions.SingleOrDefault(i =>
+                        i.Equals(r.Exception.GetType().Name, StringComparison.InvariantCultureIgnoreCase)) == null) {
+                        throw r.Exception;
+                    }
+                }
                 return filteredResults;
             } catch (Exception e) {
                 CtxTrace.TraceError(e);
+                CtxTrace.TraceError(e.StackTrace);
                 throw;
             }
         }

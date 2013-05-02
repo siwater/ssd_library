@@ -76,7 +76,7 @@ namespace Citrix.SelfServiceDesktops.Agent {
         }
 
         private void SyncDesktopOfferings(DesktopOfferingElement offering) {
-            CtxTrace.TraceInformation(offering.Name);
+            CtxTrace.TraceVerbose("{0}, {1}", offering.Name, offering.HostnamePrefix);
             Dictionary<string, string> args = new Dictionary<string, string>();
             args["ccpip"] = config.CloudStackUri.Host;
             args["hostnameprefix"] = offering.HostnamePrefix;
