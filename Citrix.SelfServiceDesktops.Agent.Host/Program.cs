@@ -16,7 +16,7 @@ namespace Citrix.SelfServiceDesktops.Agent.Host {
     class Program {
         static void Main(string[] args) {
 
-            CtxTrace.Initialize("self-service-desktops-agent", true);
+            CtxTrace.Initialize("self-service-desktops-agent-host", true);
             DesktopAgentService svc = new DesktopAgentService();
             svc.Start();
             Console.WriteLine("Desktop Agent is running");
