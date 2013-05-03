@@ -13,7 +13,7 @@ using System.Xml.XPath;
 namespace Citrix.SelfServiceDesktops.Agent.Services {
 
     [ServiceBehavior(Name = "ConfigService",
-                     Namespace = "urn:com.citrix.selfservicedesktops.config-15-04-2013",
+                     Namespace = "urn:com.citrix.selfservicedesktops-15-04-2013",
                      IncludeExceptionDetailInFaults = true)]
     public class DesktopService : IDesktopService {
 

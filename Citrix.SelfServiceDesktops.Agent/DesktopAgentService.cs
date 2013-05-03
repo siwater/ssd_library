@@ -10,6 +10,8 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
 
+using Citrix.SelfServiceDesktops.DesktopLibrary.Configuration;
+
 using Citrix.Diagnostics;
 
 namespace Citrix.SelfServiceDesktops.Agent {
@@ -21,8 +23,6 @@ namespace Citrix.SelfServiceDesktops.Agent {
     /// of contexts (console app, windows service etc)
     /// </summary>
     public class DesktopAgentService {
-
-        public const string ListenUrl = "http://localhost:8000/";
 
         private Listener listener;
         private SyncService syncService;
@@ -36,7 +36,9 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         private void StartWebListener() {
             CtxTrace.TraceInformation();
-            Uri uri = new Uri(ListenUrl);
+            string listenUrl = DesktopServiceConfiguration.ConfigServiceUrl;
+            Uri uri = new Uri(listenUrl);
+
             WebServiceHost host = new WebServiceHost(typeof(DesktopService), uri);
             host.AddServiceEndpoint(typeof(IDesktopService), new WebHttpBinding(), "");
             ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();

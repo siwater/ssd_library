@@ -15,6 +15,10 @@ using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.Agent {
     
+    /// <summary>
+    /// This is the service that periodically executes a PowerShell script to synchronise XenDesktop and CloudPlatform
+    /// The script will be executed for each Desktop Offering in the config.
+    /// </summary>
     public class SyncService {
 
         private IDesktopServiceConfiguration config;

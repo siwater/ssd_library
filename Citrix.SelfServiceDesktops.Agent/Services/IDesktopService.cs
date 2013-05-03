@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace Citrix.SelfServiceDesktops.Agent.Services {
 
-    [ServiceContract(Namespace = "urn:com.citrix.selfservicedesktops.config-15-04-2013")]
+    [ServiceContract(Namespace = "urn:com.citrix.selfservicedesktops-15-04-2013")]
     public interface IDesktopService {
 
         [OperationContract]
