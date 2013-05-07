@@ -2,6 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" 
      xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
   
+  
 	<Product Id="333035dc-6a48-49fe-9c75-ba4e8c660e0b" Name="Citrix SelfServiceDesktops WebApp" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems" UpgradeCode="d449f1e9-35aa-4c1e-a134-9ca34dfbf123">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     
@@ -12,6 +13,9 @@
     
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>
+    
+    <!-- All installation pre-conditions -->
+    <?include Conditions.wxi ?>
 
 		<Feature Id="ProductFeature" Title="Citrix SelfServiceDesktops WebApp" Level="1">
 			<ComponentGroupRef Id="Citrix.SelfServiceDesktops.WebApp_Project" />
@@ -41,8 +45,11 @@
       </Directory>
     </Directory>
 
-
-    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
+    <Property Id='WEBSITENAME' Value='Default Web Site'/>
+    <Property Id="WEBAPPNAME" Value="SelfServiceDesktops"/>
     
+    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
+    <UIRef Id="WixUI_Custom"/>
   </Product>
 </Wix>

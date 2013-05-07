@@ -22,13 +22,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Citrix.SelfServiceDesktops.WebApp.wxs" />
+    <Compile Include="InvalidWebAppNameDialog.wxs" />
     <Compile Include="Product.wxs" />
+    <Compile Include="WebAppDialog.wxs" />
+    <Compile Include="WixUI_Custom.wxs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="000_XenDesktop_Combo_All.ico" />
+    <Content Include="Conditions.wxi" />
     <Content Include="eula.rtf" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Citrix.SelfServiceDesktops.Setup.CustomActions\Citrix.SelfServiceDesktops.Setup.CustomActions.csproj">
+      <Name>Citrix.SelfServiceDesktops.Setup.CustomActions</Name>
+      <Project>{46ce1c60-50af-40a5-a4f8-9449e89080a1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Citrix.SelfServiceDesktops.WebApp\Citrix.SelfServiceDesktops.WebApp.csproj">
       <Name>Citrix.SelfServiceDesktops.WebApp</Name>
       <Project>{42778926-36d1-48f4-90a5-3e8bc2d3993f}</Project>
@@ -38,6 +50,23 @@
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
       <InstallProject>True</InstallProject>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixIIsExtension">
+      <HintPath>$(WixExtDir)\WixIIsExtension.dll</HintPath>
+      <Name>WixIIsExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="English.wxl" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <Target Name="BeforeBuild">
