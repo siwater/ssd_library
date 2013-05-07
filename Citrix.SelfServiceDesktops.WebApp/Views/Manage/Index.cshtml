@@ -22,7 +22,7 @@
     <div id = "@item.Id">
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            <a href="@ViewBag.ReceiverUrl">@item.Name</a>
         </td><td>
             @Html.DisplayFor(modelItem => item.IpAddress)
         </td><td>
