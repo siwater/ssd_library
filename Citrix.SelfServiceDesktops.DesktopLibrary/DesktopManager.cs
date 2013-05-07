@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,18 +22,31 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
     public class DesktopManager : IDesktopManager {
 
 
-        public const string DesktopSuffixFormat = "00";
+        public const string DesktopSuffixFormat = "000";
 
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
-        
 
         /// <summary>
-        /// Create a new instance of the DesktopManager for the specified user in the root domain
+        /// Temporary access all areas via port 8096
+        /// </summary>
+        private Client openAccessClient;
+
+        private DesktopManager() {
+            config = DesktopServiceConfiguration.Instance;
+            // Build Uri for accessing open port 8096 as a temporary fix to get complete VM list
+            UriBuilder openAccessUriBuilder = new UriBuilder(config.CloudStackUri);
+            openAccessUriBuilder.Port = 8096;
+            openAccessClient = new Client(openAccessUriBuilder.Uri); 
+        }
+
+        /// <summary>
+        /// Create a new instance of the DesktopManager for the specified user in the default domain
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        internal DesktopManager(string userName, string password) : this(userName, password, null) {      
+        internal DesktopManager(string userName, string password)
+            : this(userName, password, null) {
         }
 
         /// <summary>
@@ -40,11 +54,29 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <param name="domain"></param>
-        internal DesktopManager(string userName, string password, string domain) {
-            config = DesktopServiceConfiguration.Instance;
+        /// <param name="domain">If not specified domain will be taken from config value</param>
+        internal DesktopManager(string userName, string password, string domain)
+            : this() 
+        {       
             cloudStackClient = new Client(config.CloudStackUri);
-            cloudStackClient.Login(userName, password, config.Domain, config.HashCloudStackPassword);
+            if (string.IsNullOrEmpty(domain)) {
+                domain = config.Domain;
+            }
+            try {
+                cloudStackClient.Login(userName, password, domain, config.HashCloudStackPassword);
+            } catch (CloudStackException) {
+                cloudStackClient.Login(userName, password, domain, !config.HashCloudStackPassword);
+            }
+        }
+
+        internal DesktopManager(string userName, string sessionKey, string jSessionId, string domain)
+            : this() {
+                
+            CtxTrace.TraceVerbose("sessionKey={0}, jSessionId={1}", sessionKey, jSessionId);
+            Cookie sessionCookie = new Cookie("JSESSIONID", jSessionId);
+            sessionCookie.Domain = config.CloudStackUri.Host;
+            sessionCookie.Path = "/client";
+            cloudStackClient = new Client(config.CloudStackUri, sessionKey, sessionCookie);
         }
 
 
@@ -64,8 +96,8 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             ListVirtualMachinesResponse response = cloudStackClient.ListVirtualMachines(request);
             return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), includeDestroyed);
         }
-
-    public IDesktop CreateDesktop(string serviceOfferingName)
+  
+        public IDesktop CreateDesktop(string serviceOfferingName)
         {
             IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == serviceOfferingName));
             string name = GetNextDesktopName(offering);
@@ -121,6 +153,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="machines">The raw set of virtual machines from the CloudStack API</param>
         /// <param name="desktopOfferings">The set of desktop offerings to use as a filter</param>
+        /// <param name="includeDestroyed">Include destroyed and expunging virtual machines in the list</param>
         /// <returns>A list of potential desktops (ordered by name)</returns>
         private IEnumerable<IDesktop> FilterDesktops(VirtualMachine[] machines, IEnumerable<IDesktopOffering> desktopOfferings, bool includeDestroyed) {
            
@@ -150,12 +183,23 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         }
 
         /// <summary>
+        /// Use the open access client to get all desktops from all users.
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable<IDesktop> ListAllDesktops() {
+            ListVirtualMachinesRequest request = new ListVirtualMachinesRequest();
+            request.Parameters["listall"] = "true";
+            ListVirtualMachinesResponse response = openAccessClient.ListVirtualMachines(request);
+            return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), true);
+        } 
+
+        /// <summary>
         /// Generate a new desktop name for the specified desktop offering
         /// </summary>
         /// <param name="offering">Desktop offering</param>
         /// <returns>A name for the desktop</returns>
         private string GetNextDesktopName(IDesktopOffering offering) {
-            IEnumerable<IDesktop> existingDesktops = ListDesktops(true).Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
+            IEnumerable<IDesktop> existingDesktops = ListAllDesktops().Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
             string suffix = DesktopSuffixFormat;
             int last = 0;
             if (existingDesktops.Count() > 0) {

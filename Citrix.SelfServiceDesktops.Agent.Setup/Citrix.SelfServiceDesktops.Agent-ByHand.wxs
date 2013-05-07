@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">  
+                    <Component Id="Citrix.Diagnostics.dll" Guid="{796AD29D-B216-43C9-BEFA-C593AAF1ECA0}">
+                        <File Id="filACEA0C2A7E2193DF0793F73B6818FFC0" KeyPath="yes" Source="$(var.BasePath)\Citrix.Diagnostics.dll" />
+                    </Component>
+                    <Component Id="Citrix.SelfServiceDesktops.Agent.exe" Guid="{1600EEB9-4D27-4C1E-8362-19CB02D31D73}">
+                        <File Id="filA16FC7C7E9C866E5BA27E11C452B4FED" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe" />
+                    </Component>
+                    <Component Id="Citrix.SelfServiceDesktops.Agent.exe.config" Guid="{00D26576-E5F5-4E22-8119-E3B00E5E10EA}">
+                        <File Id="fil34CE43E39ED3725B98FD7F6ED9FC1897" KeyPath="yes" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe.config" />
+                    </Component>
+                    
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="Citrix.SelfServiceDesktops.Agent_Project">
+           <ComponentRef Id="Citrix.Diagnostics.dll" />
+          <ComponentRef Id="Citrix.SelfServiceDesktops.Agent.exe" />
+          <ComponentRef Id="Citrix.SelfServiceDesktops.Agent.exe.config" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>

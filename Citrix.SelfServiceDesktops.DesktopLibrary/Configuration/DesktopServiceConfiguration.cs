@@ -3,6 +3,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,12 +21,34 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
     
     public class DesktopServiceConfiguration : IDesktopServiceConfiguration {
 
-        private const string ConfigServiceUrl = "http://localhost:8000/config";
+        private const string configServiceUrlPattern = "http://localhost:{0}/config";
+
+        private const int defaultAgentPort = 8000;
+
+        private static string _configServiceUrl;
+
+        public static string ConfigServiceUrl {
+            get {
+                if (_configServiceUrl == null) {
+                    _configServiceUrl = GetConfigServiceUrl();
+                }
+                return _configServiceUrl;
+            }
+        }
 
         public static DesktopServiceConfiguration Instance { get { return GetInstance(ConfigurationLocation.Either); } }
 
         public static DesktopServiceConfiguration GetInstance(ConfigurationLocation location) {
             return new DesktopServiceConfiguration(location);
+        }
+
+        private static string GetConfigServiceUrl() {
+            ushort port = defaultAgentPort;
+            string agentPort = ConfigurationManager.AppSettings["agent-port"];
+            if (!string.IsNullOrEmpty(agentPort)) {
+                ushort.TryParse(agentPort, out port);
+            }        
+            return string.Format(configServiceUrlPattern, port);
         }
 
         private XElement config;
