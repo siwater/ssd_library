@@ -19,10 +19,12 @@ namespace Citrix.SelfServiceDesktops.Agent {
     using Services;
 
     /// <summary>
-    /// This is the container for the various services run inside the Self Service Desktops Agen, It can be executed in a range 
+    /// This is the container for the various services run inside the Self Service Desktops Agent, It can be executed in a range 
     /// of contexts (console app, windows service etc)
     /// </summary>
     public class DesktopAgentService {
+
+
 
         private Listener listener;
         private SyncService syncService;
@@ -36,10 +38,12 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         private void StartWebListener() {
             CtxTrace.TraceInformation();
-            string listenUrl = DesktopServiceConfiguration.ConfigServiceUrl;
-            Uri uri = new Uri(listenUrl);
 
-            WebServiceHost host = new WebServiceHost(typeof(DesktopService), uri);
+            string listenUrl = DesktopServiceConfiguration.ConfigServiceUrl;
+            UriBuilder uriBuilder = new UriBuilder(listenUrl);
+            uriBuilder.Path = ""; // Adjust Url so host listens  on localhost:port
+
+            WebServiceHost host = new WebServiceHost(typeof(DesktopService), uriBuilder.Uri);
             host.AddServiceEndpoint(typeof(IDesktopService), new WebHttpBinding(), "");
             ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();
             sdb.HttpHelpPageEnabled = false;
