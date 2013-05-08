@@ -58,8 +58,8 @@ Patch dialog sequence:
             <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
 
             <Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg">1</Publish>
-            <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg">LicenseAccepted = "1"</Publish>
-
+            <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="WebAppDlg">LicenseAccepted = "1"</Publish>
+<!--
             <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
             <Publish Dialog="InstallDirDlg" Control="Next" Event="SetTargetPath" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
             <Publish Dialog="InstallDirDlg" Control="Next" Event="DoAction" Value="WixUIValidatePath" Order="2">NOT WIXUI_DONTVALIDATEPATH</Publish>
@@ -67,12 +67,13 @@ Patch dialog sequence:
             <Publish Dialog="InstallDirDlg" Control="Next" Event="NewDialog" Value="WebAppDlg" Order="4">WIXUI_DONTVALIDATEPATH OR WIXUI_INSTALLDIR_VALID="1"</Publish>
             <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Property="_BrowseProperty" Value="[WIXUI_INSTALLDIR]" Order="1">1</Publish>
             <Publish Dialog="InstallDirDlg" Control="ChangeFolder" Event="SpawnDialog" Value="BrowseDlg" Order="2">1</Publish>
-            
+-->         
             <!-- Specify Web App properties -->
-            <Publish Dialog="WebAppDlg" Control="Back" Event="NewDialog" Value="InstallDirDlg">1</Publish>
-
-            <!-- Check to see the web app name has been specified -->        
-            <Publish Dialog="WebAppDlg" Control="Next" Event="SpawnDialog" Value="InvalidWebAppNameDlg" Order="1">WEBAPPNAME=""</Publish> 
+            <Publish Dialog="WebAppDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+          
+            <!--  For now just publish into the default web app...
+            <Publish Dialog="WebAppDlg" Control="Next" Event="DoAction"  Value="SetWebSiteProperties" Order="1">1</Publish>
+            -->
             <Publish Dialog="WebAppDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg" Order="2">1</Publish>
  
             <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="WebAppDlg" Order="1">NOT Installed</Publish>

@@ -22,7 +22,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Citrix.SelfServiceDesktops.WebApp.wxs" />
-    <Compile Include="InvalidWebAppNameDialog.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="WebAppDialog.wxs" />
     <Compile Include="WixUI_Custom.wxs" />

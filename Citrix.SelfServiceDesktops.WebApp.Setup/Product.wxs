@@ -19,34 +19,43 @@
 
 		<Feature Id="ProductFeature" Title="Citrix SelfServiceDesktops WebApp" Level="1">
 			<ComponentGroupRef Id="Citrix.SelfServiceDesktops.WebApp_Project" />
+      <ComponentRef Id='SSDWebVDir' />
 		</Feature>
-<!--
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER1" Name="Citrix">
-          <Directory Id="INSTALLFOLDER2" Name="SelfServiceDesktops">
-            <Directory Id="INSTALLFOLDER" Name="WebApp">
-                
-            </Directory>
-          </Directory>
-        </Directory>
-      </Directory>
-    </Directory>
--->
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="inetpub" Name="inetpub">
         <Directory Id="wwwroot" Name="wwwroot" ComponentGuidGenerationSeed="9da18920-ada3-11e2-9e96-0800200c9a66">
           <Directory Id="INSTALLFOLDER1" Name="Citrix">
             <Directory Id="INSTALLFOLDER" Name="SelfServiceDesktops">
+              
+              <Component Id="SSDWebVDir" Guid="3176007c-8b36-4351-81c4-ad006508a4c9">
+
+                <iis:WebAppPool Id="AppPool" Name="[APPPOOLNAME]" ManagedRuntimeVersion="v4.0"
+                               IdleTimeout="0" RecycleMinutes="0" ManagedPipelineMode="integrated">
+                </iis:WebAppPool>       
+
+                <iis:WebVirtualDir Id="VirtualDir" Alias="[WEBAPPNAME]" Directory="INSTALLFOLDER" WebSite="SelectedWebSite">             
+                  <iis:WebApplication Id="SSDWebApp" WebAppPool="AppPool" Name="[WEBAPPNAME]" />              
+                  <iis:WebDirProperties Id="SSDWebVDir_Properties" AnonymousAccess="yes" WindowsAuthentication="no" />               
+                </iis:WebVirtualDir>
                 
+                <CreateFolder/>
+              </Component>  
             </Directory>
           </Directory>
         </Directory>
       </Directory>
     </Directory>
-
+    
     <Property Id='WEBSITENAME' Value='Default Web Site'/>
-    <Property Id="WEBAPPNAME" Value="SelfServiceDesktops"/>
+    <Property Id="WEBAPPNAME" Value="Citrix/SelfServiceDesktops"/>
+    <Property Id='APPPOOLNAME' Value='SelfServiceDesktops_Pool'/>
+    
+    <!-- Note this does not create a web site, just looks it up -->
+    <iis:WebSite Id='SelectedWebSite' Description='[WEBSITENAME]' Directory='INSTALLFOLDER'>
+      <!-- This element has to be here or WiX does not compile. -->
+      <iis:WebAddress Id="AllUnassigned" Port="80"/>
+    </iis:WebSite>
     
     <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
