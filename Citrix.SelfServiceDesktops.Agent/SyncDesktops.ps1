@@ -163,7 +163,7 @@ foreach ($vm in $ccpvmsnotinxd)
 	{
 		WriteDebug "Registering new CloudPlatform desktop $computer in XenDesktop"
 		$catalog = Get-BrokerCatalog -Filter {(Name -eq $catalogname)}  
-		$newmachine=New-BrokerMachine -MachineName $vm[0].ToUpper() -CatalogUid $catalog.uid 
+		$newmachine=New-BrokerMachine -MachineName $adcomputer.SID -CatalogUid $catalog.uid 
 		if ($newmachine.machinename.ToLower() -eq $vm[0])
 		{
 			$userincldomain = $domain + '\' + $vm[2]
