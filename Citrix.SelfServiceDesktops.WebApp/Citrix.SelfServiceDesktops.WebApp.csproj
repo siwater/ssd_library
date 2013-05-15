@@ -151,6 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\header_bg.jpg" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -207,6 +208,29 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\font\Avenir 95 Black_9.ttf" />
+    <Content Include="Content\font\Avenir LT 35 Light Oblique_9.ttf" />
+    <Content Include="Content\font\Avenir LT 35 Light_9.ttf" />
+    <Content Include="Content\font\Avenir LT 45 Book Oblique_9.ttf" />
+    <Content Include="Content\font\Avenir LT 45 Book_9.ttf" />
+    <Content Include="Content\font\Avenir LT 55 Oblique_9.ttf" />
+    <Content Include="Content\font\Avenir LT 55 Roman_9.ttf" />
+    <Content Include="Content\font\Avenir LT 65 Medium Oblique_9.ttf" />
+    <Content Include="Content\font\Avenir LT 65 Medium_9.ttf" />
+    <Content Include="Content\font\Avenir LT 85 Heavy_9.ttf" />
+    <Content Include="Content\font\Avenir LT 86 Heavy Oblique_9.ttf" />
+    <Content Include="Content\font\Avenir-2_9.ttf" />
+    <Content Include="Content\font\Avenir4_9.ttf" />
+    <Content Include="Content\font\AvenirLTStd-BlackOblique_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-Black_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-BookOblique_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-Book_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-LightOblique_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-Light_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-MediumOblique_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-Medium_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-Oblique_1.otf" />
+    <Content Include="Content\font\AvenirLTStd-Roman_1.otf" />
     <None Include="Properties\PublishProfiles\SSD.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
@@ -233,9 +257,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Content\Site.css" />
-    <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
-    <Content Include="Images\heroAccent.png" />
     <Content Include="Images\orderedList0.png" />
     <Content Include="Images\orderedList1.png" />
     <Content Include="Images\orderedList2.png" />
