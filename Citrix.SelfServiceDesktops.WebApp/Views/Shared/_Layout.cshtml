@@ -1,51 +1,51 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title>Self-Service Desktop - @ViewBag.Title</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    </head>
-    <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("CloudPlatform Self-Service Desktop", "Index", "Manage")</p>
-                </div>
-                <div class="float-right">
-                                        <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
+<head>
+    <title>My Windows Desktops - @ViewBag.Title</title>
+    <meta charset="utf-8" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("My Windows Desktops", "Index", "Manage")</p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    @Html.Partial("_LoginPartial")
+                </section>
 
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Manage", "Index", "Manage")</li>
-                            @if(ViewBag.NoCreate == null)
-                            {
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Manage", "Index", "Manage")</li>
+                        @if (ViewBag.NoCreate == null)
+                        {
                             <li>@Html.ActionLink("Create", "Index", "Create")</li>
-                            }
-                        </ul>
-                    </nav>
-                </div>
+                        }
+                    </ul>
+                </nav>
             </div>
-        </header>
-        <div id="body">
-            @RenderSection("featured", required: false)
-            <section class="content-wrapper main-content clear-fix">
-                @RenderBody()
-            </section>
         </div>
-        <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - Citrix CloudPlatform Self-Service Desktop</p>
-                </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p></p>
             </div>
-        </footer>
+        </div>
+    </footer>
 
-        @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
-    </body>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
 </html>

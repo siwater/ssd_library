@@ -1,10 +1,11 @@
 ﻿@if (User.Identity.IsAuthenticated) {
     <text>
-         <div class="username">Hello, @User.Identity.Name!</div>
+         <div class="username">Hello, @User.Identity.Name!
         @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
         {
             <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
         }
+             </div>
     </text>
 } else {
     <ul>
