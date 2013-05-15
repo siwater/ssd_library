@@ -66,7 +66,7 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
 
         public string HostnamePrefix
         {
-            get { throw new NotImplementedException(); }
+            get { return "foobar"; }
         }
     }
 }
