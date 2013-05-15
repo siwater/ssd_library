@@ -14,19 +14,20 @@
  <fieldset>
   <legend>Select Your Desktop
 </legend>
+     <div class="table_style2">
 <table>
 @foreach (var item in Model)
 {
 <tr>
     
-<td width ="10">@Html.RadioButton("serviceOfferingIdName", item.Name, item.Default)
+<td width ="10">@Html.RadioButton("serviceOfferingIdName", item.Name, item.Default)</td>
 
 <td><div class="offering-label">@Html.DisplayFor(modelItem => item.Name)</div></td>
     
 </tr>
 <tr><div class="offering-description">
-   <td width ="10"></td> 
-<td>
+   <td width ="10" class="info"></td> 
+<td class="info">
     @Html.DisplayFor(modelItem => item.Description)
     </td>
     <div id="@item.Name" class="ServiceOffering">
@@ -41,9 +42,10 @@
 </tr>
 }
 </table>
+         </div>
 <div class="offering-buttons">
-<input type="submit" value="Submit" name="button" />
-<input type="submit" value="Cancel" name="button"  />
+<input type="submit" class="refresh"  value="Submit" name="button" />
+<input type="submit" class="refresh"  value="Cancel" name="button"  />
 </div>
 </fieldset>
 }

@@ -10,8 +10,9 @@
 <h2>Desktops for user "@ViewBag.User"</h2>
 @using (Html.BeginForm("Index", "Manage", FormMethod.Get)) 
 {
-    <input type="submit" value="Refresh"/>
+    <input type="submit" class="refresh" value="Refresh"/>
 }
+<div class="table_style">
 <table id="SSD-list">
     <tr>
         <th>Name</th>
@@ -52,6 +53,7 @@
     </div>
     }
 </table>
+    </div>
 <! >
 <h4><a href="@ViewBag.ReceiverUrl" style="color:blue">Access your desktop console from Web Receiver</a> </h4>
 <script type="text/javascript">
