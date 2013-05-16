@@ -12,7 +12,7 @@
 </hgroup>
 
 <section id="loginForm">
-<h2>Use your CloudPlatform account to log in.</h2>
+<h2></h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     <fieldset>
         <legend>Log in Form</legend>
@@ -26,7 +26,7 @@
                 @Html.PasswordFor(m => m.Password)
             </li>
         </ol>
-        <input type="submit" value="Log in" />
+        <input type="submit" class="refresh"  value="Log in" />
     </fieldset>
 }
 </section>

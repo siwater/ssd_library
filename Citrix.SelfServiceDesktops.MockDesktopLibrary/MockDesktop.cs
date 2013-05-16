@@ -24,7 +24,7 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
 
         public string Id
         {
-            get { throw new NotImplementedException(); }
+            get { return "1"; }
         }
     }
 }
