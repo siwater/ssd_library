@@ -233,6 +233,10 @@
     <Content Include="Content\font\AvenirLTStd-Roman_1.otf" />
     <None Include="Properties\PublishProfiles\SSD.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Images\cloudplatform.png" />
+    <Content Include="Images\images.jpg" />
+    <Content Include="Images\logo-slides.png" />
+    <Content Include="Images\logo.png" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.20.js" />
