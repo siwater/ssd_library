@@ -47,7 +47,7 @@ A
 }
 A:link
 {
-	color: #FFFFFF;
+	color: #0a79ac;
 }
 A:visited
 {
@@ -214,13 +214,13 @@ H5 A:active
 #body
 {
 	padding-bottom: 35px;
-	background-color: #EFEEEF;
+	background-color: "white";
 	clear: both;
-}
+} 
 .table_style
 {
 	width: 877px;
-	background-color: #27BDC8;
+	background-color:#DEDCDC;
 	padding-top: 8px;
 	padding-bottom: 27px;
 	padding-left: 21px;
@@ -229,7 +229,7 @@ H5 A:active
 .table_style2
 {
 	width: 365px;
-	background-color: #27BDC8;
+background-color:#DEDCDC;
 	height: 242px;
 	padding-left: 20px;
 	padding-top: 1px;
@@ -247,7 +247,7 @@ H5 A:active
 }
 #body
 {
-	background-color: #5ED3E6;
+	background-color: white;
 }
 .featured + .main-content
 {
@@ -500,12 +500,12 @@ ASIDE UL LI
 }
 #loginForm
 {
-	width: 55%;
-	float: left;
-
-	background-color: #27BDC8;
-	padding-top: 15px;
-	padding-left: 18px;
+background-color:#dedcdc;
+    border: 1px solid #CCCCCC;
+    float: left;
+    padding-left: 18px;
+    padding-top: 15px;
+    width: 55%;
 }
 #loginForm .validation-error
 {
@@ -630,7 +630,7 @@ INPUT
 	width: 300px;
 	padding-right: 5px;
 	background: #FFF;
-	color: #F5F4F4;
+	color: #0a79ac;
 	font-size: 1.2em;
 	border-top: 1px solid #E2E2E2;
 	border-right: 1px solid #E2E2E2;
@@ -658,20 +658,19 @@ TEXTAREA
 }
 INPUT[type='radio']
 {
-	border-bottom: 1px solid #27BDC8;
-	border-left: 1px solid #27BDC8;
+	border-bottom: 1px solid #DEDCDC;
+	border-left: 1px solid #DEDCDC;
 	padding-bottom: 5px;
 	margin: 5px 0px 6px;
 	padding-left: 5px;
 	width: 20px;
 	padding-right: 5px;
-	background: #EFEEEF;
+	background-color:#DEDCDC;
 	color: #333;
 	font-size: 1.2em;
-	border-top: 1px solid #27BDC8;
-	border-right: 1px solid #27BDC8;
+	border-top: 1px solid #DEDCDC;
+	border-right: 1px solid #DEDCDC;
 	padding-top: 5px;
-        background-color: #27BDC8;
  }
 #serviceOfferingIdName
 {
@@ -753,7 +752,8 @@ INPUT[type='submit']
 }
 INPUT[type='submit'].refresh
 {
-	background-color: #F68C13;
+	background-color: #0080A1;
+color:white;
 }
 INPUT[type='button']
 {
@@ -801,7 +801,7 @@ TD INPUT[type='submit']
 }
 INPUT
 {
-	color: #FFFFFF;
+	color: #0a79ac;
 }
 TD INPUT[type='button']
 {
@@ -890,7 +890,7 @@ TABLE
 	margin-top: 0.75em;
 	border-spacing: 0;
 	border-collapse: collapse;
-	border: 1px solid #FFF;
+	border: 1px solid grey;
 }
 TH
 {
@@ -903,9 +903,9 @@ TH
 	border-top-style: solid;
 	border-right-style: solid;
 	border-left-style: solid;
-	border-top-color: #FFF;
-	border-right-color: #FFF;
-	border-left-color: #FFF;
+	border-top-color: grey;
+	border-right-color: grey;
+	border-left-color: grey;
 }
 TH A
 {
@@ -1000,9 +1000,9 @@ TD
 	border-top-style: solid;
 	border-right-style: solid;
 	border-left-style: solid;
-	border-top-color: #FFF;
-	border-right-color: #FFF;
-	border-left-color: #FFF;
+	border-top-color: grey;
+	border-right-color: grey;
+	border-left-color: grey;
 }
 TR.pager TD
 {
