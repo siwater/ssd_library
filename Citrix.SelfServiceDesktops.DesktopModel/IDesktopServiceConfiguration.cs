@@ -15,6 +15,8 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
 
         Uri CloudStackUri { get; }
 
+        int ListenPort { get; }
+
         bool HashCloudStackPassword { get; }
 
         string Domain { get; }

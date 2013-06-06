@@ -18,10 +18,16 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
              this.config = config;
          }
 
-
         public string Path {
             get { 
-                return config.XPathSelectElement("//script").Attribute("path").Value; 
+                XElement script = config.XPathSelectElement("//script");
+                if (script != null) {
+                    XAttribute path = script.Attribute("path");
+                    if (path != null) {
+                        return path.Value;
+                    }
+                }
+                return null;
             }
         }
 
@@ -32,8 +38,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         }
 
         public bool Debug {
-            get { 
-                return bool.Parse(config.XPathSelectElement("//script").Attribute("debug").Value); 
+            get {
+                try {
+                    return bool.Parse(config.XPathSelectElement("//script").Attribute("debug").Value);
+                } catch (NullReferenceException) {
+                    return false;
+                }
             }
         }
     }

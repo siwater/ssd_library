@@ -57,16 +57,22 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
             get { return this.networkId;}  set { networkId = value; }
         }
 
-        public bool Default
-        {
+        public bool Default {
             get { return this.defaultOption; }
             set { defaultOption = value; }
         }
-
 
         public string HostnamePrefix
         {
             get { return "foobar"; }
         }
+
+        public string IsoId { get { return "foo"; } }
+
+        public bool Sync { get { return true; } }
+
+        public string XenDesktopCatalog { get { return "foo"; } }
+
+        public IDeviceCollection DeviceCollection { get { return null; } }
     }
 }

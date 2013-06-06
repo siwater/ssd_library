@@ -28,6 +28,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         [XmlAttribute("template-id")]
         public string TemplateId { get; set; }
 
+        [XmlAttribute("iso-id")]
+        public string IsoId { get; set; }
+        
         [XmlAttribute("service-offering-id")]
         public string ServiceOfferingId { get; set; }
 
@@ -37,14 +40,23 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         [XmlAttribute("hostname-prefix")]
         public string HostnamePrefix { get; set; }
 
+        [XmlAttribute("xendesktop-catalog")]
+        public string XenDesktopCatalog { get; set; }
+
+        [XmlAttribute("sync")]
+        public bool Sync { get; set; }
+
+        [XmlElement("device-collection")]
+        public DeviceCollectionElement DeviceCollectionImpl { get; set; }
+
+        [XmlIgnore]
+        public IDeviceCollection DeviceCollection { get { return DeviceCollectionImpl; } }
 
         public override string ToString() {
             return string.Format("{0} ({1})", Name, Description);
         }
 
-
-        public bool Default
-        {
+        public bool Default {
             get { return false; }
         }
     }

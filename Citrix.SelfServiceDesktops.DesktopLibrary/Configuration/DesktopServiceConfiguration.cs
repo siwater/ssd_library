@@ -21,20 +21,6 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
     
     public class DesktopServiceConfiguration : IDesktopServiceConfiguration {
 
-        private const string configServiceUrlPattern = "http://localhost:{0}/config";
-
-        private const int defaultAgentPort = 8000;
-
-        private static string _configServiceUrl;
-
-        public static string ConfigServiceUrl {
-            get {
-                if (_configServiceUrl == null) {
-                    _configServiceUrl = GetConfigServiceUrl();
-                }
-                return _configServiceUrl;
-            }
-        }
 
         public static DesktopServiceConfiguration Instance { get { return GetInstance(ConfigurationLocation.Either); } }
 
@@ -42,32 +28,22 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             return new DesktopServiceConfiguration(location);
         }
 
-        private static string GetConfigServiceUrl() {
-            ushort port = defaultAgentPort;
-            string agentPort = ConfigurationManager.AppSettings["agent-port"];
-            if (!string.IsNullOrEmpty(agentPort)) {
-                ushort.TryParse(agentPort, out port);
-            }        
-            return string.Format(configServiceUrlPattern, port);
-        }
-
         private XElement config;
 
         private DesktopServiceConfiguration(ConfigurationLocation location) {
 
-            // Try to read config from local app.config.
-            if ((location == ConfigurationLocation.Local) || (location == ConfigurationLocation.Either)) {
-                XDocument doc = XDocument.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-                config = doc.XPathSelectElement("//selfServiceDesktops");
-            }
-
-            // Try to read the config from remote server
-            if ((config == null) && (location != ConfigurationLocation.Local)) {
-                config = GetConfig(new Uri(ConfigServiceUrl));
-            }
-
+            string configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            XDocument doc = XDocument.Load(configFile);
+            config = doc.XPathSelectElement("//selfServiceDesktops");           
             if (config == null) {
-                throw new ApplicationException("No configuration found at location: " + location);
+                throw new ApplicationException("No selfServiceDesktops configuration found in : " + configFile);
+            }
+
+            // Load config from remote server
+            XAttribute remoteConfigAttribute = config.Attribute("remoteConfig");
+            if ((remoteConfigAttribute != null)  && 
+                ((location == ConfigurationLocation.Remote) || (location == ConfigurationLocation.Either))) {
+                config = GetConfig (new Uri(remoteConfigAttribute.Value));
             }
         }
 
@@ -96,6 +72,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public Uri CloudStackUri {
             get {
                 return new Uri(config.XPathSelectElement("//cloudstack").Attribute("url").Value);
+            }
+        }
+
+        public int ListenPort {
+            get {
+                return int.Parse(config.XPathSelectElement("//listen").Attribute("port").Value);
             }
         }
 
