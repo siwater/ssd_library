@@ -47,7 +47,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             catch (System.Exception ex)
             {
-                CtxTrace.TraceError(ex.Message);
+                CtxTrace.TraceError(ex);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -78,7 +78,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             catch (System.Exception ex)
             {
-                CtxTrace.TraceError(ex.Message);
+                CtxTrace.TraceError(ex);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -98,7 +98,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             catch (System.Exception ex)
             {
-                CtxTrace.TraceError(ex.Message);
+                CtxTrace.TraceError(ex);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -118,7 +118,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             catch (System.Exception ex)
             {
-                CtxTrace.TraceError(ex.Message);
+                CtxTrace.TraceError(ex);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
@@ -139,7 +139,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             catch (System.Exception ex)
             {
-                CtxTrace.TraceError(ex.Message);
+                CtxTrace.TraceError(ex);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
             }
