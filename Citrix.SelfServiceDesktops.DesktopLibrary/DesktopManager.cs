@@ -22,7 +22,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
     public class DesktopManager : IDesktopManager {
 
 
-        public const string DesktopSuffixFormat = "000";
+        public const string DesktopSuffixFormat = "0000";
 
         private IDesktopServiceConfiguration config;
         private Client cloudStackClient;
@@ -97,21 +97,45 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             return FilterDesktops(response.VirtualMachine, config.DesktopOfferings.Cast<IDesktopOffering>(), includeDestroyed);
         }
   
-        public IDesktop CreateDesktop(string serviceOfferingName)
+        /// <summary>
+        /// Create a desktop. The boot device may be either an ISO or a conventional template or both.
+        /// If the desktop offering specifies both an ISO and a template, the virtual machine is
+        /// created from template in the stopped state, and the ISO attached before starting the machine.
+        /// </summary>
+        /// <param name="desktopOfferingName">desktop offering</param>
+        /// <returns>The desktop</returns>
+        public IDesktop CreateDesktop(string desktopOfferingName)
         {
-            IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == serviceOfferingName));
+            IDesktopOffering offering = ListDesktopOfferings().First(o => (o.Name == desktopOfferingName));
+
+            bool isoAndTemplate = (offering.IsoId != null) && (offering.TemplateId != null);
+                  
             string name = GetNextDesktopName(offering);
             DeployVirtualMachineRequest request = new DeployVirtualMachineRequest() {
                 ServiceOfferingId = offering.ServiceOfferingId,
-                TemplateId = offering.TemplateId,
                 ZoneId = offering.ZoneId,
-                DisplayName = name
+                TemplateId = offering.TemplateId,
+                DisplayName = name,
+                // If both ISO and template specified don't start the VM yet
+                StartVm = !isoAndTemplate
             };
             request.Parameters["name"] = name;
-            if (!string.IsNullOrEmpty(offering.NetworkId)) {
-                request.WithNetworkIds(offering.NetworkId);
+            request.WithNetworkIds(offering.NetworkId);
+
+            // If just an ISO is specified boot from that 
+            if (!isoAndTemplate && (offering.IsoId != null)) {
+                request.TemplateId = offering.IsoId;
             }
+
             string id = cloudStackClient.DeployVirtualMachine(request);
+
+            if (isoAndTemplate) {
+                APIRequest attachIsoRequest = new APIRequest("attachIso");
+                attachIsoRequest.Parameters["id"] = offering.IsoId;
+                attachIsoRequest.Parameters["virtualmachineid"] = id;
+                XDocument response = cloudStackClient.SendRequest(attachIsoRequest);
+                cloudStackClient.StartVirtualMachine(id);
+            }
             return new Desktop(id, name, null, DesktopState.Creating);
         }
 
@@ -194,14 +218,15 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         } 
 
         /// <summary>
-        /// Generate a new desktop name for the specified desktop offering
+        /// Generate a new desktop name for the specified desktop offering. Non PVS desktops will be named using the host
+        /// name prefix plus a free number starting from 1. 
         /// </summary>
         /// <param name="offering">Desktop offering</param>
         /// <returns>A name for the desktop</returns>
         private string GetNextDesktopName(IDesktopOffering offering) {
-            IEnumerable<IDesktop> existingDesktops = ListAllDesktops().Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
             string suffix = DesktopSuffixFormat;
-            int last = 0;
+            IEnumerable<IDesktop> existingDesktops = ListAllDesktops().Where(d => (d.Name.StartsWith(offering.HostnamePrefix)));
+            int last = 1;
             if (existingDesktops.Count() > 0) {
                 IEnumerable<int> existingSuffixes = existingDesktops.Select(d => {
                     int num = -1;
@@ -210,11 +235,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 }).Where(i => (i != -1));
                 while (existingSuffixes.Contains(last)) {
                     last++;
-                }       
-                suffix = last.ToString(DesktopSuffixFormat);
+                }
             }
+            suffix = last.ToString(DesktopSuffixFormat);
             return string.Format("{0}{1}", offering.HostnamePrefix, suffix);
         }
+
         #endregion
     }
 }
