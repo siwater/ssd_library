@@ -24,10 +24,10 @@ namespace Citrix.SelfServiceDesktops.Agent {
     /// </summary>
     public class DesktopAgentService {
 
-
+        private const string ListenUrlPattern = "http://localhost:{0}/";
 
         private Listener listener;
-        private SyncService syncService;
+        private SyncService syncService; 
 
         public void Start() {
             CtxTrace.TraceInformation();
@@ -38,12 +38,10 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         private void StartWebListener() {
             CtxTrace.TraceInformation();
+            DesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
 
-            string listenUrl = DesktopServiceConfiguration.ConfigServiceUrl;
-            UriBuilder uriBuilder = new UriBuilder(listenUrl);
-            uriBuilder.Path = ""; // Adjust Url so host listens  on localhost:port
-
-            WebServiceHost host = new WebServiceHost(typeof(DesktopService), uriBuilder.Uri);
+            Uri listenUrl = new Uri(String.Format(ListenUrlPattern, config.ListenPort));
+            WebServiceHost host = new WebServiceHost(typeof(DesktopService), listenUrl);
             host.AddServiceEndpoint(typeof(IDesktopService), new WebHttpBinding(), "");
             ServiceDebugBehavior sdb = host.Description.Behaviors.Find<ServiceDebugBehavior>();
             sdb.HttpHelpPageEnabled = false;
