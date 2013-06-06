@@ -18,10 +18,10 @@ namespace TestApp {
             testHarness.TestConfigurationReader(false);
 
             // Test IDesktopManager implementation
-            testHarness.TestDesktopManager();
+            //testHarness.TestDesktopManager();
 
             // Test SSO capabilities (use of sessionkey and jsessionid to login)
-            testHarness.TestSso();
+            //testHarness.TestSso();
 
             Console.WriteLine("Press any key to exit");
             Console.Read();

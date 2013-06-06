@@ -45,7 +45,7 @@ namespace TestApp {
         }
 
         public void TestConfigurationReader(bool testRemote) {
-            IDesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
+            IDesktopServiceConfiguration config = DesktopServiceConfiguration.GetInstance(ConfigurationLocation.Local);
             Console.WriteLine("Broker Url is {0}", config.BrokerUri);
             Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
             DisplayOfferings(config.DesktopOfferings);
@@ -56,7 +56,6 @@ namespace TestApp {
                 Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
                 DisplayOfferings(config.DesktopOfferings);
             }
-
         }
 
         public void TestDesktopManager() {
@@ -251,10 +250,13 @@ namespace TestApp {
             }
         }
 
-
         private void DisplayOfferings(IEnumerable<IDesktopOffering> offerings) {
             foreach (IDesktopOffering offering in offerings) {
                 Console.WriteLine("Desktop offering: {0}", offering);
+
+                if (offering.DeviceCollection != null) {
+                    Console.WriteLine("Device collection {0}", offering.DeviceCollection.Name);
+                }        
             }
         }
 
