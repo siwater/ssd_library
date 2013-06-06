@@ -65,12 +65,14 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
                 while (!cancellationTokenSource.Token.IsCancellationRequested) {
                     foreach (DesktopOfferingElement offering in config.DesktopOfferings) {
-                        SyncDesktopOfferings(offering);
+                        if (offering.Sync) {
+                            SyncDesktopOfferings(offering);
+                        }
                     }
                     // Ensure timely response to task cancel
                     DateTime waitUntil = DateTime.Now + syncFrequency;
                     while (!cancellationTokenSource.Token.IsCancellationRequested && (DateTime.Now < waitUntil)) {
-                        Thread.Sleep(TimeSpan.FromMilliseconds(500));
+                        Thread.Sleep(TimeSpan.FromMilliseconds(1000));
                     }
                 }
                 CtxTrace.TraceVerbose("Task is cancelled");
@@ -81,9 +83,23 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         private void SyncDesktopOfferings(DesktopOfferingElement offering) {
             CtxTrace.TraceVerbose("{0}, {1}", offering.Name, offering.HostnamePrefix);
-            Dictionary<string, string> args = new Dictionary<string, string>();
+            
+            // Arguments to pass to PowerShell script.
+            Dictionary<string, object> args = new Dictionary<string, object>();
+ 
             args["ccpip"] = config.CloudStackUri.Host;
             args["hostnameprefix"] = offering.HostnamePrefix;
+
+            if (!string.IsNullOrEmpty(offering.XenDesktopCatalog)) {
+                args["catalogname"] = offering.XenDesktopCatalog;
+            }
+            if (!string.IsNullOrEmpty(offering.TemplateId)) {
+                args["templateid"] = offering.TemplateId;
+            }
+            if (!string.IsNullOrEmpty(offering.IsoId)) {
+                args["isoid"] = offering.IsoId;
+            }
+            args["devicecollection"] = offering.DeviceCollection;
           
             try {
                 PsWrapper script = new PsWrapper(scriptPath, config.PowerShellScript.Debug);
