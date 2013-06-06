@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="13d9fa40-131b-42ab-a54e-3c4e34141b31" Name="Citrix SelfServiceDesktops Agent" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems" UpgradeCode="1b28b8cf-7439-4785-a6db-5b11bdd5aa9c">
+  <Product Id="13d9fa40-131b-42ab-a54e-3c4e34141b31" Name="Citrix SelfServiceDesktops Agent" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems, Inc." UpgradeCode="1b28b8cf-7439-4785-a6db-5b11bdd5aa9c">
 
     <Package InstallerVersion="200"
              Description="Citrix Self Service Desktop Installer"
