@@ -46,6 +46,7 @@
     <Compile Include="IDesktopManager.cs" />
     <Compile Include="IDesktopManagerFactory.cs" />
     <Compile Include="IDesktopServiceConfiguration.cs" />
+    <Compile Include="IDeviceCollection.cs" />
     <Compile Include="IPowerShellScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
