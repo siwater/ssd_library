@@ -36,7 +36,7 @@ namespace Citrix.SelfServiceDesktops.Agent {
         public List<string> IgnoreExceptions { get; private set; }
 
 
-        public Collection<PSObject> RunPowerShell(Dictionary<string, string> arguments) {
+        public Collection<PSObject> RunPowerShell(Dictionary<string, object> arguments) {
             Command command = new Command(scriptPath);
             if (arguments != null) {
                 foreach (var argument in arguments) {
