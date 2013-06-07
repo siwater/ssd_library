@@ -127,6 +127,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 request.TemplateId = offering.IsoId;
             }
 
+            if (offering.DiskOfferingId != null) {
+                request.Parameters["diskofferingid"] = offering.DiskOfferingId;
+            }
+
             string id = cloudStackClient.DeployVirtualMachine(request);
 
             if (isoAndTemplate) {

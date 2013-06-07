@@ -69,6 +69,8 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
 
         public string IsoId { get { return "foo"; } }
 
+        public string DiskOfferingId { get { return "foo"; } }
+
         public bool Sync { get { return true; } }
 
         public string XenDesktopCatalog { get { return "foo"; } }
