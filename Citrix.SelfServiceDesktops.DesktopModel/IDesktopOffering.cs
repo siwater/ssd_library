@@ -41,6 +41,11 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         string DiskOfferingId { get; }
 
         /// <summary>
+        /// Optional hypervisor name. Required if you intend to boot from ISO
+        /// </summary>
+        string Hypervisor { get; }
+
+        /// <summary>
         /// CLoudPlatform service offering id
         /// </summary>
         string ServiceOfferingId { get; }

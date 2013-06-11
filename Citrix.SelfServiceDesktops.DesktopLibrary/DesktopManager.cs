@@ -121,6 +121,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             };
             request.Parameters["name"] = name;
             request.WithNetworkIds(offering.NetworkId);
+            if (offering.Hypervisor != null) {
+                request.Parameters["hypervisor"] = offering.Hypervisor;
+            }
 
             // If just an ISO is specified boot from that 
             if (!isoAndTemplate && (offering.IsoId != null)) {

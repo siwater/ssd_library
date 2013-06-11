@@ -35,8 +35,11 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         [XmlAttribute("iso-id")]
         public string IsoId { get; set; }
 
+        [XmlAttribute("hypervisor")]
+        public string Hypervisor { get; set; }
+
         [XmlAttribute("disk-offering-id")]
-        public string DiskOfferingid { get; set; }
+        public string DiskOfferingId { get; set; }
         
         [XmlAttribute("service-offering-id")]
         public string ServiceOfferingId { get; set; }

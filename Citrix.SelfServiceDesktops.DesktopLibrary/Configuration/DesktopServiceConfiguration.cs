@@ -36,7 +36,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             XDocument doc = XDocument.Load(configFile);
             config = doc.XPathSelectElement("//selfServiceDesktops");           
             if (config == null) {
-                throw new ApplicationException("No selfServiceDesktops configuration found in : " + configFile);
+                throw new ConfigurationErrorsException("No <selfServiceDesktops/> configuration element found in : " + configFile);
             }
 
             // Load config from remote server
@@ -45,6 +45,19 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
                 ((location == ConfigurationLocation.Remote) || (location == ConfigurationLocation.Either))) {
                 config = GetConfig (new Uri(remoteConfigAttribute.Value));
             }
+            ValidateConfiguration(config);
+        }
+
+        /// <summary>
+        /// Sanity check the supplied configuration
+        /// </summary>
+        /// <param name="config"></param>
+        private void ValidateConfiguration(XElement config) {
+           
+            // ToDo:
+            // Check desktop offering names are unique
+            // Check hostname prefix length and validity
+            // ...
         }
 
         private XElement GetConfig(Uri fromUri) {
