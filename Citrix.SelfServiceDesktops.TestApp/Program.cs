@@ -18,7 +18,7 @@ namespace TestApp {
             testHarness.TestConfigurationReader(false);
 
             // Test IDesktopManager implementation
-            //testHarness.TestDesktopManager();
+            testHarness.TestDesktopManager();
 
             // Test SSO capabilities (use of sessionkey and jsessionid to login)
             //testHarness.TestSso();

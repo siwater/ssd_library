@@ -82,7 +82,7 @@ namespace TestApp {
             IEnumerable<IDesktopOffering> offerings = manager.ListDesktopOfferings();
             DisplayOfferings(offerings);
 
-            IEnumerable<IDesktop> desktops = manager.ListDesktops();
+            IEnumerable<IDesktop> desktops = manager.ListDesktops();       
             DisplayDesktops(desktops);
             int count = desktops.Count();
 
@@ -101,7 +101,7 @@ namespace TestApp {
             // Try delete operation on a desktop
             desktops = manager.ListDesktops();
             foreach (IDesktop d in desktops) {
-                if (!operationInPogress(d.Id) && d.State == DesktopState.Running) {
+                if (!operationInPogress(d.Id) && d.State == VirtualMachineState.Running) {
                     Console.WriteLine("Attempting to destroy {0}", d);
                     manager.DestroyDesktop(d.Id);
                     operationsInProgress.Add(d.Id);
@@ -111,7 +111,7 @@ namespace TestApp {
 
             // Try start operation on a desktop     
             foreach (IDesktop d in desktops) {
-                if (!operationInPogress(d.Id) && d.State == DesktopState.Stopped) {
+                if (!operationInPogress(d.Id) && d.State == VirtualMachineState.Stopped) {
                     Console.WriteLine("Attempting start of {0}", d);
                     manager.StartDesktop(d.Id);
                     operationsInProgress.Add(d.Id);
@@ -121,7 +121,7 @@ namespace TestApp {
 
             // Try stop operation on a desktop
             foreach (IDesktop d in desktops) {
-                if (!operationInPogress(d.Id) && d.State == DesktopState.Running) {
+                if (!operationInPogress(d.Id) && d.State == VirtualMachineState.Running) {
                     Console.WriteLine("Attempting stop of {0}", d);
                     manager.StopDesktop(d.Id);
                     operationsInProgress.Add(d.Id);
@@ -131,7 +131,7 @@ namespace TestApp {
 
             // Try restart operation on a desktop
             foreach (IDesktop d in desktops) {
-                if (!operationInPogress(d.Id) && d.State == DesktopState.Running) {
+                if (!operationInPogress(d.Id) && d.State == VirtualMachineState.Running) {
                     Console.WriteLine("Attempting restart of {0}", d);
                     manager.RestartDesktop(d.Id);
                     operationsInProgress.Add(d.Id);
@@ -247,6 +247,7 @@ namespace TestApp {
             Console.WriteLine("There are {0} desktops", desktops.Count());
             foreach (IDesktop desktop in desktops) {
                 Console.WriteLine("Got desktop : {0}", desktop);
+                Console.WriteLine("Desktop state: {0}", desktop.DesktopState);
             }
         }
 
