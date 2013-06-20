@@ -7,7 +7,7 @@
     ViewBag.Title = "Manage Desktops";
 }
 
-<h2>Desktops for user "@ViewBag.User"</h2>
+<h2>Desktops</h2>
 @using (Html.BeginForm("Index", "Manage", FormMethod.Get)) 
 {
     <input type="submit" class="refresh" value="Refresh"/>
@@ -55,7 +55,7 @@
 </table>
     </div>
 <! >
-<h4><a href="@ViewBag.ReceiverUrl" target="_blank" style="color:blue">Access your desktop console from Web Receiver</a> </h4>
+<h4><a href="@ViewBag.ReceiverUrl" target="_blank">Access your desktop console from Web Receiver</a> </h4>
 <script type="text/javascript">
     function confirmStateChange(vmName, stateName) {
         return confirm('Are you sure you want to ' + stateName + ' VM ' +  vmName + ' ?');
