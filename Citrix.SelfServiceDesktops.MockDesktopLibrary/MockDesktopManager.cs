@@ -13,9 +13,9 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
 
         public MockDesktopManager()
         {
-            MockDesktop d1 = new MockDesktop() { Name = "foo1", IpAddress = "192.168.0.1", State = DesktopState.Stopped };
-            MockDesktop d2 = new MockDesktop() { Name = "foo2", IpAddress = "192.168.0.2", State = DesktopState.Stopped };
-            MockDesktop d3 = new MockDesktop() { Name = "foo3", IpAddress = "192.168.0.3", State = DesktopState.Stopped };
+            MockDesktop d1 = new MockDesktop() { Name = "foo1", IpAddress = "192.168.0.1", State = VirtualMachineState.Stopped };
+            MockDesktop d2 = new MockDesktop() { Name = "foo2", IpAddress = "192.168.0.2", State = VirtualMachineState.Stopped };
+            MockDesktop d3 = new MockDesktop() { Name = "foo3", IpAddress = "192.168.0.3", State = VirtualMachineState.Stopped };
             desktops.Add(d1.Name, d1);
             desktops.Add(d2.Name, d2);
             desktops.Add(d3.Name, d3);
@@ -23,7 +23,7 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
             MockDesktopOffering o1 = new MockDesktopOffering()
                 {
                     Name = "Office",
-                    Description = "Office Tools",
+                    Description = "Office Tools with a short description",
                     NetworkId = "OfficeVlan",
                     ServiceOfferingId = "OfficeResources",
                     TemplateId = "OfficeImage",
@@ -32,7 +32,7 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
             MockDesktopOffering o2 = new MockDesktopOffering()
             {
                 Name = "Developer",
-                Description = "Developer Tools",
+                Description = "Developer Tools with a longer description to test if the web pages lays this out correctly",
                 NetworkId = "DevVlan",
                 ServiceOfferingId = "DevResources",
                 TemplateId = "DevImage",
@@ -47,10 +47,28 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
                 TemplateId = "SecureImage",
                 ZoneId = "1"
             };
+            MockDesktopOffering o4 = new MockDesktopOffering() {
+                Name = "PVS with server cache",
+                Description = "Streamed desktop from PVS with server side cache",
+                NetworkId = "PublicVlan",
+                ServiceOfferingId = "OfficeResources",
+                TemplateId = "SecureImage",
+                ZoneId = "1"
+            };
+            MockDesktopOffering o5 = new MockDesktopOffering() {
+                Name = "PVS with client cache",
+                Description = "Streamed desktop from PVS with client side cache to minimize network bandwidth consumption",
+                NetworkId = "PublicVlan",
+                ServiceOfferingId = "OfficeResources",
+                TemplateId = "SecureImage",
+                ZoneId = "1"
+            };
 
             offerings.Add(o1.Name, o1);
             offerings.Add(o2.Name, o2);
             offerings.Add(o3.Name, o3);
+            offerings.Add(o4.Name, o4);
+            offerings.Add(o5.Name, o5);
         }
 
         public IEnumerable<IDesktopOffering> ListDesktopOfferings()
@@ -67,7 +85,7 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
         {
             MockDesktop d1 = new MockDesktop() { 
                 Name = Guid.NewGuid().ToString(),
-                IpAddress = "192.168.0.1", State = DesktopState.Stopped 
+                IpAddress = "192.168.0.1", State = VirtualMachineState.Stopped 
             };
             desktops.Add(d1.Name, d1);
 
@@ -82,19 +100,19 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
         public void StartDesktop(string desktop)
         {
             MockDesktop desk = desktops[desktop] as MockDesktop; 
-            desk.State = DesktopState.Running;
+            desk.State = VirtualMachineState.Running;
         }
 
         public void StopDesktop(string desktop)
         {
             MockDesktop desk = desktops[desktop] as MockDesktop;
-            desk.State = DesktopState.Stopped;
+            desk.State = VirtualMachineState.Stopped;
         }
 
         public void RestartDesktop(string desktop)
         {
             MockDesktop desk = desktops[desktop] as MockDesktop;
-            desk.State = DesktopState.Running;
+            desk.State = VirtualMachineState.Running;
         }
 
         public Uri BrokerUrl

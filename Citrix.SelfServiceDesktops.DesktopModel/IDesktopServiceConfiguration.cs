@@ -11,6 +11,8 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
 
     public interface IDesktopServiceConfiguration {
 
+        Uri AgentUri { get; }
+
         Uri BrokerUri { get; }
 
         Uri CloudStackUri { get; }

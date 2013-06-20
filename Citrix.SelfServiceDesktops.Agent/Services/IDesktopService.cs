@@ -9,14 +9,20 @@ using System.ServiceModel.Web;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 namespace Citrix.SelfServiceDesktops.Agent.Services {
 
-    [ServiceContract(Namespace = "urn:com.citrix.selfservicedesktops-15-04-2013")]
+
+    [ServiceContract(Namespace = "urn:com.citrix.selfservicedesktops-12-06-2013")]
     public interface IDesktopService {
 
         [OperationContract]
-        [WebGet(BodyStyle = WebMessageBodyStyle.Bare, RequestFormat = WebMessageFormat.Xml, ResponseFormat = WebMessageFormat.Xml)]
-        XElement config(); 
+        [WebGet(UriTemplate = "config", ResponseFormat = WebMessageFormat.Xml)]
+        XElement getConfig();
+
+        [OperationContract]
+        [WebGet(UriTemplate = "desktopstates/{username}", ResponseFormat = WebMessageFormat.Xml)]
+        List<XenDesktopState> getDesktopStates(string username);
     }
 }

@@ -44,6 +44,7 @@
         <File Id="Citrix.SelfServiceDesktops.DesktopLibrary.dll" Name="Citrix.SelfServiceDesktops.DesktopLibrary.dll" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopLibrary.dll" Vital="yes" DiskId="1"/>
         <File Id="Citrix.SelfServiceDesktops.Agent.exe.config" Name="Citrix.SelfServiceDesktops.Agent.exe.config" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe.config" Vital="yes" DiskId="1"/>
         <File Id="SyncDesktops.ps1" Name="SyncDesktops.ps1" Source="$(var.BasePath)\SyncDesktops.ps1" Vital="yes" DiskId="1"/>
+        <File Id="ListDesktops.ps1" Name="ListDesktops.ps1" Source="$(var.BasePath)\ListDesktops.ps1" Vital="yes" DiskId="1"/>      
       </Component>
       <Component Id="ServiceProcess">
         <File Id="Citrix.SelfServiceDesktops.Agent.exe" Name="Citrix.SelfServiceDesktops.Agent.exe" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe" Vital="yes" KeyPath="yes" DiskId="1"/>

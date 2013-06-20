@@ -13,11 +13,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
     public class Desktop : IDesktop {
 
-        public Desktop(string id, string name, string ipAddress, DesktopState state) {
+        public Desktop(string id, string name, string ipAddress, VirtualMachineState state, DesktopState desktopState) {
             Id = id;
             Name = name;
             IpAddress = ipAddress;
             State = state;
+            DesktopState = desktopState;
         }
 
         public string Id {
@@ -35,7 +36,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             private set;
         }
 
-        public DesktopState State {
+        public VirtualMachineState State {
+            get;
+            private set;
+        }
+
+        public DesktopState DesktopState {
             get;
             private set;
         }

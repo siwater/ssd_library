@@ -10,21 +10,25 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
     {
         string name;
         string ipAddress;
-        DesktopState state;
+        VirtualMachineState state;
+        DesktopState desktopState;
 
         public MockDesktop()
         {
             this.name = "foo";
             this.ipAddress = "255.255.255.255";
-            this.state = DesktopState.Stopped;
+            this.state = VirtualMachineState.Stopped;
+            this.desktopState = DesktopState.Unknown;
         }
         public string Name { get { return name; } set { name = value; } }
         public string IpAddress { get { return ipAddress; } set { ipAddress = value; } }
-        public DesktopState State { get { return state; } set { state = value; } }
+        public VirtualMachineState State { get { return state; } set { state = value; } }
+        public DesktopState DesktopState { get { return desktopState; } set { desktopState = value; } }
 
         public string Id
         {
             get { return "1"; }
         }
+
     }
 }

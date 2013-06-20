@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
+using System.Reflection;
 using System.Xml;
 
 using Citrix.Diagnostics;
@@ -19,12 +20,12 @@ namespace Citrix.SelfServiceDesktops.Agent {
         private const string DebugPrefix = "[Debug]";
 
         private string scriptPath;
-        private bool debug;
+        private bool debug; 
 
-        public PsWrapper(string scriptPath) : this(scriptPath, false) {}
+        public PsWrapper(string scriptName) : this(scriptName, false) {}
 
-        public PsWrapper(string scriptPath, bool debug) {
-            this.scriptPath = scriptPath;
+        public PsWrapper(string scriptName, bool debug) {
+            this.scriptPath = GetScriptPath(scriptName);
             this.debug = debug;
             IgnoreExceptions = new List<string>();
         }
@@ -80,6 +81,22 @@ namespace Citrix.SelfServiceDesktops.Agent {
                 CtxTrace.TraceError(e.StackTrace);
                 throw;
             }
+        }
+
+        private static string GetScriptPath(string inputScriptPath) {
+            if (File.Exists(inputScriptPath)) {
+
+                if (!Path.IsPathRooted(inputScriptPath)) {
+                    return ".\\" + inputScriptPath;
+                }
+                return inputScriptPath;
+            }
+
+            string scriptPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), inputScriptPath);
+            if (File.Exists(scriptPath)) {
+                return scriptPath;
+            }
+            throw new System.Configuration.ConfigurationErrorsException("Unable to locate script " + inputScriptPath);
         }
     }
 }

@@ -5,64 +5,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Citrix.SelfServiceDesktops.DesktopModel {
 
     /// <summary>
-    /// Current state of the desktop (subset of the Apache CloudState virtual machine state)
+    /// Current state of the desktop (this reflects the XenDesktop state - see Get-BrokerDesktop PowerShell command)
     /// </summary>
-    public  enum DesktopState {
+    public enum DesktopState {
+
+        // Before the machine is added to XenDesktop via the Add-BrokerMachine command, it it not known to XenDesktop
         Unknown,
-        Creating,
-        Stopped,
-        Starting,
-        Running,
-        Stopping,
-        Error,
-        Expunging,
-        Destroyed
-    }
 
-    public static class ValidTransitions
-    {
-        public static bool CanDelete(DesktopState currState)
-        {
-            if (currState == DesktopState.Destroyed || currState == DesktopState.Expunging)
-            {
-                return false;
-            }
-            return true;
-        }
-        public static bool CanStart(DesktopState currState)
-        {
-            if (currState == DesktopState.Stopped)
-            {
-                return true;
-            }
-            return false;
-        }
-        public static bool CanStop(DesktopState currState)
-        {
-            if (currState == DesktopState.Running ||
-                currState == DesktopState.Stopping ||
-                currState == DesktopState.Starting)
-            {
-                return true;
-            }
-            return false;
-        }
-        public static bool CanRestart(DesktopState currState)
-        {
-            if (currState == DesktopState.Running ||
-                currState == DesktopState.Starting ||
-                currState == DesktopState.Stopping ||
-                currState == DesktopState.Starting)
-            {
-                return true;
-            }
-            return false;
-        }
-    }
+        // The machine has been added to XenDesktop bu the VDA is not (yet) registered
+        Unregistered,
 
+        // The machine is available for use
+        Available,
+
+        // There is an active HDX session to the desktop
+        InUse,
+
+        // The machine has a disconnected HDX remote session
+        Disconnected,
+
+        // The machine is know to XenDesktop but is in an unknown or error state
+        Error
+
+    }
 }

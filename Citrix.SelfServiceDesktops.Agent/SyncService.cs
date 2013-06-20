@@ -26,10 +26,13 @@ namespace Citrix.SelfServiceDesktops.Agent {
         private CancellationTokenSource cancellationTokenSource;
         private Task syncTask;
 
+ 
+
+
         public void Start() {
             CtxTrace.TraceInformation();
             config = DesktopServiceConfiguration.Instance;
-            scriptPath = GetScriptPath(config.PowerShellScript.Path);
+            scriptPath = config.PowerShellScript.Path;
             cancellationTokenSource = new CancellationTokenSource();
             syncTask = Task.Factory.StartNew(() => SyncDesktopOfferings(), cancellationTokenSource.Token);
         }
@@ -40,23 +43,6 @@ namespace Citrix.SelfServiceDesktops.Agent {
         }
 
         #region Private Methods
-
-        private string GetScriptPath (string configScriptPath) {
-            if (File.Exists(configScriptPath)) {
-       
-                if (!Path.IsPathRooted(configScriptPath)) {
-                    return ".\\" + configScriptPath;
-                }
-                return configScriptPath;
-            }
-
-            string scriptPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), configScriptPath);
-            if (File.Exists(scriptPath)) {
-                return scriptPath;
-            }
-            throw new System.Configuration.ConfigurationErrorsException("Unable to locate script " + configScriptPath);
-        }
-
 
         private void SyncDesktopOfferings() {
             try {
