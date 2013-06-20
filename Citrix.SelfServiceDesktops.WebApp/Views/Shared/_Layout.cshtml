@@ -21,10 +21,10 @@
                 </section>
 
                 <nav>
-                    <ul id="menu">
-                        <li>@Html.ActionLink("Manage", "Index", "Manage")</li>
+                    <ul id="menu">                     
                         @if (ViewBag.NoCreate == null)
                         {
+                            <li>@Html.ActionLink("Manage", "Index", "Manage")</li>
                             <li>@Html.ActionLink("Create", "Index", "Create")</li>
                         }
                     </ul>
@@ -42,7 +42,7 @@
     <footer>
         <div class="content-wrapper">
             <div class="float-right">
-                <p class="site-title">Powered by Citrix CloudPlatform</p>
+                <p class="powered-by">Powered by Citrix CloudPlatform</p>
             </div>
         </div>
     </footer>
