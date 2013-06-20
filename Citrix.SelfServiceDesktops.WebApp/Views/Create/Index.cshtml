@@ -7,14 +7,14 @@
     ViewBag.Title = "Request Desktop";
 }
 
-<h2>Desktop Offerings</h2>
+<h2>Select a desktop</h2>
 
 @using (Html.BeginForm())
 {
  <fieldset>
   <legend>Select Your Desktop
 </legend>
-     <div class="table_style2">
+     <div class="table_style">
 <table>
 @foreach (var item in Model)
 {
@@ -37,6 +37,9 @@
         <input name="NetworkId" type="hidden" value="@item.NetworkId">
         <input name="TemplateId" type="hidden" value="@item.TemplateId">
         <input name="ZoneId" type="hidden" value="@item.ZoneId">
+        <input name="IsoId" type="hidden" value="@item.IsoId">
+        <input name="DiskOfferingId" type="hidden" value="@item.DiskOfferingId">       
+        <input name="Hypervisor" type="hidden" value="@item.Hypervisor">
         </div>
 </div>
 </tr>
