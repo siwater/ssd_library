@@ -1,7 +1,7 @@
 ﻿@font-face
 {
 	font-family: Avenir;
-	src: url(..font/Avenir LT 45 Book_9.ttf);
+	src: url(../font%2FAvenir%20LT%2045%20Book_9.ttf);
 }
 TD.info
 {
@@ -51,7 +51,7 @@ A:link
 }
 A:visited
 {
-	color: #FFFFFF;
+	color: #0a79ac;
 }
 A:active
 {
@@ -161,8 +161,9 @@ H1
 }
 H2
 {
-	font-size: 1.75em;
-	color: #FFFFFF;
+	
+    color: #999;
+	
 	padding-bottom: 17px;
 	margin-top: -14px;
 }
@@ -214,7 +215,7 @@ H5 A:active
 #body
 {
 	padding-bottom: 35px;
-	background-color: "white";
+	background-color: white;
 	clear: both;
 } 
 .table_style
@@ -264,13 +265,21 @@ FOOTER
 	clear: both;
 	font-size: 0.8em;
 }
+
+.powered-by 
+{
+	font-size: 1.7em; 
+	font-weight: 600; 
+	color: #999;
+}
 .site-title
 {
 	margin: 0px;
 	font-family: Avenir;
-	color: #white;
+	color: white;
 	font-size: 2.3em;
 }
+
 .site-title A
 {
 	outline-style: none;
