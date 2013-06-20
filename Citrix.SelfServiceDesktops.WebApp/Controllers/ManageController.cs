@@ -37,7 +37,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            CheckForNoCreate();
+            ControllerUtilities.CheckForNoCreate(this);
             try
             {
                 ViewBag.ReceiverUrl = mgr.BrokerUrl.ToString();
@@ -53,23 +53,12 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
         }
 
-        private void CheckForNoCreate()
-        {
-            if (!Request.QueryString.AllKeys.Contains("nocreate") && HttpContext.Session["nocreate"] == null)
-            {
-                return;
-            }
-            ViewBag.NoCreate = true;
-            HttpContext.Session.Add("nocreate", "true");
-            return;
-        }
-
         //
         // POST: /Manage/Restart?name=foo
         [HttpPost]
         public ActionResult Restart(string identifier)
         {
-            CheckForNoCreate();
+            ControllerUtilities.CheckForNoCreate(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
@@ -89,7 +78,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Start(string identifier)
         {
-            CheckForNoCreate();
+            ControllerUtilities.CheckForNoCreate(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
@@ -109,7 +98,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Stop(string identifier)
         {
-            CheckForNoCreate();
+            ControllerUtilities.CheckForNoCreate(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
@@ -130,7 +119,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Delete(string identifier)
         {
-            CheckForNoCreate();
+            ControllerUtilities.CheckForNoCreate(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {

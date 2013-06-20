@@ -15,7 +15,7 @@ using Citrix.Diagnostics;
 using Citrix.SelfServiceDesktops.Models;
 using Citrix.SelfServiceDesktops.DesktopModel;
 
-namespace Citrix.SelfServiceDesktops.Controllers
+namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -51,6 +51,7 @@ namespace Citrix.SelfServiceDesktops.Controllers
                 // TODO: revise to use SSO key
                 return this.Login(new LoginModel() { UserName = username, JSessionId = jsessionid, SessionKey = sessionkey }, returnUrl);
             }
+            ControllerUtilities.CheckForNoCreate(this);
             return View();
         }
 
@@ -127,7 +128,6 @@ namespace Citrix.SelfServiceDesktops.Controllers
                 return RedirectToAction("Index", "Manage");
             }
         }
-
         #endregion
     }
 }
