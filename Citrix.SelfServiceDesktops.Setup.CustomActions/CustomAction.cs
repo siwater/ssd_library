@@ -30,12 +30,15 @@ namespace Citrix.SelfServiceDesktops.Setup.CustomActions {
                     using (ServerManager serverManager = new ServerManager()) {
                         int index = 1;
                         foreach (Site site in serverManager.Sites) {
-                            Record record = session.Database.CreateRecord(4);
-                            record.SetString(1, WebSiteNamePropertyName);
-                            record.SetInteger(2, index++);
-                            record.SetString(3, site.Name);
-                            record.SetString(4, site.Name);
-                            view.Modify(ViewModifyMode.InsertTemporary, record);
+                            // For now only support install to default web site 
+                            if (site.Name == "Default Web Site") {
+                                Record record = session.Database.CreateRecord(4);
+                                record.SetString(1, WebSiteNamePropertyName);
+                                record.SetInteger(2, index++);
+                                record.SetString(3, site.Name);
+                                record.SetString(4, site.Name);
+                                view.Modify(ViewModifyMode.InsertTemporary, record);
+                            }
                         }
                     }
                     return ActionResult.Success;
