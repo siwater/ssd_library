@@ -209,7 +209,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             foreach (VirtualMachine vm in desktopVms) {
                 DesktopState desktopState = DesktopState.Unknown;
                 if (desktopStates != null) {
-                    string xpath = string.Format("//x:XenDesktopState[x:DesktopName='{0}']/x:State", vm.DisplayName);
+                    string xpath = string.Format("//x:XenDesktopState[x:DesktopName='{0}']/x:State", vm.DisplayName.ToLower());
                     XElement stateElement = desktopStates.XPathSelectElement(xpath, nsmgr);
                     if (stateElement != null) {
                         if (!Enum.TryParse(stateElement.Value, out desktopState)) {

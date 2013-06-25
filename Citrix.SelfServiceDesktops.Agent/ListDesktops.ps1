@@ -39,7 +39,7 @@ try
     foreach ($desktop in $desktops) {
         if ($desktop -ne $null) {
             $d = @{}
-		    $name = $desktop.MachineName
+		    $name = $desktop.MachineName.ToLower()
             [string]$state = $desktop.SummaryState
             $d["machine-name"] = $name.Substring($name.IndexOf('\')+1)
             $d["summary-state"] = $state
