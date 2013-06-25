@@ -39,5 +39,10 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         /// </summary>
         DesktopState DesktopState { get; }
 
+        /// <summary>
+        /// Composite state for display
+        /// </summary>
+        string DisplayState { get; }
+
     }
 }

@@ -24,6 +24,7 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
         public string IpAddress { get { return ipAddress; } set { ipAddress = value; } }
         public VirtualMachineState State { get { return state; } set { state = value; } }
         public DesktopState DesktopState { get { return desktopState; } set { desktopState = value; } }
+        public string DisplayState { get { return State.ToString(); } }
 
         public string Id
         {
