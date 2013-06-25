@@ -16,7 +16,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers {
             {
                 return;
             }
-            controller.ViewBag.NoCreate = true;
+            controller.ViewBag.NoLinks = true;
             controller.HttpContext.Session.Add(NoLinks, "true");
         }
     }
