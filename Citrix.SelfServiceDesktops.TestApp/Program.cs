@@ -11,14 +11,18 @@ using System.Threading.Tasks;
 namespace TestApp {
     class Program {
         static void Main(string[] args) {
-            Console.WriteLine("Tests for Self Service Desktops");
-            TestHarness testHarness = new TestHarness();
-      
-            // Test configuration system is working (you must have SSD windows service running to test the remote retrieval of config)
-            testHarness.TestConfigurationReader(false);
 
-            // Test IDesktopManager implementation
-            testHarness.TestDesktopManager();
+            Console.WriteLine("Tests for Self Service Desktops Admin");
+            TestAdmin.Run();
+
+            //Console.WriteLine("Tests for Self Service Desktops");
+            //TestHarness testHarness = new TestHarness();
+      
+            //// Test configuration system is working (you must have SSD windows service running to test the remote retrieval of config)
+            //testHarness.TestConfigurationReader(false);
+
+            //// Test IDesktopManager implementation
+            //testHarness.TestDesktopManager();
 
             // Test SSO capabilities (use of sessionkey and jsessionid to login)
             //testHarness.TestSso();

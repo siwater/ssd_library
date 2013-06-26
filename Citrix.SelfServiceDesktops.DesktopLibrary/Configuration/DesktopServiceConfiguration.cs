@@ -26,7 +26,23 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public static DesktopServiceConfiguration Instance { get { return GetInstance(ConfigurationLocation.Either); } }
 
         public static DesktopServiceConfiguration GetInstance(ConfigurationLocation location) {
-            return new DesktopServiceConfiguration(location);
+            string configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            XDocument doc = XDocument.Load(configFile);
+            XElement config = doc.XPathSelectElement("//selfServiceDesktops");
+            if (config == null) {
+                throw new ConfigurationErrorsException("No <selfServiceDesktops/> configuration element found in : " + configFile);
+            }
+
+            // Load config from agent 
+            XAttribute remoteConfigAttribute = config.Attribute("remoteConfig");
+            if (remoteConfigAttribute != null) {
+                string remoteUrl = remoteConfigAttribute.Value;
+                Uri uri = new Uri(remoteUrl);
+                if ((location == ConfigurationLocation.Remote) || (location == ConfigurationLocation.Either)) {
+                    config = GetXml(new Uri(remoteUrl));
+                }
+            }
+            return new DesktopServiceConfiguration(config);
         }
 
         public static XElement GetXml(Uri fromUri) {
@@ -45,26 +61,15 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         private XElement config;
 
-        private DesktopServiceConfiguration(ConfigurationLocation location) {
-
-            string configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            XDocument doc = XDocument.Load(configFile);
-            config = doc.XPathSelectElement("//selfServiceDesktops");           
-            if (config == null) {
-                throw new ConfigurationErrorsException("No <selfServiceDesktops/> configuration element found in : " + configFile);
-            }
-
-            // Load config from agent 
+        public DesktopServiceConfiguration(XElement config) {
+            this.config = config;
             XAttribute remoteConfigAttribute = config.Attribute("remoteConfig");
             if (remoteConfigAttribute != null) {
                 string remoteUrl = remoteConfigAttribute.Value;
                 Uri uri = new Uri(remoteUrl);
                 AgentUri = new Uri(uri.GetLeftPart(UriPartial.Authority));
-                if ((location == ConfigurationLocation.Remote) || (location == ConfigurationLocation.Either)) {
-                    config = GetXml(new Uri(remoteUrl));
-                }
             }
-            ValidateConfiguration(config);
+            ValidateConfiguration();
         }
 
         #region IDesktopServiceConfiguration members
@@ -132,7 +137,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         /// Sanity check the supplied configuration
         /// </summary>
         /// <param name="config"></param>
-        private void ValidateConfiguration(XElement config) {      
+        private void ValidateConfiguration() {      
             try {
                 // Check desktop offering names are unique
                 this.DesktopOfferings.ToDictionary(i => i.Name);

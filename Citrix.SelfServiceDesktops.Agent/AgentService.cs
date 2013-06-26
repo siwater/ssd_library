@@ -29,7 +29,7 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         public static string Name {
             get {
-                return "CtxDsAgnt";
+                return "CtxSSDSvc";
             }
         }
 
