@@ -40,6 +40,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl, string username, string password, string sessionkey, string jsessionid )
         {
+            ControllerUtilities.CheckForNoCreate(this);
             ViewBag.ReturnUrl = returnUrl;
 
             if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
@@ -51,7 +52,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                 // TODO: revise to use SSO key
                 return this.Login(new LoginModel() { UserName = username, JSessionId = jsessionid, SessionKey = sessionkey }, returnUrl);
             }
-            ControllerUtilities.CheckForNoCreate(this);
+          
             return View();
         }
 
