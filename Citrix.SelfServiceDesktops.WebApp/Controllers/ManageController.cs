@@ -37,7 +37,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             try
             {
                 ViewBag.ReceiverUrl = mgr.BrokerUrl.ToString();
@@ -58,7 +58,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Restart(string identifier)
         {
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
@@ -78,7 +78,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Start(string identifier)
         {
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
@@ -98,7 +98,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Stop(string identifier)
         {
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {
@@ -119,7 +119,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [HttpPost]
         public ActionResult Delete(string identifier)
         {
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             ViewBag.User = HttpContext.User.Identity.Name;
             try
             {

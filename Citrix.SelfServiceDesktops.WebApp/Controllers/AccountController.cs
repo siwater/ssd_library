@@ -51,7 +51,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                 // TODO: revise to use SSO key
                 return this.Login(new LoginModel() { UserName = username, JSessionId = jsessionid, SessionKey = sessionkey }, returnUrl);
             }
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             return View();
         }
 

@@ -45,7 +45,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 
         // POST: /Create/
         [HttpPost]
-        public ActionResult Index(string serviceOfferingIdName, string button)
+        public ActionResult Index(string serviceOfferingIdName, string button, string displayVmId)
         {
             System.Web.Routing.RouteValueDictionary route =new System.Web.Routing.RouteValueDictionary();
             if (button == "Submit")
