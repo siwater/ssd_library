@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using System.Xml.XPath;
 using System.Xml.Serialization;
 
+using Citrix.Diagnostics;
 using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
@@ -23,33 +24,18 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         public const int NetBiosMaxNameLength = 15;
 
+        #region Public Static Methods
+
         public static DesktopServiceConfiguration Instance { get { return GetInstance(ConfigurationLocation.Either); } }
 
         public static DesktopServiceConfiguration GetInstance(ConfigurationLocation location) {
             string configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-            XDocument doc = XDocument.Load(configFile);
-            XElement config = doc.XPathSelectElement("//selfServiceDesktops");
-            if (config == null) {
-                throw new ConfigurationErrorsException("No <selfServiceDesktops/> configuration element found in : " + configFile);
-            }
-
-            // Load config from agent 
-            XAttribute remoteConfigAttribute = config.Attribute("remoteConfig");
-            if (remoteConfigAttribute != null) {
-                string remoteUrl = remoteConfigAttribute.Value;
-                Uri uri = new Uri(remoteUrl);
-                if ((location == ConfigurationLocation.Remote) || (location == ConfigurationLocation.Either)) {
-                    config = GetXml(new Uri(remoteUrl));
-                }
-            }
-            return new DesktopServiceConfiguration(config);
+            return new DesktopServiceConfiguration(configFile, true);
         }
 
         public static XElement GetXml(Uri fromUri) {
-
             HttpWebRequest httpWebRequest = WebRequest.Create(fromUri) as HttpWebRequest;
             httpWebRequest.Method = "GET";
-
             using (HttpWebResponse httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse) {
                 using (Stream responseStream = httpWebResponse.GetResponseStream()) {
                     using (StreamReader streamReader = new StreamReader(responseStream)) {
@@ -59,15 +45,28 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             }
         }
 
-        private XElement config;
+        #endregion
 
-        public DesktopServiceConfiguration(XElement config) {
-            this.config = config;
+        protected XDocument configDoc;
+        protected XElement config;
+        protected string filePath;
+
+        protected DesktopServiceConfiguration(string path, bool loadRemoteConfig) {
+            filePath = path;
+            configDoc = XDocument.Load(path);
+            config = configDoc.XPathSelectElement("//selfServiceDesktops");
+            if (config == null) {
+                throw new ArgumentException("No <selfServiceDesktops/> configuration element found in : " + path);
+            }
+
             XAttribute remoteConfigAttribute = config.Attribute("remoteConfig");
             if (remoteConfigAttribute != null) {
                 string remoteUrl = remoteConfigAttribute.Value;
                 Uri uri = new Uri(remoteUrl);
                 AgentUri = new Uri(uri.GetLeftPart(UriPartial.Authority));
+                if (loadRemoteConfig) {
+                    config = GetXml(uri);
+                }
             }
             ValidateConfiguration();
         }
@@ -131,33 +130,39 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         #endregion
 
-        #region Private Methods
+        #region Protected Methods
 
         /// <summary>
         /// Sanity check the supplied configuration
         /// </summary>
         /// <param name="config"></param>
-        private void ValidateConfiguration() {      
-            try {
-                // Check desktop offering names are unique
-                this.DesktopOfferings.ToDictionary(i => i.Name);
-            } catch (ArgumentException e) {
-                throw new ConfigurationErrorsException("Desktop Offerings must have unique name", e);
-            }
-            try {
-                // Check desktop offering host name prefixes are unique
-                this.DesktopOfferings.ToDictionary(i => i.HostnamePrefix);
-            } catch (ArgumentException e) {
-                throw new ConfigurationErrorsException("Desktop Offerings must specify unique host name prefixes", e);
-            }
+        protected void ValidateConfiguration() {
 
-            // Check the configuration will generate legal Windows computer names (NetBios name <= 15 characters)
-            int maxPrefixLen = NetBiosMaxNameLength - DesktopManager.DesktopSuffixFormat.Length;
-            foreach (IDesktopOffering offering in DesktopOfferings) {
-                if (offering.HostnamePrefix.Length > maxPrefixLen) {
-                    string msg = string.Format("HostNamePrefix for desktop offering {0} exceeds {1} characters", offering.Name, maxPrefixLen);
-                    throw new ConfigurationErrorsException(msg);
+            try {
+                try {
+                    // Check desktop offering names are unique
+                    this.DesktopOfferings.ToDictionary(i => i.Name);
+                } catch (ArgumentException e) {
+                    throw new ConfigurationErrorsException("Desktop Offerings must have unique name", e);
                 }
+                try {
+                    // Check desktop offering host name prefixes are unique
+                    this.DesktopOfferings.ToDictionary(i => i.HostnamePrefix);
+                } catch (ArgumentException e) {
+                    throw new ConfigurationErrorsException("Desktop Offerings must specify unique host name prefixes", e);
+                }
+
+                // Check the configuration will generate legal Windows computer names (NetBios name <= 15 characters)
+                int maxPrefixLen = NetBiosMaxNameLength - DesktopManager.DesktopSuffixFormat.Length;
+                foreach (IDesktopOffering offering in DesktopOfferings) {
+                    if (offering.HostnamePrefix.Length > maxPrefixLen) {
+                        string msg = string.Format("HostNamePrefix for desktop offering {0} exceeds {1} characters", offering.Name, maxPrefixLen);
+                        throw new ConfigurationErrorsException(msg);
+                    }
+                }
+            } catch (ConfigurationErrorsException ex) {
+                CtxTrace.TraceError(ex);
+                throw;
             }
         }
 

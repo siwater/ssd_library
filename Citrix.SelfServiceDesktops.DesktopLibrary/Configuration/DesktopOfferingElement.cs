@@ -3,6 +3,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +21,14 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             Sync = true;
         }
 
+        [Required]
         [XmlAttribute("name")]
         public string Name { get; set; }
 
         [XmlAttribute("description")]
         public string Description { get; set; }
 
+        [Required]
         [XmlAttribute("zone-id")]
         public string ZoneId { get; set; }
 
@@ -40,13 +43,18 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         [XmlAttribute("disk-offering-id")]
         public string DiskOfferingId { get; set; }
-        
+
+        [Required]
         [XmlAttribute("service-offering-id")]
         public string ServiceOfferingId { get; set; }
-
+         
+        [Required]
+        
         [XmlAttribute("network-id")]
         public string NetworkId { get; set; }
 
+        [Required]
+        [StringLength(11)]
         [XmlAttribute("hostname-prefix")]
         public string HostnamePrefix { get; set; }
 
