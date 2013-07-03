@@ -25,18 +25,18 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         }
 
         [HttpPost]
-        public ActionResult New() {
-            return View("Edit", new DesktopOfferingElement() { Name = "New desktop offering" });
+        public ActionResult NewDesktopOffering() {
+            return View("EditDesktopOffering", new DesktopOfferingElement() { Name = "New desktop offering" });
         }
 
         [HttpPost]
-        public ActionResult Edit(string identifier) {         
+        public ActionResult EditDesktopOffering(string identifier) {         
             IDesktopOffering offering = ConfigStore.DesktopOfferings.Where(o => o.Name == identifier).First();
             return View(offering);
         }
 
         [HttpPost]
-        public ActionResult EndEdit(DesktopOfferingElement item) {
+        public ActionResult EndEditDesktopOffering(DesktopOfferingElement item) {
             IDesktopOffering offering = ConfigStore.DesktopOfferings.Where(o => o.Name == item.Name).FirstOrDefault();
             if (offering == null) {
                 ConfigStore.AddDesktopOffering(item);
@@ -49,8 +49,9 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         
 
         [HttpPost]
-        public ActionResult Delete(string identifier) {
+        public ActionResult DeleteDesktopOffering(string identifier) {
             ConfigStore.DeleteDesktopOffering(identifier);
+            //ConfigStore.Save();
             return RedirectToAction("ViewDesktopOfferings");
         }
 

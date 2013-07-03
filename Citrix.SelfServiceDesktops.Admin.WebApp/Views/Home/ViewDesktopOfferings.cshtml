@@ -14,12 +14,12 @@
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                 <td class="info">@Html.DisplayFor(modelItem => item.Description)</td>
                 <td>
-                    @using (Html.BeginForm("Edit", "Home", new { identifier = item.Name }, FormMethod.Post)) {
+                    @using (Html.BeginForm("EditDesktopOffering", "Home", new { identifier = item.Name }, FormMethod.Post)) {
                         <input type="submit" value="Edit" name="button" />                             
                     }
                 </td>
                 <td>
-                     @using (Html.BeginForm("Delete", "Home", new { identifier = item.Name }, FormMethod.Post)) {                        
+                     @using (Html.BeginForm("DeleteDesktopOffering", "Home", new { identifier = item.Name }, FormMethod.Post)) {                        
                         <input type="submit" value="Delete" name="button" />
                     }
                 </td>
@@ -27,7 +27,7 @@
         }
         <tr>
             <td>
-                 @using (Html.BeginForm("New", "Home", null, FormMethod.Post)) {
+                 @using (Html.BeginForm("NewDesktopOffering", "Home", null, FormMethod.Post)) {
                         <input type="submit" value="New" name="button" />                    
                  }
             </td>
