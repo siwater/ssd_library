@@ -10,33 +10,25 @@ using System.Web.Mvc;
 using Citrix.Diagnostics;
 using Citrix.SelfServiceDesktops.DesktopModel;
 
-namespace Citrix.SelfServiceDesktops.WebApp.Controllers
-{
+namespace Citrix.SelfServiceDesktops.WebApp.Controllers {
     [Authorize]
-    public class CreateController : Controller
-    {
-        private IDesktopManager mgr
-        {
+    public class CreateController : Controller {
+        private IDesktopManager mgr {
             get {
                 return HttpContext.Session["IDesktopManager"] as IDesktopManager;
-                }
+            }
         }
 
         //
         // GET: /Create/
         [AllowAnonymous]
-        public ActionResult Index()
-        {
-            if (!HttpContext.User.Identity.IsAuthenticated)
-            {
+        public ActionResult Index() {
+            if (!HttpContext.User.Identity.IsAuthenticated) {
                 return RedirectToAction("Login", "Account");
             }
-            try
-            {
+            try {
                 return View(mgr.ListDesktopOfferings());
-            }
-            catch (System.Exception ex)
-            {
+            } catch (System.Exception ex) {
                 CtxTrace.TraceError(ex);
                 ViewBag.ErrorMessage = ex.Message;
                 return View("Error");
@@ -45,28 +37,33 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
 
         // POST: /Create/
         [HttpPost]
-        public ActionResult Index(string serviceOfferingIdName, string button)
-        {
-            System.Web.Routing.RouteValueDictionary route =new System.Web.Routing.RouteValueDictionary();
-            if (button == "Submit")
-            {
-                if (serviceOfferingIdName == null)
-                {
+        public ActionResult Index(string serviceOfferingIdName, string button) {
+            ControllerUtilities.CheckForNoCreate(this);
+            System.Web.Routing.RouteValueDictionary route = new System.Web.Routing.RouteValueDictionary();
+            if (button == "Submit") {
+                if (serviceOfferingIdName == null) {
                     return this.Index();
                 }
-                try
-                {
+                try {
                     var newDesktop = mgr.CreateDesktop(serviceOfferingIdName);
+
+                    // For CPBM plugin return a simple view with VM Id visible
+                    if (ViewBag.NoLinks != null) {
+                        return View("CreateComplete", newDesktop);
+                    }
                     route.Add("newId", newDesktop.Id);
-                }
-                catch (System.Exception ex)
-                {
+                } catch (System.Exception ex) {
                     CtxTrace.TraceError(ex);
                     ViewBag.ErrorMessage = ex.Message;
                     return View("Error");
                 }
             }
-            return RedirectToAction("Index", "Manage", route ); 
+            return RedirectToAction("Index", "Manage", route);
+        }
+
+        [AllowAnonymous]
+        public ActionResult CreateComplete(IDesktop newDesktop) {
+            return View(newDesktop);
         }
     }
 }

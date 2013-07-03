@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "CreateComplete";
+}
+@model Citrix.SelfServiceDesktops.DesktopModel.IDesktop
+
+<h2>Desktop created</h2>
+<div class="table_style">
+    <table style="border:hidden">
+        <tr>
+            <td>Your new desktop id:</td>
+            <td><div id="desktop-id">@Model.Id</div></td>
+        </tr>
+    </table>
+</div>
+<div id="next-link">
+    @Html.ActionLink("Return to Desktop List", "Index", "Manage")
+</div>
