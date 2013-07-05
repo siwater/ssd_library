@@ -184,6 +184,33 @@ function GetXenDesktops($catalog)
     return ,$xdvmarray
 }
 
+ # A machine may be registered in XenDesktop, but not be published as a desktop
+ # so be careful when querying for a desktop properties
+function Get-DesktopGroupName($vm)
+{
+    try 
+    {     
+        $vmproperties = Get-BrokerDesktop -MachineName $vm -ErrorAction SilentlyContinue
+	    return $vmproperties.DesktopGroupName
+    }
+    catch
+    {
+    }
+    return $null    
+}
+
+ # -ErrorAction does not work with Get-ADComputer (known issue)
+function Get-ComputerFromAD($computer)
+{
+    try 
+    {      
+	    return Get-ADComputer -identity $computer -ErrorAction SilentlyContinue
+    } 
+    catch 
+    {       
+    }
+    return $null
+}
 
 function SyncXenDesktop()
 {
@@ -233,7 +260,7 @@ function SyncXenDesktop()
     }
     if ($xdvmsnotinccp.length -gt 0)
     {
-        #WriteDebug "XenDesktop VMs not in CloudPlatform:"
+       # WriteDebug "XenDesktop VMs not in CloudPlatform:"
         #foreach ($vm in $xdvmsnotinccp) 
         #{
         #    WriteDebug "XD Vm not in CP $vm"
@@ -243,14 +270,8 @@ function SyncXenDesktop()
     foreach ($vm in $ccpvmsnotinxd)
     {  
         $computer = $vm["machine"].split("\")[1]
-	    $adcomputer = $null  
-        try 
-        {
-            # -ErrorAction does not work with Get-ADComputer (known issue)
-	        $adcomputer=Get-ADComputer -identity $computer -ErrorAction SilentlyContinue
-        } catch 
-        {
-        }     
+	    $adcomputer = Get-ComputerFromAD $computer
+        
 	    if (($adcomputer -ne $null) -and ($adcomputer.enabled -eq "True"))
 	    {
             WriteDebug "Registering new CloudPlatform desktop $computer in XenDesktop"
@@ -306,9 +327,11 @@ function SyncXenDesktop()
     foreach ($vm in $xdvmsnotinccp)
     {
         WriteDebug "Removing desktop $vm"   
-	    $vmproperties = Get-BrokerDesktop -MachineName $vm
-	    $desktopgroupname = $vmproperties.DesktopGroupName
-	    Remove-BrokerMachine -MachineName $vm -Force -DesktopGroup $desktopgroupname  -ErrorAction SilentlyContinue
+	    $desktopgroupname = Get-DesktopGroupName $vm
+        if ($desktopgroupname -ne $null)
+        {
+            Remove-BrokerMachine -MachineName $vm -Force -DesktopGroup $desktopgroupname  -ErrorAction SilentlyContinue
+        }
 	    Remove-BrokerMachine -MachineName $vm -Force -ErrorAction SilentlyContinue
 	    $computer = $vm.split("\")[1]  
         if ($devicecollection -ne $null) { 
@@ -317,19 +340,22 @@ function SyncXenDesktop()
         }
         WriteDebug "Removing AD Computer $computer"
 	    Remove-ADComputer $computer -confirm:$false
-	    $desktopgroup = Get-BrokerDesktop -Filter {(DesktopGroupName -eq $desktopgroupname)}
-	    if ($desktopgroup) 
+        if ($desktopgroupname -ne $null)
         {
+    	    $desktopgroup = Get-BrokerDesktop -Filter {(DesktopGroupName -eq $desktopgroupname)}
+	       if ($desktopgroup) 
+           {
             #WriteDebug "Desktop group $desktopgroupname still has desktops"
-        }
-	    else
-	    {
-	        WriteDebug "Removing Desktop group $desktopgroupname"
-		    Remove-BrokerDesktopGroup -Name $desktopgroupname
-		    $desktopgroupnamedirect = $desktopgroupname + '_Direct'
-		    $desktopgroupnameag = $desktopgroupname + '_AG'
-		    Remove-BrokerAccessPolicyRule -Name $desktopgroupnamedirect
-		    Remove-BrokerAccessPolicyRule -Name $desktopgroupnameag
+           }
+	       else
+	       {
+	           WriteDebug "Removing Desktop group $desktopgroupname"
+		       Remove-BrokerDesktopGroup -Name $desktopgroupname
+		       $desktopgroupnamedirect = $desktopgroupname + '_Direct'
+		       $desktopgroupnameag = $desktopgroupname + '_AG'
+		       Remove-BrokerAccessPolicyRule -Name $desktopgroupnamedirect
+		       Remove-BrokerAccessPolicyRule -Name $desktopgroupnameag
+           }
 	    }
     }
 
@@ -340,20 +366,22 @@ function SyncXenDesktop()
 	   if ($xdvmsnotinccp -notcontains $vm)
 	   {
 		  $vmmachine = $vm.split("\")[1]
-		  $vmproperties = Get-BrokerDesktop -MachineName $vm
+		  $vmproperties = Get-BrokerMAchine -MachineName $vm
 		  $vmxdsid = $vmproperties.SID
-		  $adproperties = Get-ADComputer -identity $vmmachine
-		  $vmadsid = $adproperties.SID
-
-		  if ($vmxdsid -ne $vmadsid)
-		  {
-		      WriteDebug "$vmmachine SID mismatch --> Deleting VM XD registration"
-		      WriteDebug "AD SID: $vmadsid XD SID: $vmxdsid"
-			  $desktopgroupname = $vmproperties.DesktopGroupName
-			  Remove-BrokerMachine -MachineName $vm -Force -DesktopGroup $desktopgroupname
-			  Remove-BrokerMachine -MachineName $vm -Force
-              WriteDebug "Forcing broker cache refresh after sid mis-match"
-			  Update-BrokerNameCache -Machines
+          $adcomputer = Get-ComputerFromAD $computer
+          if ($adcomputer -ne $null)
+          {
+		      $vmadsid = $adproperties.SID
+		      if ($vmxdsid -ne $vmadsid)
+		      {
+		          WriteDebug "$vmmachine SID mismatch --> Deleting VM XD registration"
+		          WriteDebug "AD SID: $vmadsid XD SID: $vmxdsid"
+			      $desktopgroupname = $vmproperties.DesktopGroupName
+			      Remove-BrokerMachine -MachineName $vm -Force -DesktopGroup $desktopgroupname
+			      Remove-BrokerMachine -MachineName $vm -Force
+                  WriteDebug "Forcing broker cache refresh after sid mis-match"
+			      Update-BrokerNameCache -Machines
+              }
 		  }
 	   }
     }
