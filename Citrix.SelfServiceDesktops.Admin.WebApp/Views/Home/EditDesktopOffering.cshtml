@@ -103,7 +103,44 @@
                         @Html.ValidationMessageFor(model => model.Hypervisor)
                     </div>
                 </td>    
+            </tr>
+            <tr>
+                <td><div class="editor-label">@Html.LabelFor(model => model.DeviceCollection, "PVS Device Collection")</div></td>
             </tr> 
+            <tr>           
+                <td style="padding-left: 2em">
+                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollection.Name)</div>
+                </td>
+                <td style="padding-left: 2em">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DeviceCollection.Name)
+                        @Html.ValidationMessageFor(model => model.DeviceCollection.Name)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left: 2em">
+                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollection.Server)</div>
+                </td>
+                <td style="padding-left: 2em">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DeviceCollection.Server)
+                        @Html.ValidationMessageFor(model => model.DeviceCollection.Server)
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-left: 2em">
+                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollection.Site)</div>
+                </td>
+                <td style="padding-left: 2em">
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DeviceCollection.Site)
+                        @Html.ValidationMessageFor(model => model.DeviceCollection.Site)
+                    </div>
+                </td>
+               
+            </tr>       
             <tr>
                 <td><div class="editor-label">@Html.LabelFor(model => model.Sync)</div></td>
                 <td>

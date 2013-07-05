@@ -17,6 +17,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
     [XmlRootAttribute(ElementName = "add")]
     public class DesktopOfferingElement : IDesktopOffering {
 
+        private const string GuidRegExpr = @"\b[A-Fa-f0-9]{8}(?:-[A-Fa-f0-9]{4}){3}-[A-Fa-f0-9]{12}\b";
+        private const string ErrorNotGuid = "The field {0} must be a GUID";
+
         public DesktopOfferingElement() {
             Sync = true;
         }
@@ -29,28 +32,33 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public string Description { get; set; }
 
         [Required]
+        [RegularExpression(GuidRegExpr, ErrorMessage=ErrorNotGuid)]
         [XmlAttribute("zone-id")]
         public string ZoneId { get; set; }
 
         [XmlAttribute("template-id")]
+        [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
         public string TemplateId { get; set; }
 
         [XmlAttribute("iso-id")]
+        [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
         public string IsoId { get; set; }
 
         [XmlAttribute("hypervisor")]
         public string Hypervisor { get; set; }
 
         [XmlAttribute("disk-offering-id")]
+        [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
         public string DiskOfferingId { get; set; }
 
         [Required]
         [XmlAttribute("service-offering-id")]
+        [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
         public string ServiceOfferingId { get; set; }
          
-        [Required]
-        
+        [Required]    
         [XmlAttribute("network-id")]
+        [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
         public string NetworkId { get; set; }
 
         [Required]
