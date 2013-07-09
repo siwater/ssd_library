@@ -15,13 +15,35 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         private const string ConfigStoreIndex = "config-store";
       
         public ActionResult Index() {
-
-            return View();
+            try {
+                ConfigurationStore store = ConfigStore;
+                return View();
+            } catch (Exception e) {           
+                return View("Error", e);
+            }
         }
 
         public ActionResult ViewDesktopOfferings() {
+            try {
+                return View(ConfigStore.DesktopOfferings);
+            } catch (Exception e) {
+                ViewBag.Message = e.Message;
+                return View("Index");
+            }
+        }
 
-            return View(ConfigStore.DesktopOfferings);
+        public ActionResult ViewSettings() {
+            try {
+                return View(ConfigStore);
+            } catch (Exception e) {
+                ViewBag.Message = e.Message;
+                return View("Index");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EndEditSettings(DesktopServiceConfiguration item) {
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AgentController.cs" />
     <Compile Include="ConfigurationStore.cs" />
+    <Compile Include="FileUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

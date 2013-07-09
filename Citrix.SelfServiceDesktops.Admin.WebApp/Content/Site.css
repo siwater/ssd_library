@@ -72,6 +72,10 @@ mark {
     float: right;
 }
 
+.indent-text {
+    padding-left: 2em
+}
+
 .clear-fix:after {
     content: ".";
     clear: both;

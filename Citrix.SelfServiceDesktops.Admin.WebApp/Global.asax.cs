@@ -26,9 +26,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp {
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             
-            CtxTrace.Initialize("self-service-desktops-admin-webapp");
-            HttpContext.Current.Application.Add("COnfigurationStore", ConfigurationStore.Open());
-          
+            CtxTrace.Initialize("self-service-desktops-admin-webapp");      
         }
     }
 }

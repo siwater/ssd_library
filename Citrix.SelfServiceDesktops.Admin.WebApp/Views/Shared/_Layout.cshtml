@@ -44,4 +44,9 @@
         @Scripts.Render("~/bundles/jquery")
         @RenderSection("scripts", required: false)
     </body>
+    <script>
+        var msg = "@ViewBag.Message";
+        if (msg != "")
+            window.alert(msg);
+   </script>
 </html>

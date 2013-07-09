@@ -34,8 +34,12 @@ namespace Citrix.SelfServiceDesktops.Admin
         public static ConfigurationStore Open(string path) {
             if (!File.Exists(path)) {
                 string msg = string.Format("Configuration file {0} does not exist", path);
-                throw new ArgumentException(msg);
-            }  
+                throw new System.IO.FileNotFoundException(msg);
+            }
+            if (!FileUtilities.IsWriteable(path)) {
+                string msg = string.Format("You do not have write access to Configuration file {0}", path);
+                throw new UnauthorizedAccessException(msg);
+            }
             return new ConfigurationStore(path);
         }
 
