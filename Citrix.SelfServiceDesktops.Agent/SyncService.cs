@@ -34,7 +34,11 @@ namespace Citrix.SelfServiceDesktops.Agent {
             config = DesktopServiceConfiguration.Instance;
             scriptPath = config.PowerShellScript.Path;
             cancellationTokenSource = new CancellationTokenSource();
-            syncTask = Task.Factory.StartNew(() => SyncDesktopOfferings(), cancellationTokenSource.Token);
+            if (scriptPath != null) {            
+                syncTask = Task.Factory.StartNew(() => SyncDesktopOfferings(), cancellationTokenSource.Token);
+            } else {
+                CtxTrace.TraceWarning("No script configured for desktop syncronisation");
+            }
         }
 
         public void Stop() {
@@ -44,6 +48,9 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         #region Private Methods
 
+        /// <summary>
+        /// Execute sync script at required frequency
+        /// </summary>
         private void SyncDesktopOfferings() {
             try {
                 CtxTrace.TraceInformation();
