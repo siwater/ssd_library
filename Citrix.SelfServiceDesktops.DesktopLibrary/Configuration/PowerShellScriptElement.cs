@@ -12,17 +12,16 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
     
     public class PowerShellScriptElement : IPowerShellScript {
 
-         private XElement config;
+        public XElement Script { get; private set; }
 
-         internal PowerShellScriptElement(XElement config) {
-             this.config = config;
-         }
+        internal PowerShellScriptElement(XElement config) {
+            Script = config.XPathSelectElement("//script");
+        }
 
         public string Path {
             get { 
-                XElement script = config.XPathSelectElement("//script");
-                if (script != null) {
-                    XAttribute path = script.Attribute("path");
+                if (Script != null) {
+                    XAttribute path = Script.Attribute("path");
                     if (path != null) {
                         return path.Value;
                     }
@@ -32,18 +31,14 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         }
 
         public TimeSpan Frequency {
-            get { 
-                return TimeSpan.Parse(config.XPathSelectElement("//script").Attribute("frequency").Value); 
-            }
+            get {
+                return (Script != null) ? TimeSpan.Parse(Script.Attribute("frequency").Value) : TimeSpan.Zero;
+            }     
         }
 
         public bool Debug {
-            get {
-                try {
-                    return bool.Parse(config.XPathSelectElement("//script").Attribute("debug").Value);
-                } catch (NullReferenceException) {
-                    return false;
-                }
+            get {             
+                return (Script != null) ? bool.Parse(Script.Attribute("debug").Value) : false;             
             }
         }
     }
