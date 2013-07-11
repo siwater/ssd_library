@@ -61,7 +61,11 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
                 Uri uri = new Uri(remoteUrl);
                 AgentUri = new Uri(uri.GetLeftPart(UriPartial.Authority));
                 if ((location == ConfigurationLocation.Remote) || (location == ConfigurationLocation.Either)) {
-                    config = GetXml(new Uri(remoteUrl));
+                    try {
+                        config = GetXml(new Uri(remoteUrl));
+                    } catch (Exception e) {
+                        throw new ConfigurationErrorsException("Unable to load configuration from remote server", e);
+                    }
                 }
             }
             ValidateConfiguration(config);
