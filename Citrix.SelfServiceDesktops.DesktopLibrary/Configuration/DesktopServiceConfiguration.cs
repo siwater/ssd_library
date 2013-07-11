@@ -110,15 +110,20 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             }
         }
 
+        private IEnumerable<IDesktopOffering> _desktopOfferings;
+
         public IEnumerable<IDesktopOffering> DesktopOfferings {
             get {
-                List<IDesktopOffering> result = new List<IDesktopOffering>();
-                XmlSerializer deSerializer = new XmlSerializer(typeof(DesktopOfferingElement));
-                foreach (XElement e in config.XPathSelectElements("//desktopOfferings/add")) {              
-                    DesktopOfferingElement offering = deSerializer.Deserialize(e.CreateReader()) as DesktopOfferingElement;
-                    result.Add(offering);
-                }
-                return result;
+                if (_desktopOfferings == null) {
+                    List<IDesktopOffering> offerings = new List<IDesktopOffering>();
+                    XmlSerializer deSerializer = new XmlSerializer(typeof(DesktopOfferingElement));
+                    foreach (XElement e in config.XPathSelectElements("//desktopOfferings/add")) {
+                        DesktopOfferingElement offering = deSerializer.Deserialize(e.CreateReader()) as DesktopOfferingElement;
+                        offerings.Add(offering);
+                    }
+                    _desktopOfferings = offerings;
+                }             
+                return _desktopOfferings;
             }    
         }
 
@@ -158,6 +163,16 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
                     throw new ConfigurationErrorsException(msg);
                 }
             }
+
+            // Ensure there is exactly one default desktop offering
+            IEnumerable<IDesktopOffering> defaultSet = this.DesktopOfferings.Where(i => i.Default == true);
+            if (defaultSet.Count() > 0) {
+                throw new ConfigurationErrorsException("Only one Desktop Offerings may marked with default=true");
+            }
+            if (defaultSet.Count() == 0) {
+                DesktopOfferingElement first = this.DesktopOfferings.First() as DesktopOfferingElement;
+                first.Default = true;
+            }      
         }
 
         #endregion
