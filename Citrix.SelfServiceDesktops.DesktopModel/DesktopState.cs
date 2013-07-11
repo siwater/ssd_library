@@ -13,22 +13,25 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
     /// </summary>
     public enum DesktopState {
 
-        // Before the machine is added to XenDesktop via the Add-BrokerMachine command, it it not known to XenDesktop
-        Unknown,
+        // The desktop state has not be provided (e.g. if the Agent is not available)
+        NotProvided,
 
-        // The machine has been added to XenDesktop bu the VDA is not (yet) registered
+        // Before the machine is added to XenDesktop via the Add-BrokerMachine command, it is unknown to XenDesktop
+        UnknownToXenDesktop,
+
+        // The machine is known to XenDesktop but the VDA is not (yet) registered
         Unregistered,
 
-        // The machine is available for use
+        // The machine is known to XenDesktop and available for use
         Available,
 
-        // There is an active HDX session to the desktop
+        // The machine is known to XenDesktop and there is an active HDX session to the desktop
         InUse,
 
-        // The machine has a disconnected HDX remote session
+        //  The machine is known to XenDesktop and there is a disconnected HDX session to the desktop
         Disconnected,
 
-        // The machine is know to XenDesktop but is in an unknown or error state
+        // The machine is known to XenDesktop but the state has not been recognised
         Error
 
     }
