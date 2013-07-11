@@ -50,6 +50,7 @@ namespace Citrix.SelfServiceDesktops.Agent.Services {
                 }
             } catch (Exception e) {
                 CtxTrace.TraceError(e);
+                return null;
             }
             return result;
         }
