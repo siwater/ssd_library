@@ -56,8 +56,7 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         {
             if (currState == VirtualMachineState.Running ||
                 currState == VirtualMachineState.Starting ||
-                currState == VirtualMachineState.Stopping ||
-                currState == VirtualMachineState.Starting)
+                currState == VirtualMachineState.Stopping)
             {
                 return true;
             }
