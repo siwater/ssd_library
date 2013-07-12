@@ -18,12 +18,13 @@ namespace Citrix.SelfServiceDesktops.MockDesktopLibrary
             this.name = "foo";
             this.ipAddress = "255.255.255.255";
             this.state = VirtualMachineState.Stopped;
-            this.desktopState = DesktopState.Unknown;
+            this.desktopState = DesktopState.UnknownToXenDesktop;
         }
         public string Name { get { return name; } set { name = value; } }
         public string IpAddress { get { return ipAddress; } set { ipAddress = value; } }
         public VirtualMachineState State { get { return state; } set { state = value; } }
         public DesktopState DesktopState { get { return desktopState; } set { desktopState = value; } }
+        public string DisplayState { get { return State.ToString(); } }
 
         public string Id
         {

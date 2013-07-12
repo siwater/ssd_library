@@ -81,9 +81,9 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public override string ToString() {
             return string.Format("{0} ({1})", Name, Description);
         }
-
-        public bool Default {
-            get { return false; }
-        }
+          
+        [XmlAttribute("default")]
+        public bool Default { get; set; }
+        
     }
 }

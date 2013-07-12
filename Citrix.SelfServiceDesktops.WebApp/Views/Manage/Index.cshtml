@@ -27,7 +27,7 @@
         </td><td>
             @Html.DisplayFor(modelItem => item.IpAddress)
         </td><td>
-            @Html.DisplayFor(modelItem => item.State)
+            @Html.DisplayFor(modelItem => item.DisplayState)
         </td><td>  
             @using (Html.BeginForm("Restart", "Manage", new { identifier = item.Id }, FormMethod.Post)) 
             {

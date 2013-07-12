@@ -108,7 +108,11 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             XElement desktopStatus = null;
             if (DesktopStateUrl != null) {
                 Uri uri = new Uri(string.Format("{0}{1}", DesktopStateUrl, userName));
-                desktopStatus = DesktopServiceConfiguration.GetXml(uri);
+                try {
+                    desktopStatus = DesktopServiceConfiguration.GetXml(uri);
+                } catch (Exception e) {
+                    CtxTrace.TraceError("Exception trying to read desktop state from Agent: {0}", e.Message);
+                }
             }
             return CreateIDesktopList(desktopVms, desktopStatus);
         } 
@@ -159,7 +163,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 XDocument response = cloudStackClient.SendRequest(attachIsoRequest);
                 cloudStackClient.StartVirtualMachine(id);
             }
-            return new Desktop(id, name, null, VirtualMachineState.Creating, DesktopState.Unknown);
+            return new Desktop(id, name, null, VirtualMachineState.Creating, DesktopState.UnknownToXenDesktop);
         }
 
         public void DestroyDesktop(string desktopId) {
@@ -202,19 +206,20 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// <param name="desktopStates">Optional set of XenDesktop states</param>
         /// <returns>collection of IDesktop objects</returns>
         private IEnumerable<IDesktop> CreateIDesktopList(IEnumerable<VirtualMachine> desktopVms, XElement desktopStates) {
-            SortedList<string, IDesktop> result = new SortedList<string, IDesktop>();
-            XNamespace ns = desktopStates.GetDefaultNamespace();
+            SortedList<string, IDesktop> result = new SortedList<string, IDesktop>(); 
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(new NameTable());
-            nsmgr.AddNamespace("x", ns.NamespaceName);
             foreach (VirtualMachine vm in desktopVms) {
-                DesktopState desktopState = DesktopState.Unknown;
+                DesktopState desktopState = DesktopState.NotProvided;
                 if (desktopStates != null) {
-                    string xpath = string.Format("//x:XenDesktopState[x:DesktopName='{0}']/x:State", vm.DisplayName);
+                    desktopState = DesktopState.UnknownToXenDesktop;
+                    if (!nsmgr.HasNamespace("x")) {
+                        XNamespace ns = desktopStates.GetDefaultNamespace();
+                        nsmgr.AddNamespace("x", ns.NamespaceName);
+                    }
+                    string xpath = string.Format("//x:XenDesktopState[x:DesktopName='{0}']/x:State", vm.DisplayName.ToLower());
                     XElement stateElement = desktopStates.XPathSelectElement(xpath, nsmgr);
                     if (stateElement != null) {
-                        if (!Enum.TryParse(stateElement.Value, out desktopState)) {
-                            desktopState = DesktopState.Error;
-                        }
+                        desktopState = (DesktopState) Enum.Parse(typeof(DesktopState), stateElement.Value);                
                     }
                 }
                 VirtualMachineState vmstate = Parse(vm.State);

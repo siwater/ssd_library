@@ -46,6 +46,22 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
             private set;
         }
 
+        /// <summary>
+        /// The state for display on the GUI is normally the Virtual Machine State from CloudPlatform.
+        /// However whilst the deskop is being prepared and registered with XenDesktop the state
+        /// "Preparing" is displayed.
+        /// </summary>
+        public string DisplayState {
+            get {
+                if ((State == VirtualMachineState.Running) &&
+                    ((DesktopState == DesktopModel.DesktopState.UnknownToXenDesktop) ||
+                    (DesktopState == DesktopModel.DesktopState.Unregistered))) {
+                    return "Preparing";
+                }
+                return State.ToString();
+            }
+        }
+
         public override string ToString() {
             return string.Format("Desktop: {0}; State: {2}; IpAddress: {3}", Name, Id, State, IpAddress);
         }

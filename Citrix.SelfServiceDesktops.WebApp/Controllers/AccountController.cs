@@ -40,6 +40,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl, string username, string password, string sessionkey, string jsessionid )
         {
+            ControllerUtilities.CheckFlags(this);
             ViewBag.ReturnUrl = returnUrl;
 
             if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
@@ -48,10 +49,8 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             }
             else if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(sessionkey) && !string.IsNullOrEmpty(jsessionid))
             {
-                // TODO: revise to use SSO key
                 return this.Login(new LoginModel() { UserName = username, JSessionId = jsessionid, SessionKey = sessionkey }, returnUrl);
             }
-            ControllerUtilities.CheckFlags(this);
             return View();
         }
 
@@ -88,14 +87,23 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                     }
                     catch (System.Exception ex)
                     {
-                        CtxTrace.TraceError(ex);
-                        ViewBag.ErrorMessage = ex.Message;
-                        // return View("Error"); // Exceptions thrown when authentication fails, but we ignore to avoid giving away details about the cloudstack command.
+                        string message = ex.Message;
+                        CloudStack.SDK.CloudStackException csex = ex as CloudStack.SDK.CloudStackException;
+                        if (csex != null) {
+                            message = csex.APIErrorResult.ErrorText;
+                        }
+                        if (InvalidCredentials(csex)) {
+                            // Don't log full exception as it may contain password/session credentials (needs a fix in CSSDK)
+                            string msg = String.Format("Invalid credentials entered. for user {0}", model.UserName);
+                            CtxTrace.TraceError(msg);
+                        } else {
+                            CtxTrace.TraceError(ex);  
+                        }
+                        ModelState.AddModelError("AuthError",  message);
                     }
                 }
             }
-            // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            // If we got this far, something failed, redisplay form       
             return View(model);
         }
 
@@ -127,6 +135,15 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             {
                 return RedirectToAction("Index", "Manage");
             }
+        }
+
+        /// <summary>
+        ///  Determine if an exception is as a result of the user entering invalid credential
+        /// </summary>
+        /// <param name="csex"></param>
+        /// <returns></returns>
+        private bool InvalidCredentials(CloudStack.SDK.CloudStackException csex) {
+            return (csex != null) && (csex.APIErrorResult.ErrorCode == "531");
         }
         #endregion
     }
