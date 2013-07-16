@@ -3,6 +3,7 @@
  */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -77,23 +78,27 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         #region IDesktopServiceConfiguration members
 
+        [Url]
         public Uri AgentUri {
             get;
             private set;
         }
 
+        [Url]
         public Uri BrokerUri {
             get {
                return new Uri(config.XPathSelectElement("//broker").Attribute("url").Value);
             }
         }
 
+        [Url]
         public Uri CloudStackUri {
             get {
                 return new Uri(config.XPathSelectElement("//cloudstack").Attribute("url").Value);
             }
         }
 
+       
         public int ListenPort {
             get {
                 return int.Parse(config.XPathSelectElement("//listen").Attribute("port").Value);

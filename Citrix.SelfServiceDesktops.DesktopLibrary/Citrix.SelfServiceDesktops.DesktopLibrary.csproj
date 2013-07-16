@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Configuration\DesktopOfferingElement.cs" />
     <Compile Include="Configuration\DesktopServiceConfiguration.cs" />
+    <Compile Include="Configuration\DesktopServiceElement.cs" />
     <Compile Include="Configuration\DeviceCollectionElement.cs" />
     <Compile Include="Configuration\PowerShellScriptElement.cs" />
     <Compile Include="Configuration\SelfServiceDesktopsSection.cs" />

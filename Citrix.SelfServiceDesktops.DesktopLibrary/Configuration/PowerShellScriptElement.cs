@@ -30,9 +30,12 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             }
         }
 
-        public TimeSpan Frequency {
+        public TimeSpan? Frequency {
             get {
-                return (Script != null) ? TimeSpan.Parse(Script.Attribute("frequency").Value) : TimeSpan.Zero;
+                if (Script != null) {
+                    return TimeSpan.Parse(Script.Attribute("frequency").Value);
+                }
+                return null;
             }     
         }
 
