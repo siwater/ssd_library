@@ -25,7 +25,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
 
         public ActionResult ViewDesktopOfferings() {
             try {
-                return View(ConfigStore.DesktopOfferings);
+                return View(ConfigStore.Configuration.DesktopOfferings);
             } catch (Exception e) {
                 ViewBag.Message = e.Message;
                 return View("Index");
@@ -34,7 +34,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
 
         public ActionResult ViewSettings() {
             try {
-                return View(ConfigStore);
+                return View(ConfigStore.Configuration);
             } catch (Exception e) {
                 ViewBag.Message = e.Message;
                 return View("Index");
@@ -42,7 +42,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         }
 
         [HttpPost]
-        public ActionResult EndEditSettings(DesktopServiceConfiguration item) {
+        public ActionResult EndEditSettings(DesktopServiceConfigurationElement item) {
             return RedirectToAction("Index");
         }
 
@@ -53,19 +53,19 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
 
         [HttpPost]
         public ActionResult EditDesktopOffering(string identifier) {         
-            IDesktopOffering offering = ConfigStore.DesktopOfferings.Where(o => o.Name == identifier).First();
+            DesktopOfferingElement offering = ConfigStore.EditableConfig.DesktopOfferingsBase.Where(o => o.Name == identifier).First();
             return View(offering);
         }
 
         [HttpPost]
         public ActionResult EndEditDesktopOffering(DesktopOfferingElement item) {
-            IDesktopOffering offering = ConfigStore.DesktopOfferings.Where(o => o.Name == item.Name).FirstOrDefault();
+            IDesktopOffering offering = ConfigStore.Configuration.DesktopOfferings.Where(o => o.Name == item.Name).FirstOrDefault();
             if (offering == null) {
                 ConfigStore.AddDesktopOffering(item);
             } else {
                 ConfigStore.ReplaceDesktopOffering(item);
             }
-            //ConfigStore.Save();
+            ConfigStore.Save();
             return RedirectToAction("ViewDesktopOfferings");
         }
         

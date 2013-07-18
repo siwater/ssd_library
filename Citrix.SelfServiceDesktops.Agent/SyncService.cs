@@ -17,7 +17,7 @@ namespace Citrix.SelfServiceDesktops.Agent {
     
     /// <summary>
     /// This is the service that periodically executes a PowerShell script to synchronise XenDesktop and CloudPlatform
-    /// The script will be executed for each Desktop Offering in the config.
+    /// The script will be executed for each Desktop Offering in the configXml.
     /// </summary>
     public class SyncService {
 
@@ -28,10 +28,10 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         public void Start() {
             CtxTrace.TraceInformation();
-            config = DesktopServiceConfiguration.Instance;
+            config = DesktopServiceConfiguration.Read();
             script = config.PowerShellScript;
             cancellationTokenSource = new CancellationTokenSource();
-            if (script.Path == null) {
+            if ((script  == null) || (script.Path == null)) {
                 CtxTrace.TraceWarning("No script configured for desktop syncronisation");
             } else if (!script.Frequency.HasValue || (script.Frequency.Value == TimeSpan.Zero)) {
                 CtxTrace.TraceWarning("Zero or missing frequency for desktop syncronisation script");            

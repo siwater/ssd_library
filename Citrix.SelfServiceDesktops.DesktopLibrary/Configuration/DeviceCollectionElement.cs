@@ -8,9 +8,6 @@ using System.Xml.Serialization;
 using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
-
-
-    //[XmlRootAttribute(ElementName = "device-collection")]
    
     public class DeviceCollectionElement : IDeviceCollection {
 

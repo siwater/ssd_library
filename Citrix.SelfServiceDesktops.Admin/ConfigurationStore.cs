@@ -47,48 +47,42 @@ namespace Citrix.SelfServiceDesktops.Admin
             : base(path, false) {
         }
 
+        public DesktopServiceConfigurationElement EditableConfig {
+            get {
+                return config;
+            }
+        }
+
         public void Save() {
             AgentController controller = new AgentController(ServiceName);
             controller.StopFor(() => this.WriteFile());
         }
         
-        public void AddDesktopOffering(IDesktopOffering offering) {
-            XElement existing = GetDesktopOffering(offering.Name);
+        public void AddDesktopOffering(DesktopOfferingElement offering) {
+            DesktopOfferingElement existing = GetDesktopOffering(offering.Name);
             if (existing != null) {
                 throw new ArgumentException("Duplicate desktop offering name");
             }
-            config.XPathSelectElement("//desktopOfferings").Add(Serialize(offering));
-        }
-
-        public void ReplaceDesktopOffering(IDesktopOffering offering) {
-            XElement existing = GetDesktopOffering(offering.Name);
-            if (existing == null) {
-                throw new ArgumentException("Desktop offering does not exist");
-            }
-            existing.ReplaceWith(Serialize(offering));
+            config.DesktopOfferingsBase.Add(offering);
         }
 
         public void DeleteDesktopOffering(string name) {
-            XElement existing = GetDesktopOffering(name);
+            DesktopOfferingElement existing = GetDesktopOffering(name);
             if (existing == null) {
                 throw new ArgumentException("Desktop offering does not exist");
             }
-            existing.Remove();
+            config.DesktopOfferingsBase.Remove(existing);
+        }
+
+        public void ReplaceDesktopOffering(DesktopOfferingElement offering) {
+            DeleteDesktopOffering(offering.Name);
+            AddDesktopOffering(offering);
         }
 
         #region Private Methods
 
-        private XElement GetDesktopOffering(string name) {
-            string xpath = string.Format("//desktopOfferings/add[@name='{0}']", name);
-            return config.XPathSelectElement(xpath);
-        }
-
-        private static XElement Serialize(IDesktopOffering offering) {
-            XmlSerializer serializer = new XmlSerializer(offering.GetType());
-            MemoryStream stream = new MemoryStream();
-            serializer.Serialize(stream, offering);
-            stream.Position = 0;
-            return XElement.Load(stream);
+        private DesktopOfferingElement GetDesktopOffering(string name) {
+            return config.DesktopOfferingsBase.FirstOrDefault(i => (i.Name == name));
         }
 
         private static string GetConfigFilePath(string serviceName) {
@@ -103,9 +97,13 @@ namespace Citrix.SelfServiceDesktops.Admin
             return null;
         }
 
-        private void WriteFile() {
-            configDoc.Save(this.filePath);
+        private void WriteFile() {     
+           XElement newConfig = Serialize(config);
+           configDoc.XPathSelectElement("//selfServiceDesktops").ReplaceWith(newConfig);        
+           configDoc.Save(this.filePath);
         }
+
+   
 
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿@*
  * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
 *@
-@model Citrix.SelfServiceDesktops.DesktopModel.IDesktopServiceConfiguration
+@model Citrix.SelfServiceDesktops.DesktopLibrary.Configuration.DesktopServiceConfigurationElement
 @{
     ViewBag.Title = "ViewSettings";
 }
@@ -49,16 +49,16 @@
                 </td>    
             </tr>
              <tr>
-                <td><div class="editor-label">@Html.LabelFor(model => model.PowerShellScript, "PowerShell Script")</div></td>
+                <td><div class="editor-label">@Html.LabelFor(model => model.PowerShellScriptBase, "PowerShell Script")</div></td>
             </tr> 
             <tr>           
                 <td  style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScript.Path)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScriptBase.Path)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.PowerShellScript.Path)
-                        @Html.ValidationMessageFor(model => model.PowerShellScript.Path)
+                        @Html.EditorFor(model => model.PowerShellScriptBase.Path)
+                        @Html.ValidationMessageFor(model => model.PowerShellScriptBase.Path)
                     </div>
                 </td>
             </tr>
@@ -68,8 +68,8 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.PowerShellScript.Frequency)
-                        @Html.ValidationMessageFor(model => model.PowerShellScript.Frequency)
+                        @Html.EditorFor(model => model.PowerShellScriptBase.FrequencyBase)
+                        @Html.ValidationMessageFor(model => model.PowerShellScriptBase.FrequencyBase)
                     </div>
                 </td>
             </tr>

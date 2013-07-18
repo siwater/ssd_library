@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Citrix.SelfServiceDesktops.DesktopLibrary.Configuration;
-
+using Citrix.SelfServiceDesktops.DesktopModel;
 using Citrix.Diagnostics;
 
 namespace Citrix.SelfServiceDesktops.Agent {
@@ -38,7 +38,7 @@ namespace Citrix.SelfServiceDesktops.Agent {
 
         private void StartWebListener() {
             CtxTrace.TraceInformation();
-            DesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
+            IDesktopServiceConfiguration config = DesktopServiceConfiguration.Read();
 
             Uri listenUrl = new Uri(String.Format(ListenUrlPattern, config.ListenPort));
             WebServiceHost host = new WebServiceHost(typeof(DesktopService), listenUrl);

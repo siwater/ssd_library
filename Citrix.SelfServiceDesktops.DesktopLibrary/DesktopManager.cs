@@ -39,7 +39,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
 
         private DesktopManager(string userName) {
             this.userName = userName;
-            config = DesktopServiceConfiguration.Instance;
+            config = DesktopServiceConfiguration.Read();
             // Build Uri for accessing open port 8096 as a temporary fix to get complete VM list
             UriBuilder openAccessUriBuilder = new UriBuilder(config.CloudStackUri);
             openAccessUriBuilder.Port = 8096;
@@ -67,7 +67,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
-        /// <param name="domain">If not specified domain will be taken from config value</param>
+        /// <param name="domain">If not specified domain will be taken from configXml value</param>
         internal DesktopManager(string userName, string password, string domain)
             : this(userName) 
         {       

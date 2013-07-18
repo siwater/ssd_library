@@ -14,7 +14,6 @@ using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
-    [XmlRootAttribute(ElementName = "add")]
     public class DesktopOfferingElement : IDesktopOffering {
 
         private const string GuidRegExpr = @"\b[A-Fa-f0-9]{8}(?:-[A-Fa-f0-9]{4}){3}-[A-Fa-f0-9]{12}\b";
@@ -23,6 +22,8 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public DesktopOfferingElement() {
             Sync = true;
         }
+
+        #region Serializable Attributes
 
         [Required]
         [XmlAttribute("name")]
@@ -73,17 +74,23 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public bool Sync { get; set; }
 
         [XmlElement("device-collection")]
-        public DeviceCollectionElement DeviceCollectionImpl { get; set; }
+        public DeviceCollectionElement DeviceCollectionBase { get; set; } 
+          
+        [XmlAttribute("default")]
+        public bool Default { get; set; }
+
+        #endregion
 
         [XmlIgnore]
-        public IDeviceCollection DeviceCollection { get { return DeviceCollectionImpl; } }
+        public IDeviceCollection DeviceCollection { get { return DeviceCollectionBase; } }
 
         public override string ToString() {
             return string.Format("{0} ({1})", Name, Description);
         }
-          
-        [XmlAttribute("default")]
-        public bool Default { get; set; }
+
+        public DesktopOfferingElement MemberwiseClone() {
+            return base.MemberwiseClone() as DesktopOfferingElement;
+        }
         
     }
 }

@@ -368,10 +368,10 @@ function SyncXenDesktop()
 		  $vmmachine = $vm.split("\")[1]
 		  $vmproperties = Get-BrokerMAchine -MachineName $vm
 		  $vmxdsid = $vmproperties.SID
-          $adcomputer = Get-ComputerFromAD $computer
+          $adcomputer = Get-ComputerFromAD $vmmachine
           if ($adcomputer -ne $null)
           {
-		      $vmadsid = $adproperties.SID
+		      $vmadsid = $adcomputer.SID
 		      if ($vmxdsid -ne $vmadsid)
 		      {
 		          WriteDebug "$vmmachine SID mismatch --> Deleting VM XD registration"
