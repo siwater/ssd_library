@@ -14,3 +14,7 @@ Add latest version of NuGet.exe to the .nuget folder
 -> Used to restore missing packages when the solution is built
 
 
+Release tips:
+Run script Scripts/Release.ps1 [-name <release-name>] [-clean]
+If you do not name a release it will be given a name of SelfServiceDesktops-dd-mm-yyyy.zip
+The -clean switch indicates to delete the release folder once the zip has been created
