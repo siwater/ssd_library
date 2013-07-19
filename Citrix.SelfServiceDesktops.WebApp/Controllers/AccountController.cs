@@ -92,7 +92,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                     }
                     catch (System.Exception ex)
                     {
-                        string message = ex.Message;
+                        string message = "Internal Error - please contact your Administrator";
                         CloudStack.SDK.CloudStackException csex = ex as CloudStack.SDK.CloudStackException;
                         if (csex != null) {
                             message = csex.APIErrorResult.ErrorText;
