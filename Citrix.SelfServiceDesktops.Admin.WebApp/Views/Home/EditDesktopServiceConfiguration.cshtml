@@ -1,16 +1,16 @@
 ﻿@*
  * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
 *@
-@model Citrix.SelfServiceDesktops.DesktopLibrary.Configuration.DesktopServiceConfigurationElement
+@model Citrix.SelfServiceDesktops.Admin.WebApp.Models.DesktopServiceConfigurationModel
 @{
-    ViewBag.Title = "ViewSettings";
+    ViewBag.Title = "EditDesktopServiceConfiguration";
 }
 
 <h2>ViewSettings</h2>
-@using (Html.BeginForm("EndEditSettings", "Home", FormMethod.Post)) {
+@using (Html.BeginForm("EndEditDesktopServiceConfiguration", "Home", FormMethod.Post)) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Self Service Desktop Settings</legend>
+        <legend>Self Service Desktop Configuration</legend>
         <table>
              <tr>
                 <td><div class="editor-label">@Html.LabelFor(model => model.BrokerUri)</div></td>
@@ -48,17 +48,26 @@
                     </div>
                 </td>    
             </tr>
-             <tr>
-                <td><div class="editor-label">@Html.LabelFor(model => model.PowerShellScriptBase, "PowerShell Script")</div></td>
+            <tr>
+                <td><div class="editor-label">@Html.LabelFor(model => model.AgentUriBase)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.AgentUriBase)
+                        @Html.ValidationMessageFor(model => model.AgentUriBase)
+                    </div>
+                </td>    
+            </tr> 
+            <tr>
+                <td><div class="editor-label">@Html.LabelFor(model => model.PowerShellScript, "PowerShell Script")</div></td>
             </tr> 
             <tr>           
                 <td  style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScriptBase.Path)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScript.Path)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.PowerShellScriptBase.Path)
-                        @Html.ValidationMessageFor(model => model.PowerShellScriptBase.Path)
+                        @Html.EditorFor(model => model.PowerShellScript.Path)
+                        @Html.ValidationMessageFor(model => model.PowerShellScript.Path)
                     </div>
                 </td>
             </tr>
@@ -68,8 +77,8 @@
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.PowerShellScriptBase.FrequencyBase)
-                        @Html.ValidationMessageFor(model => model.PowerShellScriptBase.FrequencyBase)
+                        @Html.EditorFor(model => model.PowerShellScript.FrequencyBase)
+                        @Html.ValidationMessageFor(model => model.PowerShellScript.FrequencyBase)
                     </div>
                 </td>
             </tr>
@@ -89,7 +98,7 @@
    </fieldset>  
 }
 <div>
-    @Html.ActionLink("Back to List", "ViewDesktopOfferings")
+    @Html.ActionLink("Back to Menu", "Index")
 </div>
 
 @section Scripts {

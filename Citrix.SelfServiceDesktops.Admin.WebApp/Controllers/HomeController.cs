@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using Citrix.SelfServiceDesktops.Admin.WebApp.Models;
 using Citrix.SelfServiceDesktops.Admin;
 using Citrix.SelfServiceDesktops.DesktopModel;
 using Citrix.SelfServiceDesktops.DesktopLibrary.Configuration;
@@ -32,9 +33,10 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
             }
         }
 
-        public ActionResult ViewSettings() {
+        public ActionResult EditDesktopServiceConfiguration() {
             try {
-                return View(ConfigStore.Configuration);
+                DesktopServiceConfigurationElement config = ConfigStore.Configuration as DesktopServiceConfigurationElement;
+                return View(new DesktopServiceConfigurationModel(config));
             } catch (Exception e) {
                 ViewBag.Message = e.Message;
                 return View("Index");
@@ -42,7 +44,9 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         }
 
         [HttpPost]
-        public ActionResult EndEditSettings(DesktopServiceConfigurationElement item) {
+        public ActionResult EndEditDesktopServiceConfiguration(DesktopServiceConfigurationModel item) {
+            item.Update(ConfigStore.EditableConfig);
+            ConfigStore.Save();     
             return RedirectToAction("Index");
         }
 

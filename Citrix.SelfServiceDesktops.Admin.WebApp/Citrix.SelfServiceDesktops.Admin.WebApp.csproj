@@ -129,6 +129,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DesktopServiceConfigurationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -236,12 +237,11 @@
     <None Include="readme.txt" />
     <Content Include="Views\Home\ViewDesktopOfferings.cshtml" />
     <Content Include="Views\Home\EditDesktopOffering.cshtml" />
-    <Content Include="Views\Home\ViewSettings.cshtml" />
+    <Content Include="Views\Home\EditDesktopServiceConfiguration.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Citrix.Diagnostics\Citrix.Diagnostics.csproj">
