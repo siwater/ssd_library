@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
+using Citrix.Diagnostics;
 using Citrix.SelfServiceDesktops.DesktopModel;
+
 
 namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
@@ -70,33 +72,45 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         #endregion
 
         #region IDesktopServiceConfiguration members
-
      
         /// <summary>
         /// If the base url of the SSD Agent is explicitly specified in config, return that, otherwise
         /// return the base url of the remoteConfig attribute if specified.
         /// </summary>
+        /// </summary>
         public Uri AgentUri {
             get {
-                if ((Agent != null) && (Agent.BaseUrl != null)) {
-                    return new Uri(Agent.BaseUrl);
-                } else if (RemoteConfig != null) {
-                    Uri remoteUri = new Uri(RemoteConfig);
-                    return new Uri(remoteUri.GetLeftPart(UriPartial.Authority));
+                Uri result = null;
+                if (Agent != null) { 
+                    result = ParseUri(Agent.BaseUrl);
                 }
-                return null;
+                    if ((result == null) && (RemoteConfig != null)) {
+                    result =  ParseUri(RemoteConfig);
+                    if (result != null) {
+                        result = new Uri(result.GetLeftPart(UriPartial.Authority));
+                    }
+                }
+                return result;
             }
         }
 
+        /// <summary>
+        /// Get the underlying serializable Broker Uri property as a System.Uri. If the underlying
+        /// property is null, empty or invalid the getter will return null and log an error.
+        /// </summary>
         public Uri BrokerUri {
             get {
-                return ((Broker != null) && (Broker.Url != null)) ? new Uri(Broker.Url) : null;
+                return (Broker != null)  ? ParseUri(Broker.Url) : null;
             }
         }
 
+        /// <summary>
+        /// Get the underlying serializable CloudStack Uri property as a System.Uri. If the underlying
+        /// property is null, empty or invalid the getter will return null and log an error.
+        /// </summary>
         public Uri CloudStackUri {
             get {
-                return ((CloudStack != null) && (CloudStack.Url != null)) ? new Uri(CloudStack.Url) : null;
+                return (CloudStack != null) ? ParseUri(CloudStack.Url) : null;
             }
         }
 
@@ -128,6 +142,26 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             get {
                 return PowerShellScriptBase;
             }
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Need to anticipate any old rubbish in the config file. 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private Uri ParseUri(string s) {
+            if (!string.IsNullOrEmpty(s)) {
+                try {
+                    return new Uri(s);
+                } catch (Exception e) {
+                    CtxTrace.TraceError("Error parsing Url {0} from config: {1}", s, e.Message);
+                }
+            }
+            return null;
         }
 
         #endregion

@@ -49,7 +49,7 @@
                 </td>    
             </tr>
             <tr>
-                <td><div class="editor-label">@Html.LabelFor(model => model.AgentUriBase)</div></td>
+                <td><div class="editor-label">@Html.LabelFor(model => model.AgentUriBase, "Agent Url")</div></td>
                 <td>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.AgentUriBase)
@@ -58,36 +58,36 @@
                 </td>    
             </tr> 
             <tr>
-                <td><div class="editor-label">@Html.LabelFor(model => model.PowerShellScript, "PowerShell Script")</div></td>
+                <td><div class="editor-label">@Html.Label("PowerShell Script")</div></td>
             </tr> 
             <tr>           
                 <td  style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScript.Path)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.ScriptPath)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.PowerShellScript.Path)
-                        @Html.ValidationMessageFor(model => model.PowerShellScript.Path)
+                        @Html.EditorFor(model => model.ScriptPath)
+                        @Html.ValidationMessageFor(model => model.ScriptPath)
                     </div>
                 </td>
             </tr>
             <tr>           
                 <td  style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScript.Frequency)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.Frequency)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.PowerShellScript.FrequencyBase)
-                        @Html.ValidationMessageFor(model => model.PowerShellScript.FrequencyBase)
+                        @Html.EditorFor(model => model.Frequency)
+                        @Html.ValidationMessageFor(model => model.Frequency)
                     </div>
                 </td>
             </tr>
              <tr>
                 <td style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.PowerShellScript.Debug)</div></td>
+                    <div class="editor-label">@Html.LabelFor(model => model.DebugScript)</div></td>
                 <td>
                     <div class="editor-field">
-                        @Html.CheckBoxFor(model => model.PowerShellScript.Debug)
+                        @Html.CheckBoxFor(model => model.DebugScript)
                     </div>
                 </td>    
             </tr>                        

@@ -1,7 +1,7 @@
 ﻿@*
  * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
 *@
-@model Citrix.SelfServiceDesktops.DesktopLibrary.Configuration.DesktopOfferingElement
+@model Citrix.SelfServiceDesktops.Admin.WebApp.Models.DesktopOfferingModel
 
 @{
     ViewBag.Title = "Edit";
@@ -106,38 +106,38 @@
                 </td>    
             </tr>
             <tr>
-                <td><div class="editor-label">@Html.LabelFor(model => model.DeviceCollection, "PVS Device Collection")</div></td>
+                <td><div class="editor-label">@Html.LabelFor(model => model.DeviceCollectionElement, "PVS Device Collection")</div></td>
             </tr> 
             <tr>           
                 <td style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollection.Name)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollectionElement.Name)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.DeviceCollection.Name)
-                        @Html.ValidationMessageFor(model => model.DeviceCollection.Name)
+                        @Html.EditorFor(model => model.DeviceCollectionElement.Name)
+                        @Html.ValidationMessageFor(model => model.DeviceCollectionElement.Name)
                     </div>
                 </td>
             </tr>
             <tr>
                 <td style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollection.Server)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollectionElement.Server)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.DeviceCollection.Server)
-                        @Html.ValidationMessageFor(model => model.DeviceCollection.Server)
+                        @Html.EditorFor(model => model.DeviceCollectionElement.Server)
+                        @Html.ValidationMessageFor(model => model.DeviceCollectionElement.Server)
                     </div>
                 </td>
             </tr>
             <tr>
                 <td style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollection.Site)</div>
+                    <div class="editor-label">@Html.LabelFor(model => model.DeviceCollectionElement.Site)</div>
                 </td>
                 <td>
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.DeviceCollection.Site)
-                        @Html.ValidationMessageFor(model => model.DeviceCollection.Site)
+                        @Html.EditorFor(model => model.DeviceCollectionElement.Site)
+                        @Html.ValidationMessageFor(model => model.DeviceCollectionElement.Site)
                     </div>
                 </td>
                

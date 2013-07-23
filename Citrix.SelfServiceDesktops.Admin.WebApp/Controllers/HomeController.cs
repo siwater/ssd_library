@@ -12,8 +12,6 @@ using Citrix.SelfServiceDesktops.DesktopLibrary.Configuration;
 namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
 
     public class HomeController : Controller {
-
-        private const string ConfigStoreIndex = "config-store";
       
         public ActionResult Index() {
             try {
@@ -27,9 +25,8 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         public ActionResult ViewDesktopOfferings() {
             try {
                 return View(ConfigStore.Configuration.DesktopOfferings);
-            } catch (Exception e) {
-                ViewBag.Message = e.Message;
-                return View("Index");
+            } catch (Exception e) {        
+                return View("Error", e);
             }
         }
 
@@ -45,29 +42,33 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
 
         [HttpPost]
         public ActionResult EndEditDesktopServiceConfiguration(DesktopServiceConfigurationModel item) {
-            item.Update(ConfigStore.EditableConfig);
-            ConfigStore.Save();     
-            return RedirectToAction("Index");
+            if (ModelState.IsValid) {
+                item.Update(ConfigStore.EditableConfig);
+                ConfigStore.Save();
+                return RedirectToAction("Index");
+            }
+            return View("EditDesktopServiceConfiguration", item);
         }
 
         [HttpPost]
         public ActionResult NewDesktopOffering() {
-            return View("EditDesktopOffering", new DesktopOfferingElement() { Name = "New desktop offering" });
+            return View("EditDesktopOffering", new DesktopOfferingModel() { Name = "New desktop offering" });
         }
 
         [HttpPost]
         public ActionResult EditDesktopOffering(string identifier) {         
             DesktopOfferingElement offering = ConfigStore.EditableConfig.DesktopOfferingsBase.Where(o => o.Name == identifier).First();
-            return View(offering);
+            return View(new DesktopOfferingModel (offering));
         }
 
         [HttpPost]
-        public ActionResult EndEditDesktopOffering(DesktopOfferingElement item) {
+        public ActionResult EndEditDesktopOffering(DesktopOfferingModel item) {
             IDesktopOffering offering = ConfigStore.Configuration.DesktopOfferings.Where(o => o.Name == item.Name).FirstOrDefault();
             if (offering == null) {
-                ConfigStore.AddDesktopOffering(item);
+                DesktopOfferingElement element = new DesktopOfferingElement();
+                ConfigStore.AddDesktopOffering(item.Update(element));
             } else {
-                ConfigStore.ReplaceDesktopOffering(item);
+                ConfigStore.ReplaceDesktopOffering(item.Update(offering as DesktopOfferingElement));
             }
             ConfigStore.Save();
             return RedirectToAction("ViewDesktopOfferings");
@@ -82,6 +83,8 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Controllers {
         }
 
         #region Private Methods
+
+        private const string ConfigStoreIndex = "config-store";
 
         private ConfigurationStore ConfigStore {
             get {
