@@ -43,6 +43,7 @@ if ([string]::IsNullOrEmpty($name)) {
     $name = "SelfServiceDesktops-$d"
 }
 $releaseDir = "$root\Releases\$name"
+$releaseNotes = "$root\ReleaseNotes.txt"
 $agentMSI = "$root\Citrix.SelfServiceDesktops.Agent.Setup\bin\Debug\Citrix.SelfServiceDesktops.Agent.Setup.msi"
 $webAppMSI = "$root\Citrix.SelfServiceDesktops.WebApp.Setup\bin\Debug\en-us\Citrix.SelfServiceDesktops.WebApp.Setup.msi"
 $docs = "$root\Documents\Release Documentation"
@@ -64,6 +65,9 @@ if (Test-Path $releaseDir) {
     $dir = New-Item -ItemType directory $releaseDir
     Copy-Item $agentMSI $releaseDir
     Copy-Item $webAppMSI $releaseDir
+    if (Test-Path $releaseNotes) {
+        Copy-Item $releaseNotes $releaseDir
+    }
     $dir = New-Item -ItemType directory "$releaseDir\Documentation"
     Copy-Item -Recurse "$docs\*" "$releaseDir\Documentation"
 
