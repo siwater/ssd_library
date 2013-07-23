@@ -16,8 +16,6 @@ optionally the named release folder is deleted
 An optional name for the release (e.g. SelfServiceDesktops-dd-mm-yyyy).
 If not specified the default SelfServiceDesktops-dd-mm-yyyy will be used for the current date.
 
-.PARAMETER clean
-Switch to indicate the named release folder can be deleted once the Zip has been created
 
 .EXAMPLE
 .\Release.ps1 -Name selfServiceDesktops-01-01-1901
@@ -31,8 +29,7 @@ Switch to indicate the named release folder can be deleted once the Zip has been
 #>
 Param 
 (
-    [string]$name,    
-    [switch]$clean
+    [string]$name   
 )
 
 $scriptsDir = Split-Path -parent $MyInvocation.MyCommand.Definition
@@ -82,10 +79,9 @@ if (Test-Path $releaseDir) {
         while($zipPackage.Items().Item($file.name) -eq $null){
             Start-Sleep -Milliseconds 100
         }
-    } 
-    if ($clean) {
-        Remove-Item -Path $releaseDir -Recurse -Force
     }
-    Write-Host "New release created at: $zipfile"
+    Remove-Item -Path "$releaseDir" -Recurse -Force
+ 
+    Write-Host "New release created in $zipfile"
 }
 
