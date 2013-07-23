@@ -20,11 +20,11 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        //
-        // GET: /Account/Login
 
+        public const string ErrorMessageKey = "AuthError";
+       
         /// <summary>
-        /// /Account/Login[/?[username=admin&][password=password&][ssoSessionkey=long_string]
+        /// GET: /Account/Login[/?[username=admin&][password=password&][ssoSessionkey=long_string]
         /// 
         /// e.g
         /// 
@@ -72,10 +72,14 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                         if (!string.IsNullOrEmpty(model.Password))
                         {
                             mgr = factory.CreateManager(model.UserName, model.Password, string.Empty);
-                        }
-                        else
+                        } 
+                        else if (!string.IsNullOrEmpty(model.SessionKey) && !string.IsNullOrEmpty(model.JSessionId)) 
                         {
                             mgr = factory.CreateManager(model.UserName, model.SessionKey, model.JSessionId, string.Empty);
+                        } 
+                        else 
+                        {
+                            ModelState.AddModelError(ErrorMessageKey, "Please enter valid credentials");
                         }
 
                         if (mgr != null)
@@ -87,7 +91,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                     }
                     catch (System.Exception ex)
                     {
-                        string message = ex.Message;
+                        string message = "Internal Error - please contact your Administrator";
                         CloudStack.SDK.CloudStackException csex = ex as CloudStack.SDK.CloudStackException;
                         if (csex != null) {
                             message = csex.APIErrorResult.ErrorText;
@@ -99,7 +103,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
                         } else {
                             CtxTrace.TraceError(ex);  
                         }
-                        ModelState.AddModelError("AuthError",  message);
+                        ModelState.AddModelError(ErrorMessageKey, message);
                     }
                 }
             }
