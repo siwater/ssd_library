@@ -81,11 +81,11 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public Uri AgentUri {
             get {
                 Uri result = null;
-                if (Agent != null) { 
+                if (Agent != null) {
                     result = ParseUri(Agent.BaseUrl);
                 }
-                    if ((result == null) && (RemoteConfig != null)) {
-                    result =  ParseUri(RemoteConfig);
+                if ((result == null) && (RemoteConfig != null)) {
+                    result = ParseUri(RemoteConfig);
                     if (result != null) {
                         result = new Uri(result.GetLeftPart(UriPartial.Authority));
                     }
