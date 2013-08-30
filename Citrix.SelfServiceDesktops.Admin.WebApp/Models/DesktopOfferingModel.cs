@@ -25,42 +25,51 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
         #region Public properties
 
         [Required]
+        [Display(Description = "NameHelp")]
         public string Name { get; set; }
 
+        [Display(Description = "DescriptionHelp")]
         public string Description { get; set; }
 
         [Required]
         [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
+        [Display(Description = "ZoneIdHelp")]
         public string ZoneId { get; set; }
-
      
         [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
+        [Display(Description = "TemplateIdHelp")]
         public string TemplateId { get; set; }
 
-    
+        [Display(Description = "IsoIdHelp")]
         [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
         public string IsoId { get; set; }
-
-      
+  
+        [Display(Description = "HypervisorHelp")]
         public string Hypervisor { get; set; }
 
         [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
+        [Display(Description = "DiskOfferingIdHelp")]
         public string DiskOfferingId { get; set; }
 
         [Required]
         [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
+        [Display(Description = "ServiceOfferingIdHelp")]
         public string ServiceOfferingId { get; set; }
 
         [Required]
         [RegularExpression(GuidRegExpr, ErrorMessage = ErrorNotGuid)]
+        [Display(Description = "NetworkIdHelp")]
         public string NetworkId { get; set; }
 
         [Required]
         [StringLength(11)]
+        [Display(Description = "HostnamePrefixHelp")]
         public string HostnamePrefix { get; set; }
-  
+
+        [Display(Description = "XenDesktopCatalogHelp")]
         public string XenDesktopCatalog { get; set; }
-   
+
+        [Display(Description = "SyncHelp")]
         public bool Sync { get; set; }
 
         public DeviceCollectionElement DeviceCollectionElement { get; set; }

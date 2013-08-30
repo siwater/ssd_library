@@ -29,25 +29,34 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
         #region Public properties
 
         [ValidUri]
+        [Display(Description = "AgentUriHelp")]
         public string AgentUriBase { get; set;  }
 
         [ValidUri]
+        [Display(Description = "BrokerUriHelp")]
         public string BrokerUri { get; set;  }
 
         [ValidUri]
+        [Display(Description = "CloudStackUriHelp")]
         public string CloudStackUri { get; set;  }
 
+        [Display(Description = "ListenPortHelp")]
         public int ListenPort { get; set;  }
 
+        [Display(Description = "HashCloudStackPasswordHelp")]
         public bool HashCloudStackPassword { get; set;  }
 
+        [Display(Description = "DomainHelp")]
         public string Domain { get; set;  }
 
+        [Display(Description = "PowerShellScriptPathHelp")]
         public string ScriptPath { get; set; }
 
         [TimeSpan]
+        [Display(Description = "PowerShellScriptFrequencyHelp")]
         public string Frequency { get; set; }
 
+        [Display(Description = "PowerShellScriptDebugHelp")]
         public bool DebugScript { get; set; }
 
         #endregion
