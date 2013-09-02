@@ -10,6 +10,8 @@
     <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico"/>
     <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico"/>
     <Property Id="ARPHELPLINK" Value="http://community.citrix.com/selfservicedesktops" />
+
+  
     
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
     <MediaTemplate EmbedCab="yes"/>
