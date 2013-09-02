@@ -142,6 +142,15 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Uncheck this box if you have LDAP integration in your CloudPlatform..
+        /// </summary>
+        public static string HashCloudStackPasswordHelp {
+            get {
+                return ResourceManager.GetString("HashCloudStackPasswordHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prefix for generating hostnames for this desktop group (max 11 characters).
         /// </summary>
         public static string HostnamePrefixHelp {
@@ -232,7 +241,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Whether this Self Service Dektop Agent is responsible for managing/synchonizing this device collection (allows you to manually load balance multiple Self Service Desktop Agents).
+        ///   Looks up a localized string similar to Check this box if this Self Service Dektop Agent is responsible for managing/synchonizing this device collection (allows you to manually load balance multiple Self Service Desktop Agents).
         /// </summary>
         public static string SyncHelp {
             get {
@@ -246,6 +255,15 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Resources {
         public static string TemplateIdHelp {
             get {
                 return ResourceManager.GetString("TemplateIdHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the XenDesktop catalog used to contain the desktops from this offering. If the catalog does not exist it will be created. If you leave this blank the default &quot;Self Service Desktops&quot; catalog will be used..
+        /// </summary>
+        public static string XenDesktopCatalogHelp {
+            get {
+                return ResourceManager.GetString("XenDesktopCatalogHelp", resourceCulture);
             }
         }
         

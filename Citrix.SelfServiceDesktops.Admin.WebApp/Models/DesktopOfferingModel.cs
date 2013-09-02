@@ -85,7 +85,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
         }
 
         /// <summary>
-        /// Memberiwse copy of properties from one object to another.
+        /// Memberwise copy of properties from one object to another.
         /// </summary>
         /// <param name="from"></param>
         /// <param name="to"></param>

@@ -107,6 +107,16 @@
                 </td>    
             </tr>
             <tr>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.XenDesktopCatalog, "XenDesktop Catalog")</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.XenDesktopCatalog)
+                        @Html.ValidationMessageFor(model => model.XenDesktopCatalog)
+                    </div>
+                </td>    
+            </tr>
+            <tr>
                 <td><div class="editor-label">@Html.LabelFor(model => model.DeviceCollectionElement, "PVS Device Collection")</div></td>
             </tr> 
             <tr>           

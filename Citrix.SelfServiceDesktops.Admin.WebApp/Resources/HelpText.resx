@@ -144,6 +144,9 @@
   <data name="DomainHelp" xml:space="preserve">
     <value>Optional CloudPlatform domain for user login</value>
   </data>
+  <data name="HashCloudStackPasswordHelp" xml:space="preserve">
+    <value>Uncheck this box if you have LDAP integration in your CloudPlatform.</value>
+  </data>
   <data name="HostnamePrefixHelp" xml:space="preserve">
     <value>Prefix for generating hostnames for this desktop group (max 11 characters)</value>
   </data>
@@ -175,10 +178,13 @@
     <value>The GUID of the CloudPlatform service offering to be used for desktops </value>
   </data>
   <data name="SyncHelp" xml:space="preserve">
-    <value>Whether this Self Service Dektop Agent is responsible for managing/synchonizing this device collection (allows you to manually load balance multiple Self Service Desktop Agents)</value>
+    <value>Check this box if this Self Service Dektop Agent is responsible for managing/synchonizing this device collection (allows you to manually load balance multiple Self Service Desktop Agents)</value>
   </data>
   <data name="TemplateIdHelp" xml:space="preserve">
     <value>The GUID of the CloudPlatform template to boot from (not required for PVS desktop offerings that boot from ISO)</value>
+  </data>
+  <data name="XenDesktopCatalogHelp" xml:space="preserve">
+    <value>Name of the XenDesktop catalog used to contain the desktops from this offering. If the catalog does not exist it will be created. If you leave this blank the default "Self Service Desktops" catalog will be used.</value>
   </data>
   <data name="ZoneIdHelp" xml:space="preserve">
     <value>The CloudPlatform zone id (GUID)</value>

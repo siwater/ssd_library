@@ -91,6 +91,14 @@
                         @Html.CheckBoxFor(model => model.DebugScript)
                     </div>
                 </td>    
+            </tr>
+            <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.HashCloudStackPassword, "Hash Cloud Password")</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.HashCloudStackPassword)
+                    </div>
+                </td>    
             </tr>                        
             <tr>
                 <td><input type="submit" value="Save"/></td>          
