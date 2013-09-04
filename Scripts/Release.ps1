@@ -43,6 +43,7 @@ $releaseDir = "$root\Releases\$name"
 $releaseNotes = "$root\ReleaseNotes.txt"
 $agentMSI = "$root\Citrix.SelfServiceDesktops.Agent.Setup\bin\Debug\Citrix.SelfServiceDesktops.Agent.Setup.msi"
 $webAppMSI = "$root\Citrix.SelfServiceDesktops.WebApp.Setup\bin\Debug\en-us\Citrix.SelfServiceDesktops.WebApp.Setup.msi"
+$adminMSI = "$root\Citrix.SelfServiceDesktops.Admin.WebApp.Setup\bin\Debug\en-us\Citrix.SelfServiceDesktops.Admin.WebApp.Setup.msi"
 $docs = "$root\Documents\Release Documentation"
 $zipfile = "$root\Releases\$name" + ".zip"
 
@@ -54,6 +55,8 @@ if (Test-Path $releaseDir) {
     Write-Error "$agentMSI does not exist"
 } elseif (!(Test-Path $agentMSI)) {
     Write-Error "$webappMSI does not exist"
+} elseif (!(Test-Path $adminMSI)) {
+    Write-Error "$adminMSI does not exist"
 } elseif (!(Test-Path $Docs)) {
     Write-Error "$docs folder does not exist"
 } else {
@@ -62,6 +65,7 @@ if (Test-Path $releaseDir) {
     $dir = New-Item -ItemType directory $releaseDir
     Copy-Item $agentMSI $releaseDir
     Copy-Item $webAppMSI $releaseDir
+    Copy-Item $adminMSI $releaseDir
     if (Test-Path $releaseNotes) {
         Copy-Item $releaseNotes $releaseDir
     }
