@@ -7,23 +7,27 @@
     ViewBag.Title = "EditDesktopServiceConfiguration";
 }
 
-<h2>ViewSettings</h2>
+<h2>Self Service Desktops Configuration</h2>
 @using (Html.BeginForm("EndEditDesktopServiceConfiguration", "Home", FormMethod.Post)) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Self Service Desktop Configuration</legend>
+        <legend>Self Service Desktops Configuration</legend>
         <table>
-             <tr>
-                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.BrokerUri)</div></td>
+            <tr>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.BrokerUri)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.BrokerUri)
                         @Html.ValidationMessageFor(model => model.BrokerUri)
                     </div>
-                </td>    
-            </tr> 
+                </td>
+            </tr>
             <tr>
-                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.CloudStackUri)</div></td>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.CloudStackUri)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.CloudStackUri)
@@ -32,37 +36,45 @@
                 </td>    
             </tr> 
             <tr>
-                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.Domain)</div></td>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.Domain)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.Domain)
                         @Html.ValidationMessageFor(model => model.Domain)
                     </div>
-                </td>    
+                </td>
             </tr>  
             <tr>
-                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.ListenPort)</div></td>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.ListenPort)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.ListenPort)
                         @Html.ValidationMessageFor(model => model.ListenPort)
                     </div>
-                </td>    
+                </td>
             </tr>
             <tr>
-                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.AgentUriBase, "Agent Url")</div></td>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.AgentUriBase)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.EditorFor(model => model.AgentUriBase)
                         @Html.ValidationMessageFor(model => model.AgentUriBase)
                     </div>
-                </td>    
+                </td>
             </tr> 
             <tr>
-                <td><div class="editor-label">@Html.Label("PowerShell Script")</div></td>
+                <td>
+                    <div class="editor-label">@Html.Label("PowerShell Script")</div>
+                </td>
             </tr> 
-            <tr>           
-                <td  style="padding-left: 2em">
+            <tr>
+                <td style="padding-left: 2em">
                     <div class="editor-label">@Html.LabelWithToolTipFor(model => model.ScriptPath)</div>
                 </td>
                 <td>
@@ -72,8 +84,8 @@
                     </div>
                 </td>
             </tr>
-            <tr>           
-                <td  style="padding-left: 2em">
+            <tr>
+                <td style="padding-left: 2em">
                     <div class="editor-label">@Html.LabelWithToolTipFor(model => model.Frequency)</div>
                 </td>
                 <td>
@@ -83,28 +95,32 @@
                     </div>
                 </td>
             </tr>
-             <tr>
+            <tr>
                 <td style="padding-left: 2em">
-                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.DebugScript)</div></td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.DebugScript)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.CheckBoxFor(model => model.DebugScript)
                     </div>
-                </td>    
+                </td>
             </tr>
             <tr>
-                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.HashCloudStackPassword, "Hash Cloud Password")</div></td>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.HashCloudStackPassword)</div>
+                </td>
                 <td>
                     <div class="editor-field">
                         @Html.CheckBoxFor(model => model.HashCloudStackPassword)
                     </div>
-                </td>    
+                </td>
             </tr>                        
             <tr>
-                <td><input type="submit" value="Save"/></td>          
+                <td>
+                    <input type="submit" value="Save" /></td>
             </tr>     
         </table>
-   </fieldset>  
+    </fieldset>  
 }
 <div>
     @Html.ActionLink("Back to Menu", "Index")

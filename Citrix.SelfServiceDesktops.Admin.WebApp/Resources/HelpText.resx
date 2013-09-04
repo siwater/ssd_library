@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AgentUriHelp" xml:space="preserve">
-    <value>Optional Url for Agent (e.g. http://server:8000/)</value>
+    <value>Optional Url for Self Service Desktop Agent (e.g. http://server:8000/).  Under normal circumstances this should be left balnk.</value>
   </data>
   <data name="BrokerUriHelp" xml:space="preserve">
     <value>The address of the Broker web page (WI for XenDesktop 5.6)</value>
@@ -166,7 +166,7 @@
     <value>The CloudPlatform network id (GUID)</value>
   </data>
   <data name="PowerShellScriptDebugHelp" xml:space="preserve">
-    <value>Whether the PowerShell script should write debug log entries</value>
+    <value>Check this box tif you want the PowerShell script to write debug log entries</value>
   </data>
   <data name="PowerShellScriptFrequencyHelp" xml:space="preserve">
     <value>Freqency at which the PowerShell script will execute.</value>

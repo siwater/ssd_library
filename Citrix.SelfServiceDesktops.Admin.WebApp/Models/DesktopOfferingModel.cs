@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,6 +23,12 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
 
         public DesktopOfferingModel(DesktopOfferingElement element) {
             CopyProperties(element, this);
+            // This is a PVS desktop offering if any PVS attributes are set
+            PvsDesktopOffering = (
+                Hypervisor != null ||
+                IsoId != null ||
+                DiskOfferingId != null ||
+                DeviceCollectionElement != null);
         }
 
         #region Public properties
@@ -66,15 +75,18 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
         [Display(Description = "HostnamePrefixHelp")]
         public string HostnamePrefix { get; set; }
 
-        [Display(Description = "XenDesktopCatalogHelp")]
+        [Display(Name = "Xen Desktop Catalog", Description = "XenDesktopCatalogHelp")]
         public string XenDesktopCatalog { get; set; }
 
         [Display(Description = "SyncHelp")]
         public bool Sync { get; set; }
 
+        [Display(Name = "PVS Device Collection")]
         public DeviceCollectionElement DeviceCollectionElement { get; set; }
 
         public bool Default { get; set; }
+
+        public bool PvsDesktopOffering { get; set; }
 
         #endregion
 

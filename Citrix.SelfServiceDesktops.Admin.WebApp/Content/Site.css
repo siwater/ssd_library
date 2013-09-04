@@ -50,6 +50,14 @@ header {
 	color: #999;
 }
 
+.help-link
+{
+    background-image: url("../Images/help.jpg");
+    display:block;
+    height: 16px;
+    width: 16px;
+}
+
 mark {
     background-color: #a6dbed;
     padding-left: 5px;

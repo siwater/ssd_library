@@ -61,7 +61,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Optional Url for Agent (e.g. http://server:8000/).
+        ///   Looks up a localized string similar to Optional Url for Self Service Desktop Agent (e.g. http://server:8000/).  Under normal circumstances this should be left balnk..
         /// </summary>
         public static string AgentUriHelp {
             get {
@@ -205,7 +205,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Whether the PowerShell script should write debug log entries.
+        ///   Looks up a localized string similar to Check this box tif you want the PowerShell script to write debug log entries.
         /// </summary>
         public static string PowerShellScriptDebugHelp {
             get {

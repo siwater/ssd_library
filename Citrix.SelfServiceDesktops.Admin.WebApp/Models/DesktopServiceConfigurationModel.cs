@@ -1,4 +1,7 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -29,21 +32,21 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
         #region Public properties
 
         [ValidUri]
-        [Display(Description = "AgentUriHelp")]
+        [Display(Name="Agent Uri", Description = "AgentUriHelp")]
         public string AgentUriBase { get; set;  }
 
         [ValidUri]
-        [Display(Description = "BrokerUriHelp")]
+        [Display(Name = "Broker Url", Description = "BrokerUriHelp")]
         public string BrokerUri { get; set;  }
 
         [ValidUri]
-        [Display(Description = "CloudStackUriHelp")]
+        [Display(Name = "CloudPlatform Url", Description = "CloudStackUriHelp")]
         public string CloudStackUri { get; set;  }
 
         [Display(Description = "ListenPortHelp")]
         public int ListenPort { get; set;  }
 
-        [Display(Description = "HashCloudStackPasswordHelp")]
+        [Display(Name = "Hash CloudPlatform Password", Description = "HashCloudStackPasswordHelp")]
         public bool HashCloudStackPassword { get; set;  }
 
         [Display(Description = "DomainHelp")]
@@ -56,7 +59,7 @@ namespace Citrix.SelfServiceDesktops.Admin.WebApp.Models {
         [Display(Description = "PowerShellScriptFrequencyHelp")]
         public string Frequency { get; set; }
 
-        [Display(Description = "PowerShellScriptDebugHelp")]
+        [Display(Name = "Debug", Description = "PowerShellScriptDebugHelp")]
         public bool DebugScript { get; set; }
 
         #endregion
