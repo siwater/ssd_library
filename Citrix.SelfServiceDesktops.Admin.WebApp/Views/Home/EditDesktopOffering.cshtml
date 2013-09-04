@@ -1,0 +1,213 @@
+﻿@*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+*@
+@model Citrix.SelfServiceDesktops.Admin.WebApp.Models.DesktopOfferingModel
+@using Citrix.SelfServiceDesktops.Admin.WebApp.Extensions;
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Desktop Offering</h2>
+
+@using (Html.BeginForm("EndEditDesktopOffering", "Home", FormMethod.Post)) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Desktop Offering</legend>
+        <table>
+             <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.Name)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Name)
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </td>    
+            </tr>
+            <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.Description)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Description)
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </td>    
+            </tr>
+            <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.HostnamePrefix)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.HostnamePrefix)
+                        @Html.ValidationMessageFor(model => model.HostnamePrefix)
+                    </div>
+                </td>    
+            </tr>
+             <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.ZoneId)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.ZoneId)
+                        @Html.ValidationMessageFor(model => model.ZoneId)
+                    </div>
+                </td>    
+            </tr>
+            <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.TemplateId)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.TemplateId)
+                        @Html.ValidationMessageFor(model => model.TemplateId)
+                    </div>
+                </td>    
+            </tr>             
+            <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.NetworkId)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.NetworkId)
+                        @Html.ValidationMessageFor(model => model.NetworkId)
+                    </div>
+                </td>    
+            </tr>          
+            <tr>
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.ServiceOfferingId)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.ServiceOfferingId)
+                        @Html.ValidationMessageFor(model => model.ServiceOfferingId)
+                    </div>
+                </td>    
+            </tr> 
+            <tr>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.XenDesktopCatalog)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.XenDesktopCatalog)
+                        @Html.ValidationMessageFor(model => model.XenDesktopCatalog)
+                    </div>
+                </td>    
+            </tr>
+            <tr>
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.Sync)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.CheckBoxFor(model => model.Sync)
+                    </div>
+
+                </td>    
+            </tr>          
+            <tr>
+               <td>           
+                  <label class="editor-label">PVS Desktop Options</label>
+                </td>
+                <td>
+                  <input type="button" id="pvs-toggle" value="Show"/>
+                  <div id="pvs-options-set" style="display : none">@Model.PvsDesktopOffering</div>             
+               </td> 
+            </tr>       
+            <tr class="pvs-option">
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.IsoId)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.IsoId)
+                        @Html.ValidationMessageFor(model => model.IsoId)
+                    </div>
+                </td>    
+            </tr>             
+            <tr class="pvs-option">
+                <td><div class="editor-label">@Html.LabelWithToolTipFor(model => model.DiskOfferingId)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DiskOfferingId)
+                        @Html.ValidationMessageFor(model => model.DiskOfferingId)
+                    </div>
+                </td>    
+            </tr>
+            <tr class="pvs-option">
+                <td>
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.Hypervisor)</div></td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.Hypervisor)
+                        @Html.ValidationMessageFor(model => model.Hypervisor)
+                    </div>
+                </td>    
+            </tr>
+            <tr class="pvs-option">
+                <td><div class="editor-label">@Html.LabelFor(model => model.DeviceCollectionElement)</div></td>
+            </tr> 
+            <tr class="pvs-option">           
+                <td style="padding-left: 2em">
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.DeviceCollectionElement.Name)</div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DeviceCollectionElement.Name)
+                        @Html.ValidationMessageFor(model => model.DeviceCollectionElement.Name)
+                    </div>
+                </td>
+            </tr>
+            <tr class="pvs-option">
+                <td style="padding-left: 2em">
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.DeviceCollectionElement.Server)</div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DeviceCollectionElement.Server)
+                        @Html.ValidationMessageFor(model => model.DeviceCollectionElement.Server)
+                    </div>
+                </td>
+            </tr>
+            <tr class="pvs-option">
+                <td style="padding-left: 2em">
+                    <div class="editor-label">@Html.LabelWithToolTipFor(model => model.DeviceCollectionElement.Site)</div>
+                </td>
+                <td>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.DeviceCollectionElement.Site)
+                        @Html.ValidationMessageFor(model => model.DeviceCollectionElement.Site)
+                    </div>
+                </td>          
+            </tr>
+            <tr>
+                <td><input type="submit" value="Save"/></td>          
+            </tr>     
+        </table>
+   </fieldset>  
+}
+<div>
+    @Html.ActionLink("Back to List", "ViewDesktopOfferings")
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+   <script src="/Scripts/jquery-1.7.1.min.js" type="text/javascript"></script>
+   <script type="text/javascript">
+
+       $(document).ready(function () {
+           var show = $('#pvs-options-set').text();
+           if (show == "True") {
+               $('.pvs-option').show();
+               $('#pvs-toggle').val("Hide");
+           } else {
+               $('.pvs-option').hide();
+               $('#pvs-toggle').val("Show");
+           }
+       });
+
+       $('#pvs-toggle').click(function () {
+           $('.pvs-option').toggle();
+           var oldTxt = $('#pvs-toggle').val();
+           if (oldTxt == "Hide") {
+               $('#pvs-toggle').val("Show");
+           } else {
+               $('#pvs-toggle').val("Hide");
+           }
+           return false;
+       });
+
+    </script>
+}

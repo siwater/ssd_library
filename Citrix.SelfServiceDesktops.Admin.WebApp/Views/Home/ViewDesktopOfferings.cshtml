@@ -1,0 +1,43 @@
+﻿@*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+*@
+@model IEnumerable<Citrix.SelfServiceDesktops.DesktopModel.IDesktopOffering>
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>Desktop Offerings</h2>
+<div class="table_style">
+    <fieldset>
+        <legend>Desktop Offerings</legend>
+        <table>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td class="info">@Html.DisplayFor(modelItem => item.Description)</td>
+                    <td>
+                        @using (Html.BeginForm("EditDesktopOffering", "Home", new { identifier = item.Name }, FormMethod.Post)) {
+                            <input type="submit" value="Edit" name="button" />                             
+                        }
+                    </td>
+                    <td>
+                        @using (Html.BeginForm("DeleteDesktopOffering", "Home", new { identifier = item.Name }, FormMethod.Post)) {                        
+                            <input type="submit" value="Delete" name="button" />
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    @using (Html.BeginForm("NewDesktopOffering", "Home", null, FormMethod.Post)) {
+                        <input type="submit" value="New" name="button" />                    
+                    }
+                </td>
+
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<div>
+    @Html.ActionLink("Back to Menu", "Index")
+</div>

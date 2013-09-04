@@ -17,27 +17,26 @@ namespace Citrix.SelfServiceDesktops.Agent {
     
     /// <summary>
     /// This is the service that periodically executes a PowerShell script to synchronise XenDesktop and CloudPlatform
-    /// The script will be executed for each Desktop Offering in the config.
+    /// The script will be executed for each Desktop Offering in the configXml.
     /// </summary>
     public class SyncService {
 
         private IDesktopServiceConfiguration config;
-        private string scriptPath;
+        private IPowerShellScript script;
         private CancellationTokenSource cancellationTokenSource;
         private Task syncTask;
 
- 
-
-
         public void Start() {
             CtxTrace.TraceInformation();
-            config = DesktopServiceConfiguration.Instance;
-            scriptPath = config.PowerShellScript.Path;
+            config = DesktopServiceConfiguration.Read();
+            script = config.PowerShellScript;
             cancellationTokenSource = new CancellationTokenSource();
-            if (scriptPath != null) {            
-                syncTask = Task.Factory.StartNew(() => SyncDesktopOfferings(), cancellationTokenSource.Token);
-            } else {
+            if ((script  == null) || (script.Path == null)) {
                 CtxTrace.TraceWarning("No script configured for desktop syncronisation");
+            } else if (!script.Frequency.HasValue || (script.Frequency.Value == TimeSpan.Zero)) {
+                CtxTrace.TraceWarning("Zero or missing frequency for desktop syncronisation script");            
+            } else {
+                syncTask = Task.Factory.StartNew(() => SyncDesktopOfferings(), cancellationTokenSource.Token);
             }
         }
 
@@ -54,7 +53,7 @@ namespace Citrix.SelfServiceDesktops.Agent {
         private void SyncDesktopOfferings() {
             try {
                 CtxTrace.TraceInformation();
-                TimeSpan syncFrequency = config.PowerShellScript.Frequency;
+                TimeSpan syncFrequency = config.PowerShellScript.Frequency.Value;
 
                 while (!cancellationTokenSource.Token.IsCancellationRequested) {
                     foreach (DesktopOfferingElement offering in config.DesktopOfferings) {
@@ -95,9 +94,9 @@ namespace Citrix.SelfServiceDesktops.Agent {
             args["devicecollection"] = offering.DeviceCollection;
           
             try {
-                PsWrapper script = new PsWrapper(scriptPath, config.PowerShellScript.Debug);
-                script.IgnoreExceptions.Add("ADIdentityNotFoundException");
-                Collection<PSObject> results = script.RunPowerShell(args);
+                PsWrapper scriptWrapper = new PsWrapper(script.Path, script.Debug);
+                scriptWrapper.IgnoreExceptions.Add("ADIdentityNotFoundException");
+                Collection<PSObject> results = scriptWrapper.RunPowerShell(args);
                 foreach (PSObject result in results) {
                     CtxTrace.TraceInformation(result);
                 }

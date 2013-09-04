@@ -1,0 +1,12 @@
+﻿@*
+ * Copyright (c) 2013 Citrix Systems, Inc. All Rights Reserved.
+*@
+@model System.Exception
+@{
+    ViewBag.Title = "Error";
+}
+
+<h2>Error</h2>
+<p>An error occured initializing this application:</p>
+ <p style="color: red"> @Model.Message</p>
+<p>This may be because the Self Service Desktops Agent is not installed on this computer, or you do not have the right to make changes to the configuration file.</p>

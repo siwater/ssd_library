@@ -3,6 +3,7 @@
  */
 using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,12 +14,13 @@ using Citrix.SelfServiceDesktops.DesktopModel;
 
 namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
-    [XmlRootAttribute(ElementName = "add")]
     public class DesktopOfferingElement : IDesktopOffering {
 
         public DesktopOfferingElement() {
             Sync = true;
         }
+
+        #region Serializable Attributes
 
         [XmlAttribute("name")]
         public string Name { get; set; }
@@ -40,10 +42,10 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         [XmlAttribute("disk-offering-id")]
         public string DiskOfferingId { get; set; }
-        
+   
         [XmlAttribute("service-offering-id")]
         public string ServiceOfferingId { get; set; }
-
+         
         [XmlAttribute("network-id")]
         public string NetworkId { get; set; }
 
@@ -57,17 +59,23 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         public bool Sync { get; set; }
 
         [XmlElement("device-collection")]
-        public DeviceCollectionElement DeviceCollectionImpl { get; set; }
+        public DeviceCollectionElement DeviceCollectionElement { get; set; } 
+          
+        [XmlAttribute("default")]
+        public bool Default { get; set; }
+
+        #endregion
 
         [XmlIgnore]
-        public IDeviceCollection DeviceCollection { get { return DeviceCollectionImpl; } }
+        public IDeviceCollection DeviceCollection { get { return DeviceCollectionElement; } }
 
         public override string ToString() {
             return string.Format("{0} ({1})", Name, Description);
         }
-          
-        [XmlAttribute("default")]
-        public bool Default { get; set; }
+
+        public new DesktopOfferingElement MemberwiseClone() {
+            return base.MemberwiseClone() as DesktopOfferingElement;
+        }
         
     }
 }

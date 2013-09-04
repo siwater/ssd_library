@@ -13,9 +13,9 @@ namespace Citrix.SelfServiceDesktops.DesktopModel {
         string Path { get; }
 
         /// <summary>
-        /// Frequency at which the script should be run
+        /// Frequency at which the script should be run. Null or zero
         /// </summary>
-        TimeSpan Frequency { get; }
+        TimeSpan? Frequency { get; }
 
         /// <summary>
         /// Whether to pass a "debug" swtich to the script

@@ -38,7 +38,7 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers {
         // POST: /Create/
         [HttpPost]
         public ActionResult Index(string serviceOfferingIdName, string button) {
-            ControllerUtilities.CheckForNoCreate(this);
+            ControllerUtilities.CheckFlags(this);
             System.Web.Routing.RouteValueDictionary route = new System.Web.Routing.RouteValueDictionary();
             if (button == "Submit") {
                 if (serviceOfferingIdName == null) {

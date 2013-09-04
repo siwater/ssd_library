@@ -12,33 +12,29 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
     
     public class PowerShellScriptElement : IPowerShellScript {
 
-        public XElement Script { get; private set; }
+        #region Serializable Attributes
 
-        internal PowerShellScriptElement(XElement config) {
-            Script = config.XPathSelectElement("//script");
-        }
+        [XmlAttribute("path")]
+        public string Path { get; set; }
 
-        public string Path {
-            get { 
-                if (Script != null) {
-                    XAttribute path = Script.Attribute("path");
-                    if (path != null) {
-                        return path.Value;
-                    }
-                }
-                return null;
-            }
-        }
+        [XmlAttribute("frequency")]
+        public string FrequencyBase { get; set; }
 
-        public TimeSpan Frequency {
+        [XmlAttribute("debug")]
+        public bool Debug { get; set; }
+
+        #endregion
+
+        [XmlIgnore]
+        public TimeSpan? Frequency {
             get {
-                return (Script != null) ? TimeSpan.Parse(Script.Attribute("frequency").Value) : TimeSpan.Zero;
-            }     
-        }
-
-        public bool Debug {
-            get {             
-                return (Script != null) ? bool.Parse(Script.Attribute("debug").Value) : false;             
+                if (string.IsNullOrEmpty(FrequencyBase)) {
+                    return null;
+                }
+                return TimeSpan.Parse(FrequencyBase);            
+            }
+            set {
+                FrequencyBase = value.HasValue ? value.ToString() : null;
             }
         }
     }

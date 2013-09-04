@@ -45,18 +45,52 @@ namespace TestApp {
         }
 
         public void TestConfigurationReader(bool testRemote) {
-            IDesktopServiceConfiguration config = DesktopServiceConfiguration.GetInstance(ConfigurationLocation.Local);
+            // Just read and report the local config
+            Console.WriteLine("***Local Configuration****");
+            IDesktopServiceConfiguration config = DesktopServiceConfiguration.ReadFrom(false);
+            DisplayConfig(config);
+            if (testRemote) {
+                // Read from remote config if available
+                Console.WriteLine("***Remote Configuration****");
+                config = DesktopServiceConfiguration.ReadFrom(true);
+                DisplayConfig(config);
+            }
+        }
+
+        #region Public Display Methods
+
+        public static void DisplayConfig(IDesktopServiceConfiguration config) {
+            Console.WriteLine("Agent base Url is {0}", config.AgentUri);
             Console.WriteLine("Broker Url is {0}", config.BrokerUri);
             Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
             DisplayOfferings(config.DesktopOfferings);
+            Console.WriteLine("CloudStack Domain is {0}", config.Domain);
+            Console.WriteLine("CloudStack HashCloudStackPassword is {0}", config.HashCloudStackPassword);
+            Console.WriteLine("Agent ListenPort is {0}", config.ListenPort);
+            DisplayPowerShellScript(config.PowerShellScript);
+        }
 
-            if (testRemote) {      
-                config = DesktopServiceConfiguration.GetInstance(ConfigurationLocation.Remote);
-                Console.WriteLine("Broker Url is {0}", config.BrokerUri);
-                Console.WriteLine("CloudStack Url is {0}", config.CloudStackUri);
-                DisplayOfferings(config.DesktopOfferings);
+        public static void DisplayPowerShellScript(IPowerShellScript script) {
+            if (script == null) {
+                Console.WriteLine("No PowerShellScript configured");
+            } else {
+                Console.WriteLine("PowerShellScript Path is {0}", script.Path);
+                Console.WriteLine("PowerShellScript Frequency is {0}", script.Frequency);
+                Console.WriteLine("PowerShellScript Debug is {0}", script.Debug);
             }
         }
+
+        public static void DisplayOfferings(IEnumerable<IDesktopOffering> offerings) {
+            foreach (IDesktopOffering offering in offerings) {
+                Console.WriteLine("Desktop offering: {0}", offering);
+
+                if (offering.DeviceCollection != null) {
+                    Console.WriteLine("Device collection {0}", offering.DeviceCollection.Name);
+                }
+            }
+        }
+
+        #endregion
 
         public void TestDesktopManager() {
             TestDesktopManager(AdminAccount);
@@ -189,7 +223,7 @@ namespace TestApp {
 
         private SessionDefinition GetSession(Account user) {
 
-            IDesktopServiceConfiguration config = DesktopServiceConfiguration.Instance;
+            IDesktopServiceConfiguration config = DesktopServiceConfiguration.Read();
             Client client = new Client(config.CloudStackUri);
             client.Login(user.Name, user.Password, user.Domain, config.HashCloudStackPassword);
             Console.WriteLine("Logged into Cloudstack as {0}", user.Name);
@@ -251,15 +285,7 @@ namespace TestApp {
             }
         }
 
-        private void DisplayOfferings(IEnumerable<IDesktopOffering> offerings) {
-            foreach (IDesktopOffering offering in offerings) {
-                Console.WriteLine("Desktop offering: {0}", offering);
-
-                if (offering.DeviceCollection != null) {
-                    Console.WriteLine("Device collection {0}", offering.DeviceCollection.Name);
-                }        
-            }
-        }
+   
 
         #endregion
     }
