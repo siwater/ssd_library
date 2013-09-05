@@ -23,6 +23,9 @@ namespace Citrix.SelfServiceDesktops.WebApp.Controllers
             get
             {
                 IDesktopManager result = HttpContext.Session["IDesktopManager"] as IDesktopManager;
+                if (result == null) {
+                    throw new ApplicationException("Session timed out. Please log in again");
+                }
                 return result;
             }
         }
