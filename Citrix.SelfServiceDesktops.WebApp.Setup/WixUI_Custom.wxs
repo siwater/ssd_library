@@ -89,6 +89,12 @@ Patch dialog sequence:
             <Property Id="ARPNOMODIFY" Value="1" />
         </UI>
 
-        <UIRef Id="WixUI_Common" />
+      <CustomAction Id='LaunchApplication' ExeCommand='explorer.exe http://localhost/[WEBAPPNAME]' Directory='INSTALLFOLDER' Impersonate='yes' Return='asyncNoWait' />
+      <UIRef Id="WixUI_Common" />
+
+      <InstallExecuteSequence>
+        <Custom Action='LaunchApplication' After='InstallFinalize'>LAUNCH AND NOT Installed</Custom>
+      </InstallExecuteSequence>
+      
     </Fragment>
 </Wix>
