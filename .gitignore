@@ -2,6 +2,7 @@
 *.exe
 *.pdb
 *.suo
+*.pdf
 Citrix.*/obj/*
 Citrix.*/bin/*
 packages
