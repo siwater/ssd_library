@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" 
-     xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
+﻿<?xml version="1.0" encoding="utf-8"?><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
   
   
-	<Product Id="7de798eb-1b0e-4827-9732-efe6007639b0" Name="Citrix SelfServiceDesktops Admin Tool" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems, Inc." UpgradeCode="8076f53a-111b-4b27-aa08-d93f69a3b621">
+	<Product Id="7de798eb-1b0e-4827-9732-efe6007639b0" Name="Citrix SelfServiceDesktops Admin Tool" Language="1033" Version="13.10.02" Manufacturer="Citrix Systems, Inc." UpgradeCode="8076f53a-111b-4b27-aa08-d93f69a3b621">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     
     <!-- Icon and link for programs & features list" -->
-    <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico"/>
-    <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico"/>
+    <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico" />
+    <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico" />
     <Property Id="ARPHELPLINK" Value="http://community.citrix.com/selfservicedesktops" />
 
   
     
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate EmbedCab="yes"/>
+    <MediaTemplate EmbedCab="yes" />
     
     <!-- All installation pre-conditions -->
     <?include Conditions.wxi ?>
     
     <Feature Id="ProductFeature" Title="Citrix SelfServiceDesktops Admin Tool" Level="1">
 			<ComponentGroupRef Id="Citrix.SelfServiceDesktops.Admin.WebApp_Project" />
-      <ComponentRef Id='SSDWebVDir' />
+      <ComponentRef Id="SSDWebVDir" />
 		</Feature>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
@@ -32,8 +30,7 @@
               
               <Component Id="SSDWebVDir" Guid="3176007c-8b36-4351-81c4-ad006508a4c9">
 
-                <iis:WebAppPool Id="AppPool" Name="[APPPOOLNAME]" ManagedRuntimeVersion="v4.0"
-                               IdleTimeout="0" RecycleMinutes="0" ManagedPipelineMode="integrated">
+                <iis:WebAppPool Id="AppPool" Name="[APPPOOLNAME]" ManagedRuntimeVersion="v4.0" IdleTimeout="0" RecycleMinutes="0" ManagedPipelineMode="integrated">
                 </iis:WebAppPool>       
 
                 <iis:WebVirtualDir Id="VirtualDir" Alias="[WEBAPPNAME]" Directory="INSTALLFOLDER" WebSite="SelectedWebSite">             
@@ -41,7 +38,7 @@
                   <iis:WebDirProperties Id="SSDWebVDir_Properties" AnonymousAccess="no" WindowsAuthentication="yes" />               
                 </iis:WebVirtualDir>
                 
-                <CreateFolder/>
+                <CreateFolder />
               </Component>  
             </Directory>
           </Directory>
@@ -49,18 +46,18 @@
       </Directory>
     </Directory>
     
-    <Property Id='WEBSITENAME' Value='Default Web Site'/>
-    <Property Id="WEBAPPNAME" Value="Citrix/SelfServiceDesktopsAdmin"/>
-    <Property Id='APPPOOLNAME' Value='SelfServiceDesktopsAdmin_Pool'/>
+    <Property Id="WEBSITENAME" Value="Default Web Site" />
+    <Property Id="WEBAPPNAME" Value="Citrix/SelfServiceDesktopsAdmin" />
+    <Property Id="APPPOOLNAME" Value="SelfServiceDesktopsAdmin_Pool" />
     
     <!-- Note this does not create a web site, just looks it up -->
-    <iis:WebSite Id='SelectedWebSite' Description='[WEBSITENAME]' Directory='INSTALLFOLDER'>
+    <iis:WebSite Id="SelectedWebSite" Description="[WEBSITENAME]" Directory="INSTALLFOLDER">
       <!-- This element has to be here or WiX does not compile. -->
-      <iis:WebAddress Id="AllUnassigned" Port="80"/>
+      <iis:WebAddress Id="AllUnassigned" Port="80" />
     </iis:WebSite>
     
-    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
-    <UIRef Id="WixUI_Custom"/>
+    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf" />
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_Custom" />
   </Product>
 </Wix>

@@ -1,25 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Product Id="13d9fa40-131b-42ab-a54e-3c4e34141b31" Name="Citrix SelfServiceDesktops Agent" Language="1033" Version="1.0.0.0" Manufacturer="Citrix Systems, Inc." UpgradeCode="1b28b8cf-7439-4785-a6db-5b11bdd5aa9c">
+﻿<?xml version="1.0" encoding="utf-8"?><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="13d9fa40-131b-42ab-a54e-3c4e34141b31" Name="Citrix SelfServiceDesktops Agent" Language="1033" Version="13.10.02" Manufacturer="Citrix Systems, Inc." UpgradeCode="1b28b8cf-7439-4785-a6db-5b11bdd5aa9c">
 
-    <Package InstallerVersion="200"
-             Description="Citrix Self Service Desktop Installer"
-             Compressed="yes"
-             InstallScope="perMachine" />
-    <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico"/>
-    <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico"/>
+    <Package InstallerVersion="200" Description="Citrix Self Service Desktop Installer" Compressed="yes" InstallScope="perMachine" />
+    <Icon Id="XenDesktop_Combo_All.ico" SourceFile="000_XenDesktop_Combo_All.ico" />
+    <Property Id="ARPPRODUCTICON" Value="XenDesktop_Combo_All.ico" />
     <Property Id="ARPHELPLINK" Value="http://community.citrix.com/selfservicedesktops" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-    <MediaTemplate EmbedCab="yes"/>
+    <MediaTemplate EmbedCab="yes" />
 
     <!-- Require administrator privileges -->
     <Condition Message="You need to be an administrator to install this product.">Privileged</Condition>
 
     <!-- Require .NET 4.5 to install -->
     <PropertyRef Id="NETFRAMEWORK45" />
-    <Condition Message='This setup requires the .NET Framework 4.5 be installed.'>
-      <![CDATA[(Installed OR NETFRAMEWORK45)]]>
+    <Condition Message="This setup requires the .NET Framework 4.5 be installed.">
+      (Installed OR NETFRAMEWORK45)
     </Condition>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
@@ -38,39 +34,28 @@
 
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
       <Component Id="ServiceProcessComponents" Guid="{4D0DF120-F1B3-4A6D-ABAF-257B60787F11}">
-        <File Id="Citrix.Diagnostics.dll" Name="Citrix.Diagnostics.dll" Source="$(var.BasePath)\Citrix.Diagnostics.dll" Vital="yes" DiskId="1"/>
-        <File Id="Cloudstack.SDK.dll" Name="Cloudstack.SDK.dll" Source="$(var.BasePath)\Cloudstack.SDK.dll" Vital="yes" DiskId="1"/>
-        <File Id="Citrix.SelfServiceDesktops.DesktopModel.dll" Name="Citrix.SelfServiceDesktops.DesktopModel.dll" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopModel.dll" Vital="yes" DiskId="1"/>
-        <File Id="Citrix.SelfServiceDesktops.DesktopLibrary.dll" Name="Citrix.SelfServiceDesktops.DesktopLibrary.dll" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopLibrary.dll" Vital="yes" DiskId="1"/>
-        <File Id="Citrix.SelfServiceDesktops.Agent.exe.config" Name="Citrix.SelfServiceDesktops.Agent.exe.config" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe.config" Vital="yes" DiskId="1"/>
-        <File Id="SyncDesktops.ps1" Name="SyncDesktops.ps1" Source="$(var.BasePath)\SyncDesktops.ps1" Vital="yes" DiskId="1"/>
-        <File Id="ListDesktops.ps1" Name="ListDesktops.ps1" Source="$(var.BasePath)\ListDesktops.ps1" Vital="yes" DiskId="1"/>      
+        <File Id="Citrix.Diagnostics.dll" Name="Citrix.Diagnostics.dll" Source="$(var.BasePath)\Citrix.Diagnostics.dll" Vital="yes" DiskId="1" />
+        <File Id="Cloudstack.SDK.dll" Name="Cloudstack.SDK.dll" Source="$(var.BasePath)\Cloudstack.SDK.dll" Vital="yes" DiskId="1" />
+        <File Id="Citrix.SelfServiceDesktops.DesktopModel.dll" Name="Citrix.SelfServiceDesktops.DesktopModel.dll" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopModel.dll" Vital="yes" DiskId="1" />
+        <File Id="Citrix.SelfServiceDesktops.DesktopLibrary.dll" Name="Citrix.SelfServiceDesktops.DesktopLibrary.dll" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.DesktopLibrary.dll" Vital="yes" DiskId="1" />
+        <File Id="Citrix.SelfServiceDesktops.Agent.exe.config" Name="Citrix.SelfServiceDesktops.Agent.exe.config" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe.config" Vital="yes" DiskId="1" />
+        <File Id="SyncDesktops.ps1" Name="SyncDesktops.ps1" Source="$(var.BasePath)\SyncDesktops.ps1" Vital="yes" DiskId="1" />
+        <File Id="ListDesktops.ps1" Name="ListDesktops.ps1" Source="$(var.BasePath)\ListDesktops.ps1" Vital="yes" DiskId="1" />      
       </Component>
       <Component Id="ServiceProcess">
-        <File Id="Citrix.SelfServiceDesktops.Agent.exe" Name="Citrix.SelfServiceDesktops.Agent.exe" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe" Vital="yes" KeyPath="yes" DiskId="1"/>
+        <File Id="Citrix.SelfServiceDesktops.Agent.exe" Name="Citrix.SelfServiceDesktops.Agent.exe" Source="$(var.BasePath)\Citrix.SelfServiceDesktops.Agent.exe" Vital="yes" KeyPath="yes" DiskId="1" />
        
         <util:User Id="UpdateUserLogonAsService" UpdateIfExists="yes" CreateUser="no" Name="[SERVICEUSERNAME]" LogonAsService="yes" />
         
-        <ServiceInstall
-          Id="ServiceInstaller" 
-          Type="ownProcess" 
-          Vital="yes" 
-          Name="CtxSSDSvc"
-          DisplayName="Citrix Self Service Desktop Agent" 
-          Description="Syncronize desktop hosting and publishing environments" 
-          Start="auto"
-          Account="[SERVICEUSERNAME]"
-          Password="[SERVICEPASSWORD]"
-          ErrorControl="ignore"
-          Interactive="no" />
+        <ServiceInstall Id="ServiceInstaller" Type="ownProcess" Vital="yes" Name="CtxSSDSvc" DisplayName="Citrix Self Service Desktop Agent" Description="Syncronize desktop hosting and publishing environments" Start="auto" Account="[SERVICEUSERNAME]" Password="[SERVICEPASSWORD]" ErrorControl="ignore" Interactive="no" />
         <ServiceControl Id="StartService" Start="install" Stop="both" Remove="uninstall" Name="CtxSSDSvc" Wait="yes" />
       </Component>
 
     </ComponentGroup>
 
-    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf"/>
+    <WixVariable Id="WixUILicenseRtf" Value="eula.rtf" />
 
-    <UIRef Id="WixUI_Custom"/>
+    <UIRef Id="WixUI_Custom" />
     
   </Product>
   
