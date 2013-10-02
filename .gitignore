@@ -3,6 +3,7 @@
 *.pdb
 *.suo
 *.pdf
+*.old
 Citrix.*/obj/*
 Citrix.*/bin/*
 packages
