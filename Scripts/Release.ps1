@@ -27,18 +27,29 @@ If not specified the default SelfServiceDesktops-dd-mm-yyyy will be used for the
 .LINK
      http://community.citrix.com/
 #>
-Param 
+Param
 (
     [string]$name   
 )
 
+# Default behaviour is to stop execution on error 
+$ErrorActionPreference = "Stop"
+
 $scriptsDir = Split-Path -parent $MyInvocation.MyCommand.Definition
 $root = Split-Path -Parent $scriptsDir
+$version = Get-Date -Format "yy.MM.dd"
 
 if ([string]::IsNullOrEmpty($name)) {
-    $d = Get-Date -Format dd-MM-yyyy
-    $name = "SelfServiceDesktops-$d"
+    $d = $version.Replace('.','-')
+    $name = "SelfServiceDesktops-20$d"
 }
+ 
+$VersionFiles = @(
+        "$root\Citrix.SelfServiceDesktops.WebApp.Setup\Product.wxs",
+        "$root\Citrix.SelfServiceDesktops.Agent.Setup\Product.wxs",
+        "$root\Citrix.SelfServiceDesktops.Admin.WebApp.Setup\Product.wxs"
+        )
+        
 $releaseDir = "$root\Releases\$name"
 $releaseNotes = "$root\ReleaseNotes.txt"
 $agentMSI = "$root\Citrix.SelfServiceDesktops.Agent.Setup\bin\Debug\Citrix.SelfServiceDesktops.Agent.Setup.msi"
@@ -61,6 +72,13 @@ if (Test-Path $releaseDir) {
     Write-Error "$docs folder does not exist"
 } else {
 
+    Write-Host "Updating version numbers"
+    foreach ($file in $VersionFiles) {
+        & $scriptsDir\UpdateVersion.ps1 -File $file -Version $version
+    }
+    Write-Host "Building solution"
+    & $scriptsDir\Build.ps1
+
     Write-Host "Creating $releaseDir"
     $dir = New-Item -ItemType directory $releaseDir
     Copy-Item $agentMSI $releaseDir
@@ -70,7 +88,7 @@ if (Test-Path $releaseDir) {
         Copy-Item $releaseNotes $releaseDir
     }
     $dir = New-Item -ItemType directory "$releaseDir\Documentation"
-    Copy-Item -Recurse "$docs\*" "$releaseDir\Documentation"
+    Copy-Item -Recurse "$docs\*.pdf" "$releaseDir\Documentation"
 
     Set-Content $zipfile ("PK" + [char]5 + [char]6 + ("$([char]0)" * 18))
     $zip = Get-Item -Path $zipfile
