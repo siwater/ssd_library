@@ -42,7 +42,6 @@
         <Control Id="LaunchApp" Type="CheckBox" Width="320" X="20" Y="125" Height="15" Property="LAUNCH" CheckBoxValue="1" Hidden="yes" Text="Launch app after install completes" >
            <Condition Action="show">NOT Installed</Condition>
         </Control>
-
       </Dialog>
     </UI>
 	</Fragment>
