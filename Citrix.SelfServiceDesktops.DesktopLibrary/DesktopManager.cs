@@ -244,40 +244,16 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary {
                 if (desktopOfferings.Count(o => {
                     int num;
                     VirtualMachineState state = Parse(vm.State);
-                    return (vm.DisplayName.StartsWith(o.HostnamePrefix)
-                            && (includeDestroyed || (state != VirtualMachineState.Expunging && state != VirtualMachineState.Destroyed))
-                            && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
+                    return (!string.IsNullOrEmpty(vm.DisplayName) 
+                        && vm.DisplayName.StartsWith(o.HostnamePrefix)                         
+                        && (includeDestroyed || (state != VirtualMachineState.Expunging && state != VirtualMachineState.Destroyed))                          
+                        && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
                 }) > 0) {                 
                     result.Add(vm);
                 }
             }
             return result;
         }
-        
-        /// <summary>
-        /// Filters the list of virtual machines that may be self-service desktops. This will be the set of desktops whose
-        /// names match one of the desktop offerings hostname prefixes and has a numeric suffix
-        /// </summary>
-        /// <param name="machines">The raw set of virtual machines from the CloudStack API</param>
-        /// <param name="desktopOfferings">The set of desktop offerings to use as a filter</param>
-        /// <param name="includeDestroyed">Include destroyed and expunging virtual machines in the list</param>
-        /// <returns>A list of potential desktops (ordered by name)</returns>
-        //private IEnumerable<IDesktop> FilterDesktops(VirtualMachine[] machines, IEnumerable<IDesktopOffering> desktopOfferings, bool includeDestroyed) {         
-        //    SortedList<string, IDesktop> result = new SortedList<string, IDesktop>();
-        //    foreach (VirtualMachine vm in machines) {                
-        //        if (desktopOfferings.Count(o => {
-        //            int num;
-        //            VirtualMachineState desktopState = Parse(vm.State);
-        //            return (vm.DisplayName.StartsWith(o.HostnamePrefix)
-        //                    && (includeDestroyed || (desktopState != VirtualMachineState.Expunging && desktopState != VirtualMachineState.Destroyed))
-        //                    && int.TryParse(vm.DisplayName.Substring(o.HostnamePrefix.Length), out num));
-        //        }) > 0) {
-        //            VirtualMachineState desktopState = Parse(vm.State);
-        //            result.Add(vm.Id, new Desktop(vm.Id, vm.DisplayName, vm.Nic[0].IpAddress, desktopState));
-        //        }
-        //    }
-        //    return result.Values;
-        //}
 
         private VirtualMachineState Parse(string state) {
             VirtualMachineState result;
