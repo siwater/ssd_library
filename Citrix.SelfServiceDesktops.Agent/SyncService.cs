@@ -91,7 +91,9 @@ namespace Citrix.SelfServiceDesktops.Agent {
             if (!string.IsNullOrEmpty(offering.IsoId)) {
                 args["isoid"] = offering.IsoId;
             }
-            args["devicecollection"] = offering.DeviceCollection;
+            if (IsValidDeviceCollection (offering.DeviceCollection)) {
+                args["devicecollection"] = offering.DeviceCollection;
+            }
           
             try {
                 PsWrapper scriptWrapper = new PsWrapper(script.Path, script.Debug);
@@ -103,6 +105,15 @@ namespace Citrix.SelfServiceDesktops.Agent {
             } catch (Exception e) {
                 CtxTrace.TraceError(e);
             }
+        }
+
+        /// <summary>
+        /// A valid device collection must specify all of Name, Server and Site.
+        /// </summary>
+        /// <param name="dc"></param>
+        /// <returns></returns>
+        private bool IsValidDeviceCollection(IDeviceCollection dc) {
+            return (dc != null) && !string.IsNullOrEmpty(dc.Name) && !string.IsNullOrEmpty(dc.Server) && !string.IsNullOrEmpty(dc.Site);
         }
 
         #endregion

@@ -67,7 +67,13 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
             if (useRemoteConfig && (config.RemoteConfig != null)) {
                 try {
                     configXml = GetXml(new Uri(config.RemoteConfig));
+                    string remoteConfig = config.RemoteConfig;             
                     config = Deserialize(configXml);
+                    // If the remote config does not have an agent URI, infer it from the remote Url in the local config 
+                    if (config.AgentUri == null) {
+                        config.SetAgentUriFrom(remoteConfig);
+                    }
+                   
                 } catch (Exception e) {
                     throw new ConfigurationErrorsException("Unable to load configuration from remote server", e);
                 }
@@ -112,9 +118,20 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
                     }
                 }
 
+                // Check sanity of device collections
+                foreach (IDesktopOffering offering in Configuration.DesktopOfferings) {
+                    IDeviceCollection dc = offering.DeviceCollection;
+                    if (dc != null) {
+                        if (string.IsNullOrEmpty(dc.Name) || string.IsNullOrEmpty(dc.Server) || string.IsNullOrEmpty(dc.Site)) {
+                            string msg = string.Format("Illegal DeviceCollection: Name ({0}), Server ({1}) Site ({2})", dc.Name, dc.Server, dc.Site);
+                            throw new ConfigurationErrorsException(msg);
+                        }
+                    }
+                }
+
                 // Ensure there is exactly one default desktop offering
                 IEnumerable<IDesktopOffering> defaultSet = Configuration.DesktopOfferings.Where(i => i.Default == true);
-                if (defaultSet.Count() > 0) {
+                if (defaultSet.Count() > 1) {
                     throw new ConfigurationErrorsException("Only one Desktop Offerings may marked with default=true");
                 }
                 if (defaultSet.Count() == 0) {

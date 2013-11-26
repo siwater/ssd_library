@@ -77,7 +77,6 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         /// If the base url of the SSD Agent is explicitly specified in config, return that, otherwise
         /// return the base url of the remoteConfig attribute if specified.
         /// </summary>
-        /// </summary>
         public Uri AgentUri {
             get {
                 Uri result = null;
@@ -146,6 +145,20 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
 
         #endregion
 
+        #region Internal methods
+
+        internal void SetAgentUriFrom(string remoteConfig) {
+            if (AgentUri == null) {
+                Uri agent = ParseUri(remoteConfig);
+                if (agent != null) {
+                    agent = new Uri(agent.GetLeftPart(UriPartial.Authority));
+                    Agent = new AgentElement() { BaseUrl = agent.ToString() };
+                }
+            }
+        }
+
+        #endregion
+
         #region Private methods
 
         /// <summary>
@@ -165,5 +178,7 @@ namespace Citrix.SelfServiceDesktops.DesktopLibrary.Configuration {
         }
 
         #endregion
+
+   
     }
 }
