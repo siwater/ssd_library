@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
   
   
-	<Product Id="333035dc-6a48-49fe-9c75-ba4e8c660e0b" Name="Citrix SelfServiceDesktops WebApp" Language="1033" Version="13.10.02" Manufacturer="Citrix Systems, Inc." UpgradeCode="d449f1e9-35aa-4c1e-a134-9ca34dfbf123">
+	<Product Id="333035dc-6a48-49fe-9c75-ba4e8c660e0b" Name="Citrix SelfServiceDesktops WebApp" Language="1033" Version="13.11.26" Manufacturer="Citrix Systems, Inc." UpgradeCode="d449f1e9-35aa-4c1e-a134-9ca34dfbf123">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     
     <!-- Icon and link for programs & features list" -->

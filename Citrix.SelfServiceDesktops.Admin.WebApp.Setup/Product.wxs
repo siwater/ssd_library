@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:iis="http://schemas.microsoft.com/wix/IIsExtension">
   
   
-	<Product Id="7de798eb-1b0e-4827-9732-efe6007639b0" Name="Citrix SelfServiceDesktops Admin Tool" Language="1033" Version="13.10.02" Manufacturer="Citrix Systems, Inc." UpgradeCode="8076f53a-111b-4b27-aa08-d93f69a3b621">
+	<Product Id="7de798eb-1b0e-4827-9732-efe6007639b0" Name="Citrix SelfServiceDesktops Admin Tool" Language="1033" Version="13.11.26" Manufacturer="Citrix Systems, Inc." UpgradeCode="8076f53a-111b-4b27-aa08-d93f69a3b621">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
     
     <!-- Icon and link for programs & features list" -->
