@@ -29,7 +29,8 @@ If not specified the default SelfServiceDesktops-dd-mm-yyyy will be used for the
 #>
 Param
 (
-    [string]$name   
+    [string]$name,
+    [string]$configuration = "Debug"
 )
 
 # Default behaviour is to stop execution on error 
@@ -52,9 +53,9 @@ $VersionFiles = @(
         
 $releaseDir = "$root\Releases\$name"
 $releaseNotes = "$root\ReleaseNotes.txt"
-$agentMSI = "$root\Citrix.SelfServiceDesktops.Agent.Setup\bin\Debug\Citrix.SelfServiceDesktops.Agent.Setup.msi"
-$webAppMSI = "$root\Citrix.SelfServiceDesktops.WebApp.Setup\bin\Debug\en-us\Citrix.SelfServiceDesktops.WebApp.Setup.msi"
-$adminMSI = "$root\Citrix.SelfServiceDesktops.Admin.WebApp.Setup\bin\Debug\en-us\Citrix.SelfServiceDesktops.Admin.WebApp.Setup.msi"
+$agentMSI = "$root\Citrix.SelfServiceDesktops.Agent.Setup\bin\$configuration\Citrix.SelfServiceDesktops.Agent.Setup.msi"
+$webAppMSI = "$root\Citrix.SelfServiceDesktops.WebApp.Setup\bin\$configuration\en-us\Citrix.SelfServiceDesktops.WebApp.Setup.msi"
+$adminMSI = "$root\Citrix.SelfServiceDesktops.Admin.WebApp.Setup\bin\$configuration\en-us\Citrix.SelfServiceDesktops.Admin.WebApp.Setup.msi"
 $docs = "$root\Documents\Release Documentation"
 $zipfile = "$root\Releases\$name" + ".zip"
 
